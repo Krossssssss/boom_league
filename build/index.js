@@ -14,7 +14,7 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import * as isbotModule from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
-import { jsx } from "react/jsx-runtime";
+import { jsxDEV } from "react/jsx-dev-runtime";
 var ABORT_DELAY = 5e3;
 function handleRequest(request, responseStatusCode, responseHeaders, remixContext, loadContext) {
   return isBotRequest(request.headers.get("user-agent")) || remixContext.isSpaMode ? handleBotRequest(
@@ -35,13 +35,21 @@ function isBotRequest(userAgent) {
 function handleBotRequest(request, responseStatusCode, responseHeaders, remixContext) {
   return new Promise((resolve, reject) => {
     let shellRendered = !1, { pipe, abort } = renderToPipeableStream(
-      /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsxDEV(
         RemixServer,
         {
           context: remixContext,
           url: request.url,
           abortDelay: ABORT_DELAY
-        }
+        },
+        void 0,
+        !1,
+        {
+          fileName: "node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx",
+          lineNumber: 66,
+          columnNumber: 7
+        },
+        this
       ),
       {
         onAllReady() {
@@ -68,13 +76,21 @@ function handleBotRequest(request, responseStatusCode, responseHeaders, remixCon
 function handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext) {
   return new Promise((resolve, reject) => {
     let shellRendered = !1, { pipe, abort } = renderToPipeableStream(
-      /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsxDEV(
         RemixServer,
         {
           context: remixContext,
           url: request.url,
           abortDelay: ABORT_DELAY
-        }
+        },
+        void 0,
+        !1,
+        {
+          fileName: "node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx",
+          lineNumber: 116,
+          columnNumber: 7
+        },
+        this
       ),
       {
         onShellReady() {
@@ -114,28 +130,68 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-4MV5P6NK.css?url";
+var tailwind_default = "/build/_assets/tailwind-6SAVPEJS.css?url";
 
 // app/root.tsx
-import { jsx as jsx2, jsxs } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
 var links = () => [
   { rel: "stylesheet", href: tailwind_default },
   { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+SC:wght@400;700&display=swap" }
 ];
 function App() {
-  return /* @__PURE__ */ jsxs("html", { lang: "en", children: [
-    /* @__PURE__ */ jsxs("head", { children: [
-      /* @__PURE__ */ jsx2("meta", { charSet: "utf-8" }),
-      /* @__PURE__ */ jsx2("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
-      /* @__PURE__ */ jsx2(Meta, {}),
-      /* @__PURE__ */ jsx2(Links, {})
-    ] }),
-    /* @__PURE__ */ jsxs("body", { children: [
-      /* @__PURE__ */ jsx2(Outlet, {}),
-      /* @__PURE__ */ jsx2(Scripts, {}),
-      /* @__PURE__ */ jsx2(LiveReload, {})
-    ] })
-  ] });
+  return /* @__PURE__ */ jsxDEV2("html", { lang: "en", children: [
+    /* @__PURE__ */ jsxDEV2("head", { children: [
+      /* @__PURE__ */ jsxDEV2("meta", { charSet: "utf-8" }, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 20,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV2("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 21,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV2(Meta, {}, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 22,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV2(Links, {}, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 23,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/root.tsx",
+      lineNumber: 19,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV2("body", { children: [
+      /* @__PURE__ */ jsxDEV2(Outlet, {}, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 26,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV2(Scripts, {}, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 27,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV2(LiveReload, {}, void 0, !1, {
+        fileName: "app/root.tsx",
+        lineNumber: 28,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/root.tsx",
+      lineNumber: 25,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/root.tsx",
+    lineNumber: 18,
+    columnNumber: 5
+  }, this);
 }
 
 // app/routes/_index.tsx
@@ -242,7 +298,7 @@ var ThemeContext = createContext(void 0), useTheme = () => {
 
 // app/components/layout/Sidebar.tsx
 import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideX, LucideSun, LucideMoon, LucideVolumeX, LucidePlay, LucidePause, LucideBook, LucideChevronLeft, LucideChevronRight } from "lucide-react";
-import { Fragment, jsx as jsx3, jsxs as jsxs2 } from "react/jsx-runtime";
+import { Fragment, jsxDEV as jsxDEV3 } from "react/jsx-dev-runtime";
 var Sidebar = ({
   currentPage,
   setCurrentPage,
@@ -260,53 +316,129 @@ var Sidebar = ({
   }, handleRulebookClick = () => {
     window.open("https://docs.google.com/document/d/1zJaKW7T4Lz0537q-SPOSN5mYH0btt6K8Yvd6craN504/edit?usp=sharing", "_blank");
   };
-  return /* @__PURE__ */ jsxs2(Fragment, { children: [
-    sidebarOpen && /* @__PURE__ */ jsx3(
+  return /* @__PURE__ */ jsxDEV3(Fragment, { children: [
+    sidebarOpen && /* @__PURE__ */ jsxDEV3(
       "div",
       {
         className: "fixed inset-0 bg-black/50 z-40 lg:hidden",
         onClick: () => setSidebarOpen(!1)
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/components/layout/Sidebar.tsx",
+        lineNumber: 51,
+        columnNumber: 17
+      },
+      this
     ),
-    /* @__PURE__ */ jsxs2("div", { className: `fixed left-0 top-0 h-full ${theme === "dark" ? "bg-black/40" : "bg-white/80"} backdrop-blur-2xl border-r ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} z-50 transform transition-all duration-300 ease-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static lg:z-auto ${sidebarCollapsed ? "w-16 lg:w-16" : "w-72 sm:w-80 md:w-72 lg:w-64"} ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.5)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
-      /* @__PURE__ */ jsx3("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-b from-white/5 to-transparent" : "bg-gradient-to-b from-gray-50/50 to-transparent"}` }),
-      /* @__PURE__ */ jsxs2("div", { className: "flex flex-col h-full", children: [
-        /* @__PURE__ */ jsx3("div", { className: `relative p-4 sm:p-6 border-b ${theme === "dark" ? "border-white/10" : "border-gray-200/50"}`, children: /* @__PURE__ */ jsxs2("div", { className: `flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"}`, children: [
-          !sidebarCollapsed && /* @__PURE__ */ jsxs2("div", { className: "flex items-center gap-2 sm:gap-3", children: [
-            /* @__PURE__ */ jsx3("div", { className: "relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsx3(LucideCat, { className: "text-orange-400", size: 18 }) }),
-            /* @__PURE__ */ jsxs2("div", { children: [
-              /* @__PURE__ */ jsx3("h2", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Boom League" }),
-              /* @__PURE__ */ jsx3("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"} font-medium hidden sm:block`, children: "Tournament Tracker" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxs2("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsx3(
+    /* @__PURE__ */ jsxDEV3("div", { className: `fixed left-0 top-0 h-full ${theme === "dark" ? "bg-black/40" : "bg-white/80"} backdrop-blur-2xl border-r ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} z-50 transform transition-all duration-300 ease-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static lg:z-auto ${sidebarCollapsed ? "w-16 lg:w-16" : "w-72 sm:w-80 md:w-72 lg:w-64"} ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.5)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
+      /* @__PURE__ */ jsxDEV3("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-b from-white/5 to-transparent" : "bg-gradient-to-b from-gray-50/50 to-transparent"}` }, void 0, !1, {
+        fileName: "app/components/layout/Sidebar.tsx",
+        lineNumber: 59,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV3("div", { className: "flex flex-col h-full", children: [
+        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-4 sm:p-6 border-b ${theme === "dark" ? "border-white/10" : "border-gray-200/50"}`, children: /* @__PURE__ */ jsxDEV3("div", { className: `flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"}`, children: [
+          !sidebarCollapsed && /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2 sm:gap-3", children: [
+            /* @__PURE__ */ jsxDEV3("div", { className: "relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsxDEV3(LucideCat, { className: "text-orange-400", size: 18 }, void 0, !1, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 68,
+              columnNumber: 41
+            }, this) }, void 0, !1, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 67,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV3("div", { children: [
+              /* @__PURE__ */ jsxDEV3("h2", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Boom League" }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 71,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV3("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"} font-medium hidden sm:block`, children: "Tournament Tracker" }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 72,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 70,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/layout/Sidebar.tsx",
+            lineNumber: 66,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxDEV3(
               "button",
               {
                 onClick: () => setSidebarCollapsed(!sidebarCollapsed),
                 className: `hidden lg:flex w-8 h-8 items-center justify-center rounded-md transition-all duration-200 ${theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/10" : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"}`,
                 title: sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar",
-                children: sidebarCollapsed ? /* @__PURE__ */ jsx3(LucideChevronRight, { size: 16 }) : /* @__PURE__ */ jsx3(LucideChevronLeft, { size: 16 })
-              }
+                children: sidebarCollapsed ? /* @__PURE__ */ jsxDEV3(LucideChevronRight, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 89,
+                  columnNumber: 57
+                }, this) : /* @__PURE__ */ jsxDEV3(LucideChevronLeft, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 89,
+                  columnNumber: 92
+                }, this)
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 80,
+                columnNumber: 33
+              },
+              this
             ),
-            !sidebarCollapsed && /* @__PURE__ */ jsx3(
+            !sidebarCollapsed && /* @__PURE__ */ jsxDEV3(
               "button",
               {
                 onClick: () => setSidebarOpen(!1),
                 className: `lg:hidden w-8 h-8 flex items-center justify-center rounded-md transition-colors ${theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/10" : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"}`,
-                children: /* @__PURE__ */ jsx3(LucideX, { size: 16 })
-              }
+                children: /* @__PURE__ */ jsxDEV3(LucideX, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 102,
+                  columnNumber: 41
+                }, this)
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 94,
+                columnNumber: 37
+              },
+              this
             )
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsx3("nav", { className: `flex-1 ${sidebarCollapsed ? "p-2" : "p-3 sm:p-4"} relative z-10`, children: /* @__PURE__ */ jsx3("ul", { className: `space-y-1 sm:space-y-1.5 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`, children: [
+          ] }, void 0, !0, {
+            fileName: "app/components/layout/Sidebar.tsx",
+            lineNumber: 78,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 63,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 62,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV3("nav", { className: `flex-1 ${sidebarCollapsed ? "p-2" : "p-3 sm:p-4"} relative z-10`, children: /* @__PURE__ */ jsxDEV3("ul", { className: `space-y-1 sm:space-y-1.5 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`, children: [
           { id: "home", name: "\u9996\u9875", icon: LucideHome },
           { id: "registration", name: "\u73A9\u5BB6\u6CE8\u518C", icon: LucideUserPlus },
           { id: "league", name: "\u8054\u8D5B\u7BA1\u7406", icon: LucideGamepad2 },
           { id: "rankings", name: "\u6392\u884C\u699C", icon: LucideBarChart3 }
         ].map((item) => {
           let Icon = item.icon, isActive = currentPage === item.id;
-          return /* @__PURE__ */ jsx3("li", { children: /* @__PURE__ */ jsxs2(
+          return /* @__PURE__ */ jsxDEV3("li", { children: /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: () => {
@@ -315,281 +447,800 @@ var Sidebar = ({
               className: `group relative ${sidebarCollapsed ? "w-10 h-10" : "w-full"} flex items-center ${sidebarCollapsed ? "justify-center" : "gap-3"} px-3 sm:px-4 py-3 sm:py-3 rounded-lg transition-all duration-200 overflow-hidden text-sm sm:text-base ${isActive ? "bg-gradient-to-r from-orange-500/20 to-orange-600/20 text-orange-400 border border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.2)]" : theme === "dark" ? "text-white/70 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10" : "text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 border border-transparent hover:border-gray-200"}`,
               title: sidebarCollapsed ? item.name : void 0,
               children: [
-                isActive && /* @__PURE__ */ jsx3("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 backdrop-blur-sm" }),
-                /* @__PURE__ */ jsx3(Icon, { size: 18, className: "relative z-10 flex-shrink-0" }),
-                !sidebarCollapsed && /* @__PURE__ */ jsx3("span", { className: "font-medium relative z-10 truncate", children: item.name })
+                isActive && /* @__PURE__ */ jsxDEV3("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 backdrop-blur-sm" }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 132,
+                  columnNumber: 49
+                }, this),
+                /* @__PURE__ */ jsxDEV3(Icon, { size: 18, className: "relative z-10 flex-shrink-0" }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 134,
+                  columnNumber: 45
+                }, this),
+                !sidebarCollapsed && /* @__PURE__ */ jsxDEV3("span", { className: "font-medium relative z-10 truncate", children: item.name }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 136,
+                  columnNumber: 49
+                }, this)
               ]
-            }
-          ) }, item.id);
-        }) }) }),
-        /* @__PURE__ */ jsx3("div", { className: `relative p-3 sm:p-4 border-t ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} mt-auto`, children: sidebarCollapsed ? /* @__PURE__ */ jsxs2("div", { className: "flex flex-col items-center gap-2", children: [
-          /* @__PURE__ */ jsx3(
+            },
+            void 0,
+            !0,
+            {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 117,
+              columnNumber: 41
+            },
+            this
+          ) }, item.id, !1, {
+            fileName: "app/components/layout/Sidebar.tsx",
+            lineNumber: 116,
+            columnNumber: 37
+          }, this);
+        }) }, void 0, !1, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 111,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 110,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-3 sm:p-4 border-t ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} mt-auto`, children: sidebarCollapsed ? /* @__PURE__ */ jsxDEV3("div", { className: "flex flex-col items-center gap-2", children: [
+          /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: handleMusicToggle,
               className: `w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${musicPlaying && !musicMuted ? "text-orange-400 bg-orange-500/20 border-orange-500/30" : theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
               title: musicMuted ? "Unmute music" : musicPlaying ? "Pause music" : "Play music",
-              children: musicMuted ? /* @__PURE__ */ jsx3(LucideVolumeX, { size: 14 }) : musicPlaying ? /* @__PURE__ */ jsx3(LucidePause, { size: 14 }) : /* @__PURE__ */ jsx3(LucidePlay, { size: 14 })
-            }
+              children: musicMuted ? /* @__PURE__ */ jsxDEV3(LucideVolumeX, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 161,
+                columnNumber: 51
+              }, this) : musicPlaying ? /* @__PURE__ */ jsxDEV3(LucidePause, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 161,
+                columnNumber: 96
+              }, this) : /* @__PURE__ */ jsxDEV3(LucidePlay, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 161,
+                columnNumber: 124
+              }, this)
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 150,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx3(
+          /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: toggleTheme,
               className: `w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
               title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
-              children: theme === "dark" ? /* @__PURE__ */ jsx3(LucideSun, { size: 14 }) : /* @__PURE__ */ jsx3(LucideMoon, { size: 14 })
-            }
+              children: theme === "dark" ? /* @__PURE__ */ jsxDEV3(LucideSun, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 169,
+                columnNumber: 57
+              }, this) : /* @__PURE__ */ jsxDEV3(LucideMoon, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 169,
+                columnNumber: 83
+              }, this)
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 164,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx3(
+          /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: handleRulebookClick,
               className: `w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
               title: "Open rulebook (external link)",
-              children: /* @__PURE__ */ jsx3(LucideBook, { size: 14 })
-            }
+              children: /* @__PURE__ */ jsxDEV3(LucideBook, { size: 14 }, void 0, !1, {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 177,
+                columnNumber: 37
+              }, this)
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 172,
+              columnNumber: 33
+            },
+            this
           )
-        ] }) : /* @__PURE__ */ jsxs2("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxs2("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsx3(
+        ] }, void 0, !0, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 148,
+          columnNumber: 29
+        }, this) : /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxDEV3(
               "button",
               {
                 onClick: handleMusicToggle,
                 className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${musicPlaying && !musicMuted ? "text-orange-400 bg-orange-500/20 border-orange-500/30" : theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
                 title: musicMuted ? "Unmute music" : musicPlaying ? "Pause music" : "Play music",
-                children: musicMuted ? /* @__PURE__ */ jsx3(LucideVolumeX, { size: 16 }) : musicPlaying ? /* @__PURE__ */ jsx3(LucidePause, { size: 16 }) : /* @__PURE__ */ jsx3(LucidePlay, { size: 16 })
-              }
+                children: musicMuted ? /* @__PURE__ */ jsxDEV3(LucideVolumeX, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 195,
+                  columnNumber: 55
+                }, this) : musicPlaying ? /* @__PURE__ */ jsxDEV3(LucidePause, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 195,
+                  columnNumber: 100
+                }, this) : /* @__PURE__ */ jsxDEV3(LucidePlay, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 195,
+                  columnNumber: 128
+                }, this)
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 184,
+                columnNumber: 37
+              },
+              this
             ),
-            /* @__PURE__ */ jsx3(
+            /* @__PURE__ */ jsxDEV3(
               "button",
               {
                 onClick: toggleTheme,
                 className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
                 title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
-                children: theme === "dark" ? /* @__PURE__ */ jsx3(LucideSun, { size: 16 }) : /* @__PURE__ */ jsx3(LucideMoon, { size: 16 })
-              }
+                children: theme === "dark" ? /* @__PURE__ */ jsxDEV3(LucideSun, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 203,
+                  columnNumber: 61
+                }, this) : /* @__PURE__ */ jsxDEV3(LucideMoon, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 203,
+                  columnNumber: 87
+                }, this)
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 198,
+                columnNumber: 37
+              },
+              this
             ),
-            /* @__PURE__ */ jsx3(
+            /* @__PURE__ */ jsxDEV3(
               "button",
               {
                 onClick: handleRulebookClick,
                 className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
                 title: "Open rulebook (external link)",
-                children: /* @__PURE__ */ jsx3(LucideBook, { size: 16 })
-              }
+                children: /* @__PURE__ */ jsxDEV3(LucideBook, { size: 16 }, void 0, !1, {
+                  fileName: "app/components/layout/Sidebar.tsx",
+                  lineNumber: 211,
+                  columnNumber: 41
+                }, this)
+              },
+              void 0,
+              !1,
+              {
+                fileName: "app/components/layout/Sidebar.tsx",
+                lineNumber: 206,
+                columnNumber: 37
+              },
+              this
             )
-          ] }),
-          /* @__PURE__ */ jsx3("div", { className: `text-xs ${theme === "dark" ? "text-white/40" : "text-gray-400"} font-medium`, children: "Controls" })
-        ] }) })
-      ] })
-    ] })
-  ] });
+          ] }, void 0, !0, {
+            fileName: "app/components/layout/Sidebar.tsx",
+            lineNumber: 182,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV3("div", { className: `text-xs ${theme === "dark" ? "text-white/40" : "text-gray-400"} font-medium`, children: "Controls" }, void 0, !1, {
+            fileName: "app/components/layout/Sidebar.tsx",
+            lineNumber: 214,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 181,
+          columnNumber: 29
+        }, this) }, void 0, !1, {
+          fileName: "app/components/layout/Sidebar.tsx",
+          lineNumber: 146,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/layout/Sidebar.tsx",
+        lineNumber: 60,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/layout/Sidebar.tsx",
+      lineNumber: 58,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/layout/Sidebar.tsx",
+    lineNumber: 48,
+    columnNumber: 9
+  }, this);
 }, Sidebar_default = Sidebar;
 
 // app/components/ui/Leaderboard.tsx
 import { LucideTrophy } from "lucide-react";
-import { jsx as jsx4, jsxs as jsxs3 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV4 } from "react/jsx-dev-runtime";
 var Leaderboard = ({ players, onPlayerClick }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxs3("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
-    /* @__PURE__ */ jsx4("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }),
-    /* @__PURE__ */ jsxs3("div", { className: "relative z-10 p-4 sm:p-6", children: [
-      /* @__PURE__ */ jsxs3("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsx4("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-lg shadow-[0_0_20px_rgba(251,191,36,0.2)]", children: /* @__PURE__ */ jsx4(LucideTrophy, { size: 14, className: "text-yellow-400 sm:w-4 sm:h-4" }) }),
-        /* @__PURE__ */ jsx4("h3", { className: `text-base sm:text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Leaderboard" })
-      ] }),
-      /* @__PURE__ */ jsx4("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p, index) => /* @__PURE__ */ jsxs3(
+  return /* @__PURE__ */ jsxDEV4("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
+    /* @__PURE__ */ jsxDEV4("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }, void 0, !1, {
+      fileName: "app/components/ui/Leaderboard.tsx",
+      lineNumber: 11,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV4("div", { className: "relative z-10 p-4 sm:p-6", children: [
+      /* @__PURE__ */ jsxDEV4("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV4("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-lg shadow-[0_0_20px_rgba(251,191,36,0.2)]", children: /* @__PURE__ */ jsxDEV4(LucideTrophy, { size: 14, className: "text-yellow-400 sm:w-4 sm:h-4" }, void 0, !1, {
+          fileName: "app/components/ui/Leaderboard.tsx",
+          lineNumber: 15,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/ui/Leaderboard.tsx",
+          lineNumber: 14,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV4("h3", { className: `text-base sm:text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Leaderboard" }, void 0, !1, {
+          fileName: "app/components/ui/Leaderboard.tsx",
+          lineNumber: 17,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/Leaderboard.tsx",
+        lineNumber: 13,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV4("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p, index) => /* @__PURE__ */ jsxDEV4(
         "div",
         {
           className: `group relative flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border border-transparent active:scale-[0.98] ${theme === "dark" ? "hover:bg-white/5 hover:border-white/10 active:bg-white/10" : "hover:bg-gray-100/50 hover:border-gray-200 active:bg-gray-200/50"}`,
           onClick: () => onPlayerClick && onPlayerClick(p),
           children: [
-            /* @__PURE__ */ jsxs3("div", { className: "flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1", children: [
-              /* @__PURE__ */ jsx4("div", { className: `relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center font-semibold text-xs sm:text-sm border flex-shrink-0 ${index === 0 ? "bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border-yellow-500/30 text-yellow-400 shadow-[0_0_15px_rgba(251,191,36,0.2)]" : index === 1 ? `bg-gradient-to-br from-gray-300/20 to-gray-400/20 border-gray-400/30 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}` : index === 2 ? "bg-gradient-to-br from-orange-400/20 to-orange-500/20 border-orange-500/30 text-orange-400" : theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: index + 1 }),
-              /* @__PURE__ */ jsx4("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }),
-              /* @__PURE__ */ jsx4("span", { className: `font-medium text-sm sm:text-base truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: p.name })
-            ] }),
-            /* @__PURE__ */ jsxs3("div", { className: "text-right flex-shrink-0", children: [
-              /* @__PURE__ */ jsx4("div", { className: "font-semibold text-base sm:text-lg text-emerald-400", children: p.score }),
-              /* @__PURE__ */ jsx4("div", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"} font-medium`, children: "VP" })
-            ] })
+            /* @__PURE__ */ jsxDEV4("div", { className: "flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1", children: [
+              /* @__PURE__ */ jsxDEV4("div", { className: `relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center font-semibold text-xs sm:text-sm border flex-shrink-0 ${index === 0 ? "bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border-yellow-500/30 text-yellow-400 shadow-[0_0_15px_rgba(251,191,36,0.2)]" : index === 1 ? `bg-gradient-to-br from-gray-300/20 to-gray-400/20 border-gray-400/30 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}` : index === 2 ? "bg-gradient-to-br from-orange-400/20 to-orange-500/20 border-orange-500/30 text-orange-400" : theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: index + 1 }, void 0, !1, {
+                fileName: "app/components/ui/Leaderboard.tsx",
+                lineNumber: 31,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV4("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }, void 0, !1, {
+                fileName: "app/components/ui/Leaderboard.tsx",
+                lineNumber: 39,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV4("span", { className: `font-medium text-sm sm:text-base truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: p.name }, void 0, !1, {
+                fileName: "app/components/ui/Leaderboard.tsx",
+                lineNumber: 40,
+                columnNumber: 33
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/Leaderboard.tsx",
+              lineNumber: 30,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ jsxDEV4("div", { className: "text-right flex-shrink-0", children: [
+              /* @__PURE__ */ jsxDEV4("div", { className: "font-semibold text-base sm:text-lg text-emerald-400", children: p.score }, void 0, !1, {
+                fileName: "app/components/ui/Leaderboard.tsx",
+                lineNumber: 43,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV4("div", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"} font-medium`, children: "VP" }, void 0, !1, {
+                fileName: "app/components/ui/Leaderboard.tsx",
+                lineNumber: 44,
+                columnNumber: 33
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/Leaderboard.tsx",
+              lineNumber: 42,
+              columnNumber: 29
+            }, this)
           ]
         },
-        p.id
-      )) })
-    ] })
-  ] });
+        p.id,
+        !0,
+        {
+          fileName: "app/components/ui/Leaderboard.tsx",
+          lineNumber: 21,
+          columnNumber: 25
+        },
+        this
+      )) }, void 0, !1, {
+        fileName: "app/components/ui/Leaderboard.tsx",
+        lineNumber: 19,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/Leaderboard.tsx",
+      lineNumber: 12,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/Leaderboard.tsx",
+    lineNumber: 10,
+    columnNumber: 9
+  }, this);
 }, Leaderboard_default = Leaderboard;
 
 // app/components/ui/InfoCard.tsx
-import { jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV5 } from "react/jsx-dev-runtime";
 var InfoCard = ({ icon, title, value }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxs4("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg p-3 sm:p-4 lg:p-5 transition-all duration-200 ${theme === "dark" ? "hover:bg-white/5 shadow-[0_0_30px_rgba(0,0,0,0.2)]" : "hover:bg-gray-100/50 shadow-[0_0_30px_rgba(0,0,0,0.1)]"}`, children: [
-    /* @__PURE__ */ jsx5("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg` }),
-    /* @__PURE__ */ jsxs4("div", { className: "relative z-10 flex items-center gap-2.5 sm:gap-3 lg:gap-4", children: [
-      /* @__PURE__ */ jsx5("div", { className: `p-2 sm:p-2.5 backdrop-blur-sm border rounded-lg flex-shrink-0 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"}`, children: /* @__PURE__ */ jsx5("div", { className: "w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex items-center justify-center", children: icon }) }),
-      /* @__PURE__ */ jsxs4("div", { className: "min-w-0 flex-1", children: [
-        /* @__PURE__ */ jsx5("p", { className: `text-xs sm:text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"} truncate`, children: title }),
-        /* @__PURE__ */ jsx5("p", { className: `font-semibold text-base sm:text-lg lg:text-xl ${theme === "dark" ? "text-white" : "text-gray-900"} truncate`, children: value })
-      ] })
-    ] })
-  ] });
+  return /* @__PURE__ */ jsxDEV5("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg p-3 sm:p-4 lg:p-5 transition-all duration-200 ${theme === "dark" ? "hover:bg-white/5 shadow-[0_0_30px_rgba(0,0,0,0.2)]" : "hover:bg-gray-100/50 shadow-[0_0_30px_rgba(0,0,0,0.1)]"}`, children: [
+    /* @__PURE__ */ jsxDEV5("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg` }, void 0, !1, {
+      fileName: "app/components/ui/InfoCard.tsx",
+      lineNumber: 10,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV5("div", { className: "relative z-10 flex items-center gap-2.5 sm:gap-3 lg:gap-4", children: [
+      /* @__PURE__ */ jsxDEV5("div", { className: `p-2 sm:p-2.5 backdrop-blur-sm border rounded-lg flex-shrink-0 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"}`, children: /* @__PURE__ */ jsxDEV5("div", { className: "w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex items-center justify-center", children: icon }, void 0, !1, {
+        fileName: "app/components/ui/InfoCard.tsx",
+        lineNumber: 13,
+        columnNumber: 21
+      }, this) }, void 0, !1, {
+        fileName: "app/components/ui/InfoCard.tsx",
+        lineNumber: 12,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV5("div", { className: "min-w-0 flex-1", children: [
+        /* @__PURE__ */ jsxDEV5("p", { className: `text-xs sm:text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"} truncate`, children: title }, void 0, !1, {
+          fileName: "app/components/ui/InfoCard.tsx",
+          lineNumber: 18,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV5("p", { className: `font-semibold text-base sm:text-lg lg:text-xl ${theme === "dark" ? "text-white" : "text-gray-900"} truncate`, children: value }, void 0, !1, {
+          fileName: "app/components/ui/InfoCard.tsx",
+          lineNumber: 19,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/InfoCard.tsx",
+        lineNumber: 17,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/InfoCard.tsx",
+      lineNumber: 11,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/InfoCard.tsx",
+    lineNumber: 9,
+    columnNumber: 9
+  }, this);
 }, InfoCard_default = InfoCard;
 
 // app/components/ui/ScheduleTimeline.tsx
 import { LucideScrollText } from "lucide-react";
-import { jsx as jsx6, jsxs as jsxs5 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV6 } from "react/jsx-dev-runtime";
 var ScheduleTimeline = ({ schedule, currentRound }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxs5("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
-    /* @__PURE__ */ jsx6("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }),
-    /* @__PURE__ */ jsxs5("div", { className: "relative z-10 p-6", children: [
-      /* @__PURE__ */ jsxs5("div", { className: "flex items-center gap-3 mb-6", children: [
-        /* @__PURE__ */ jsx6("div", { className: "relative p-2 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-sm border border-indigo-500/30 rounded-lg shadow-[0_0_20px_rgba(99,102,241,0.2)]", children: /* @__PURE__ */ jsx6(LucideScrollText, { size: 16, className: "text-indigo-400" }) }),
-        /* @__PURE__ */ jsx6("h3", { className: `text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Tournament Schedule" })
-      ] }),
-      /* @__PURE__ */ jsx6("div", { className: "space-y-2", children: schedule.map((roundInfo) => {
+  return /* @__PURE__ */ jsxDEV6("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
+    /* @__PURE__ */ jsxDEV6("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }, void 0, !1, {
+      fileName: "app/components/ui/ScheduleTimeline.tsx",
+      lineNumber: 11,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV6("div", { className: "relative z-10 p-6", children: [
+      /* @__PURE__ */ jsxDEV6("div", { className: "flex items-center gap-3 mb-6", children: [
+        /* @__PURE__ */ jsxDEV6("div", { className: "relative p-2 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-sm border border-indigo-500/30 rounded-lg shadow-[0_0_20px_rgba(99,102,241,0.2)]", children: /* @__PURE__ */ jsxDEV6(LucideScrollText, { size: 16, className: "text-indigo-400" }, void 0, !1, {
+          fileName: "app/components/ui/ScheduleTimeline.tsx",
+          lineNumber: 15,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/ui/ScheduleTimeline.tsx",
+          lineNumber: 14,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV6("h3", { className: `text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Tournament Schedule" }, void 0, !1, {
+          fileName: "app/components/ui/ScheduleTimeline.tsx",
+          lineNumber: 17,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/ScheduleTimeline.tsx",
+        lineNumber: 13,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV6("div", { className: "space-y-2", children: schedule.map((roundInfo) => {
         let isActive = roundInfo.round === currentRound;
-        return /* @__PURE__ */ jsxs5("div", { className: `relative p-4 rounded-lg transition-all duration-300 border ${isActive ? "bg-gradient-to-r from-orange-500/10 to-orange-600/10 border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.1)]" : theme === "dark" ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-gray-100/50 border-gray-200 hover:bg-gray-200/50"}`, children: [
-          /* @__PURE__ */ jsxs5("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxs5("p", { className: `font-semibold text-base ${isActive ? "text-orange-400" : theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
+        return /* @__PURE__ */ jsxDEV6("div", { className: `relative p-4 rounded-lg transition-all duration-300 border ${isActive ? "bg-gradient-to-r from-orange-500/10 to-orange-600/10 border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.1)]" : theme === "dark" ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-gray-100/50 border-gray-200 hover:bg-gray-200/50"}`, children: [
+          /* @__PURE__ */ jsxDEV6("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxDEV6("p", { className: `font-semibold text-base ${isActive ? "text-orange-400" : theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
               "Round ",
               roundInfo.round
-            ] }),
-            isActive && /* @__PURE__ */ jsx6("div", { className: "w-2 h-2 bg-orange-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(251,146,60,0.5)]" })
-          ] }),
-          /* @__PURE__ */ jsxs5("p", { className: `text-sm mt-1 font-medium ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/ScheduleTimeline.tsx",
+              lineNumber: 31,
+              columnNumber: 37
+            }, this),
+            isActive && /* @__PURE__ */ jsxDEV6("div", { className: "w-2 h-2 bg-orange-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(251,146,60,0.5)]" }, void 0, !1, {
+              fileName: "app/components/ui/ScheduleTimeline.tsx",
+              lineNumber: 35,
+              columnNumber: 41
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/ScheduleTimeline.tsx",
+            lineNumber: 30,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV6("p", { className: `text-sm mt-1 font-medium ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
             roundInfo.vpMode.name,
             " \u2022 ",
             roundInfo.specialRule
-          ] })
-        ] }, roundInfo.round);
-      }) })
-    ] })
-  ] });
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/ScheduleTimeline.tsx",
+            lineNumber: 38,
+            columnNumber: 33
+          }, this)
+        ] }, roundInfo.round, !0, {
+          fileName: "app/components/ui/ScheduleTimeline.tsx",
+          lineNumber: 23,
+          columnNumber: 29
+        }, this);
+      }) }, void 0, !1, {
+        fileName: "app/components/ui/ScheduleTimeline.tsx",
+        lineNumber: 19,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/ScheduleTimeline.tsx",
+      lineNumber: 12,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/ScheduleTimeline.tsx",
+    lineNumber: 10,
+    columnNumber: 9
+  }, this);
 }, ScheduleTimeline_default = ScheduleTimeline;
 
 // app/components/ui/Modal.tsx
 import { LucideX as LucideX2 } from "lucide-react";
-import { jsx as jsx7, jsxs as jsxs6 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV7 } from "react/jsx-dev-runtime";
 var Modal = ({ children, onClose, title }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsx7("div", { className: "fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4", children: /* @__PURE__ */ jsxs6("div", { className: `relative ${theme === "dark" ? "bg-black/40" : "bg-white/90"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_80px_rgba(0,0,0,0.5)]" : "shadow-[0_0_80px_rgba(0,0,0,0.2)]"} p-4 sm:p-6 lg:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto`, children: [
-    /* @__PURE__ */ jsx7("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }),
-    /* @__PURE__ */ jsxs6("div", { className: "relative z-10", children: [
-      /* @__PURE__ */ jsxs6("div", { className: "flex justify-between items-start gap-4 mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsx7("h3", { className: `text-lg sm:text-xl font-semibold tracking-tight flex-1 ${theme === "dark" ? "bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent" : "text-gray-900"}`, children: title }),
-        /* @__PURE__ */ jsx7(
+  return /* @__PURE__ */ jsxDEV7("div", { className: "fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-3 sm:p-4", children: /* @__PURE__ */ jsxDEV7("div", { className: `relative ${theme === "dark" ? "bg-black/40" : "bg-white/90"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_80px_rgba(0,0,0,0.5)]" : "shadow-[0_0_80px_rgba(0,0,0,0.2)]"} p-4 sm:p-6 lg:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto`, children: [
+    /* @__PURE__ */ jsxDEV7("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }, void 0, !1, {
+      fileName: "app/components/ui/Modal.tsx",
+      lineNumber: 12,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV7("div", { className: "relative z-10", children: [
+      /* @__PURE__ */ jsxDEV7("div", { className: "flex justify-between items-start gap-4 mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV7("h3", { className: `text-lg sm:text-xl font-semibold tracking-tight flex-1 ${theme === "dark" ? "bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent" : "text-gray-900"}`, children: title }, void 0, !1, {
+          fileName: "app/components/ui/Modal.tsx",
+          lineNumber: 15,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV7(
           "button",
           {
             onClick: onClose,
             className: `p-2 rounded-lg transition-all duration-200 border border-transparent flex-shrink-0 active:scale-95 ${theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-500 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
-            children: /* @__PURE__ */ jsx7(LucideX2, { size: 18 })
-          }
+            children: /* @__PURE__ */ jsxDEV7(LucideX2, { size: 18 }, void 0, !1, {
+              fileName: "app/components/ui/Modal.tsx",
+              lineNumber: 22,
+              columnNumber: 29
+            }, this)
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/Modal.tsx",
+            lineNumber: 18,
+            columnNumber: 25
+          },
+          this
         )
-      ] }),
-      /* @__PURE__ */ jsx7("div", { className: "space-y-4 sm:space-y-6", children })
-    ] })
-  ] }) });
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/Modal.tsx",
+        lineNumber: 14,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV7("div", { className: "space-y-4 sm:space-y-6", children }, void 0, !1, {
+        fileName: "app/components/ui/Modal.tsx",
+        lineNumber: 25,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/Modal.tsx",
+      lineNumber: 13,
+      columnNumber: 17
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/Modal.tsx",
+    lineNumber: 11,
+    columnNumber: 13
+  }, this) }, void 0, !1, {
+    fileName: "app/components/ui/Modal.tsx",
+    lineNumber: 10,
+    columnNumber: 9
+  }, this);
 }, Modal_default = Modal;
 
 // app/components/ui/PlayerProfileModal.tsx
-import { jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV8 } from "react/jsx-dev-runtime";
 var PlayerProfileModal = ({ player, onClose }) => {
   let { theme } = useTheme();
   if (!player)
     return null;
   let stats = UTILS.calculatePlayerStats(player);
-  return /* @__PURE__ */ jsx8(Modal_default, { onClose, title: `${player.avatar} ${player.name} \u7684\u6863\u6848`, children: /* @__PURE__ */ jsxs7("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxs7("div", { className: "grid grid-cols-2 gap-4", children: [
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: "text-2xl font-bold text-yellow-400", children: player.championships || 0 }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F3C6} \u51A0\u519B\u6B21\u6570" })
-      ] }),
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: `text-2xl font-bold ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: player.runnerUp || 0 }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F948} \u4E9A\u519B\u6B21\u6570" })
-      ] }),
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: "text-2xl font-bold text-orange-400", children: player.thirdPlace || 0 }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F949} \u5B63\u519B\u6B21\u6570" })
-      ] }),
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: "text-2xl font-bold text-emerald-400", children: player.score }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" })
-      ] }),
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: "text-2xl font-bold text-blue-400", children: stats.totalGames }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u603B\u6E38\u620F\u6570" })
-      ] }),
-      /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsx8("p", { className: "text-2xl font-bold text-purple-400", children: stats.averagePlacement }),
-        /* @__PURE__ */ jsx8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5E73\u5747\u6392\u540D" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
-      /* @__PURE__ */ jsxs7("div", { className: "flex justify-between items-center mb-2", children: [
-        /* @__PURE__ */ jsx8("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold`, children: "\u80DC\u7387" }),
-        /* @__PURE__ */ jsxs7("span", { className: "text-orange-400 font-bold", children: [
+  return /* @__PURE__ */ jsxDEV8(Modal_default, { onClose, title: `${player.avatar} ${player.name} \u7684\u6863\u6848`, children: /* @__PURE__ */ jsxDEV8("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV8("div", { className: "grid grid-cols-2 gap-4", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-yellow-400", children: player.championships || 0 }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 20,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F3C6} \u51A0\u519B\u6B21\u6570" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 21,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 19,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-2xl font-bold ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: player.runnerUp || 0 }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 24,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F948} \u4E9A\u519B\u6B21\u6570" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 25,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 23,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-orange-400", children: player.thirdPlace || 0 }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 28,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F949} \u5B63\u519B\u6B21\u6570" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 29,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 27,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-emerald-400", children: player.score }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 32,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 33,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 31,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-blue-400", children: stats.totalGames }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 36,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u603B\u6E38\u620F\u6570" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 37,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 35,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
+        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-purple-400", children: stats.averagePlacement }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 40,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5E73\u5747\u6392\u540D" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 41,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 39,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 18,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center mb-2", children: [
+        /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold`, children: "\u80DC\u7387" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 48,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV8("span", { className: "text-orange-400 font-bold", children: [
           stats.winRate,
           "%"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx8("div", { className: `w-full ${theme === "dark" ? "bg-gray-600" : "bg-gray-300"} rounded-full h-2`, children: /* @__PURE__ */ jsx8(
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 49,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 47,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: `w-full ${theme === "dark" ? "bg-gray-600" : "bg-gray-300"} rounded-full h-2`, children: /* @__PURE__ */ jsxDEV8(
         "div",
         {
           className: "bg-orange-400 h-2 rounded-full transition-all duration-300",
           style: { width: `${stats.winRate}%` }
-        }
-      ) })
-    ] }),
-    stats.totalGames > 0 && /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
-      /* @__PURE__ */ jsx8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6392\u540D\u5206\u5E03" }),
-      /* @__PURE__ */ jsx8("div", { className: "space-y-2", children: [1, 2, 3, 4, 5, 6].map((place) => {
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 52,
+          columnNumber: 25
+        },
+        this
+      ) }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 51,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 46,
+      columnNumber: 17
+    }, this),
+    stats.totalGames > 0 && /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
+      /* @__PURE__ */ jsxDEV8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6392\u540D\u5206\u5E03" }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 62,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2", children: [1, 2, 3, 4, 5, 6].map((place) => {
         let count = stats.placements[place] || 0, percentage = stats.totalGames > 0 ? (count / stats.totalGames * 100).toFixed(1) : 0;
-        return count > 0 ? /* @__PURE__ */ jsxs7("div", { className: "flex justify-between items-center", children: [
-          /* @__PURE__ */ jsxs7("span", { className: `text-sm ${place === 1 ? "text-yellow-400" : place === 2 ? "text-gray-300" : place === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
+        return count > 0 ? /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center", children: [
+          /* @__PURE__ */ jsxDEV8("span", { className: `text-sm ${place === 1 ? "text-yellow-400" : place === 2 ? "text-gray-300" : place === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
             "\u7B2C",
             place,
             "\u540D"
-          ] }),
-          /* @__PURE__ */ jsxs7("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxs7("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} text-sm`, children: [
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 69,
+            columnNumber: 41
+          }, this),
+          /* @__PURE__ */ jsxDEV8("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} text-sm`, children: [
               count,
               "\u6B21"
-            ] }),
-            /* @__PURE__ */ jsxs7("span", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-500"} text-xs`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/PlayerProfileModal.tsx",
+              lineNumber: 73,
+              columnNumber: 45
+            }, this),
+            /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-500"} text-xs`, children: [
               "(",
               percentage,
               "%)"
-            ] })
-          ] })
-        ] }, place) : null;
-      }) })
-    ] }),
-    player.history && player.history.length > 0 && /* @__PURE__ */ jsxs7("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
-      /* @__PURE__ */ jsx8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6700\u8FD1\u6BD4\u8D5B" }),
-      /* @__PURE__ */ jsx8("div", { className: "space-y-2 max-h-32 overflow-y-auto", children: player.history.slice(-5).reverse().map((game, index) => /* @__PURE__ */ jsxs7("div", { className: "flex justify-between items-center text-sm", children: [
-        /* @__PURE__ */ jsxs7("span", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/PlayerProfileModal.tsx",
+              lineNumber: 74,
+              columnNumber: 45
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 72,
+            columnNumber: 41
+          }, this)
+        ] }, place, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 68,
+          columnNumber: 37
+        }, this) : null;
+      }) }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 63,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 61,
+      columnNumber: 21
+    }, this),
+    player.history && player.history.length > 0 && /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
+      /* @__PURE__ */ jsxDEV8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6700\u8FD1\u6BD4\u8D5B" }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 86,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2 max-h-32 overflow-y-auto", children: player.history.slice(-5).reverse().map((game, index) => /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center text-sm", children: [
+        /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
           "\u7B2C",
           game.round,
           "\u8F6E"
-        ] }),
-        /* @__PURE__ */ jsxs7("span", { className: `font-semibold ${game.placement === 1 ? "text-yellow-400" : game.placement === 2 ? "text-gray-300" : game.placement === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 90,
+          columnNumber: 37
+        }, this),
+        /* @__PURE__ */ jsxDEV8("span", { className: `font-semibold ${game.placement === 1 ? "text-yellow-400" : game.placement === 2 ? "text-gray-300" : game.placement === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
           "\u7B2C",
           game.placement,
           "\u540D"
-        ] })
-      ] }, index)) })
-    ] })
-  ] }) });
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 91,
+          columnNumber: 37
+        }, this)
+      ] }, index, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 89,
+        columnNumber: 33
+      }, this)) }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 87,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 85,
+      columnNumber: 21
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/PlayerProfileModal.tsx",
+    lineNumber: 16,
+    columnNumber: 13
+  }, this) }, void 0, !1, {
+    fileName: "app/components/ui/PlayerProfileModal.tsx",
+    lineNumber: 15,
+    columnNumber: 9
+  }, this);
 }, PlayerProfileModal_default = PlayerProfileModal;
 
 // app/components/ui/ResultsModal.tsx
 import { useState } from "react";
-import { jsx as jsx9, jsxs as jsxs8 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV9 } from "react/jsx-dev-runtime";
 var ResultsModal = ({ players, onClose, onSubmit, round }) => {
   let { theme } = useTheme(), [rankedPlayers, setRankedPlayers] = useState(players.map((p) => p.id)), handleDragStart = (e, index) => {
     e.dataTransfer.setData("draggedIndex", index.toString());
@@ -597,11 +1248,15 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
     let draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex")), newRankedPlayers = [...rankedPlayers], [draggedItem] = newRankedPlayers.splice(draggedIndex, 1);
     newRankedPlayers.splice(dropIndex, 0, draggedItem), setRankedPlayers(newRankedPlayers);
   }, getPlayerById = (id) => players.find((p) => p.id === id);
-  return /* @__PURE__ */ jsx9(Modal_default, { onClose, title: `\u8F93\u5165\u7B2C ${round} \u8F6E\u6BD4\u8D5B\u7ED3\u679C`, children: /* @__PURE__ */ jsxs8("div", { children: [
-    /* @__PURE__ */ jsx9("p", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-600"} mb-4 text-sm sm:text-base`, children: "\u8BF7\u62D6\u52A8\u73A9\u5BB6\u5361\u7247\u4EE5\u786E\u5B9A\u672C\u8F6E\u540D\u6B21\uFF08\u4ECE\u4E0A\u5230\u4E0B\u4E3A 1-N \u540D\uFF09\u3002" }),
-    /* @__PURE__ */ jsx9("div", { className: "space-y-2 sm:space-y-3 max-h-60 sm:max-h-72 overflow-y-auto", children: rankedPlayers.map((playerId, index) => {
+  return /* @__PURE__ */ jsxDEV9(Modal_default, { onClose, title: `\u8F93\u5165\u7B2C ${round} \u8F6E\u6BD4\u8D5B\u7ED3\u679C`, children: /* @__PURE__ */ jsxDEV9("div", { children: [
+    /* @__PURE__ */ jsxDEV9("p", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-600"} mb-4 text-sm sm:text-base`, children: "\u8BF7\u62D6\u52A8\u73A9\u5BB6\u5361\u7247\u4EE5\u786E\u5B9A\u672C\u8F6E\u540D\u6B21\uFF08\u4ECE\u4E0A\u5230\u4E0B\u4E3A 1-N \u540D\uFF09\u3002" }, void 0, !1, {
+      fileName: "app/components/ui/ResultsModal.tsx",
+      lineNumber: 27,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV9("div", { className: "space-y-2 sm:space-y-3 max-h-60 sm:max-h-72 overflow-y-auto", children: rankedPlayers.map((playerId, index) => {
       let player = getPlayerById(playerId);
-      return player ? /* @__PURE__ */ jsxs8(
+      return player ? /* @__PURE__ */ jsxDEV9(
         "div",
         {
           draggable: !0,
@@ -610,35 +1265,78 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
           onDrop: (e) => handleDrop(e, index),
           className: `flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-grab active:cursor-grabbing transition-all duration-200 active:scale-[0.98] ${theme === "dark" ? "bg-gray-700 hover:bg-gray-600 active:bg-gray-600" : "bg-gray-200 hover:bg-gray-300 active:bg-gray-300"}`,
           children: [
-            /* @__PURE__ */ jsx9("span", { className: "font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center", children: index + 1 }),
-            /* @__PURE__ */ jsx9("span", { className: "text-xl sm:text-2xl flex-shrink-0", children: player.avatar }),
-            /* @__PURE__ */ jsx9("span", { className: `font-semibold text-sm sm:text-base truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name })
+            /* @__PURE__ */ jsxDEV9("span", { className: "font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center", children: index + 1 }, void 0, !1, {
+              fileName: "app/components/ui/ResultsModal.tsx",
+              lineNumber: 47,
+              columnNumber: 33
+            }, this),
+            /* @__PURE__ */ jsxDEV9("span", { className: "text-xl sm:text-2xl flex-shrink-0", children: player.avatar }, void 0, !1, {
+              fileName: "app/components/ui/ResultsModal.tsx",
+              lineNumber: 48,
+              columnNumber: 33
+            }, this),
+            /* @__PURE__ */ jsxDEV9("span", { className: `font-semibold text-sm sm:text-base truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
+              fileName: "app/components/ui/ResultsModal.tsx",
+              lineNumber: 49,
+              columnNumber: 33
+            }, this)
           ]
         },
-        playerId
+        playerId,
+        !0,
+        {
+          fileName: "app/components/ui/ResultsModal.tsx",
+          lineNumber: 35,
+          columnNumber: 29
+        },
+        this
       ) : null;
-    }) }),
-    /* @__PURE__ */ jsx9(
+    }) }, void 0, !1, {
+      fileName: "app/components/ui/ResultsModal.tsx",
+      lineNumber: 30,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV9(
       "button",
       {
         onClick: () => onSubmit(rankedPlayers),
         className: "w-full mt-4 sm:mt-6 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-3 sm:py-4 rounded-lg transition-all duration-200 active:scale-[0.98] text-sm sm:text-base",
         children: "\u786E\u8BA4\u5E76\u8FDB\u5165\u4E0B\u4E00\u8F6E"
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/components/ui/ResultsModal.tsx",
+        lineNumber: 54,
+        columnNumber: 17
+      },
+      this
     )
-  ] }) });
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/ResultsModal.tsx",
+    lineNumber: 26,
+    columnNumber: 13
+  }, this) }, void 0, !1, {
+    fileName: "app/components/ui/ResultsModal.tsx",
+    lineNumber: 25,
+    columnNumber: 9
+  }, this);
 }, ResultsModal_default = ResultsModal;
 
 // app/components/ui/SoundEffectsBox.tsx
 import { useRef } from "react";
 import { LucideVolume2 as LucideVolume22, LucideSmile, LucideFrown, LucideBomb, LucidePartyPopper, LucideWind, LucideHelpCircle } from "lucide-react";
-import { jsx as jsx10, jsxs as jsxs9 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV10 } from "react/jsx-dev-runtime";
 var SoundEffectsBox = () => {
   let { theme } = useTheme(), audioRefs = useRef({}), youtubeRefs = useRef({}), soundEffects = [
     {
       id: "fart",
       name: "\u{1F4A8} \u653E\u5C41",
-      icon: /* @__PURE__ */ jsx10(LucideWind, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucideWind, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 23,
+        columnNumber: 19
+      }, this),
       color: "from-yellow-500/20 to-brown-500/20 border-yellow-500/30 text-yellow-400",
       youtubeId: "KJotmmDJWAg"
       // https://youtu.be/KJotmmDJWAg?si=4p66S6unYDf_r8Qm
@@ -646,7 +1344,11 @@ var SoundEffectsBox = () => {
     {
       id: "bomb",
       name: "\u{1F4A3} \u7206\u70B8",
-      icon: /* @__PURE__ */ jsx10(LucideBomb, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucideBomb, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 30,
+        columnNumber: 19
+      }, this),
       color: "from-red-500/20 to-orange-500/20 border-red-500/30 text-red-400",
       youtubeId: "HTXiJpCDiH4"
       // https://youtu.be/HTXiJpCDiH4?si=-4pK7MTGL1enE3S6
@@ -654,7 +1356,11 @@ var SoundEffectsBox = () => {
     {
       id: "laugh",
       name: "\u{1F602} \u5927\u7B11",
-      icon: /* @__PURE__ */ jsx10(LucideSmile, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucideSmile, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 37,
+        columnNumber: 19
+      }, this),
       color: "from-green-500/20 to-emerald-500/20 border-green-500/30 text-green-400",
       youtubeId: "Rc2k_8skxtI"
       // https://youtu.be/Rc2k_8skxtI?si=njTqQwahPfhmPMDu
@@ -662,7 +1368,11 @@ var SoundEffectsBox = () => {
     {
       id: "cry",
       name: "\u{1F62D} \u54ED\u6CE3",
-      icon: /* @__PURE__ */ jsx10(LucideFrown, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucideFrown, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 44,
+        columnNumber: 19
+      }, this),
       color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30 text-blue-400",
       youtubeId: "pBUs2R9JV5M"
       // https://youtu.be/pBUs2R9JV5M?si=cfZJagAtlTVdsTmY
@@ -670,7 +1380,11 @@ var SoundEffectsBox = () => {
     {
       id: "happy",
       name: "\u{1F60A} \u5F00\u5FC3",
-      icon: /* @__PURE__ */ jsx10(LucidePartyPopper, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucidePartyPopper, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 51,
+        columnNumber: 19
+      }, this),
       color: "from-purple-500/20 to-pink-500/20 border-purple-500/30 text-purple-400",
       youtubeId: "NSU2hJ5wT08"
       // https://youtu.be/NSU2hJ5wT08?si=o7wYMeINEKJ8WXCB
@@ -678,7 +1392,11 @@ var SoundEffectsBox = () => {
     {
       id: "huh",
       name: "\u{1F914} huh?",
-      icon: /* @__PURE__ */ jsx10(LucideHelpCircle, { size: 20 }),
+      icon: /* @__PURE__ */ jsxDEV10(LucideHelpCircle, { size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 58,
+        columnNumber: 19
+      }, this),
       color: "from-orange-500/20 to-amber-500/20 border-orange-500/30 text-orange-400",
       youtubeId: "igO9SmiY4hs"
       // https://youtu.be/igO9SmiY4hs?si=-5l7Dm5X_t0ngqKf
@@ -711,29 +1429,84 @@ var SoundEffectsBox = () => {
       console.log("Web Audio API not supported");
     }
   };
-  return /* @__PURE__ */ jsxs9("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-    /* @__PURE__ */ jsxs9("div", { className: "flex items-center gap-3 mb-4 sm:mb-6", children: [
-      /* @__PURE__ */ jsx10("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx10(LucideVolume22, { className: theme === "dark" ? "text-white/70" : "text-gray-600", size: 20 }) }),
-      /* @__PURE__ */ jsxs9("div", { children: [
-        /* @__PURE__ */ jsx10("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u97F3\u6548\u76D2" }),
-        /* @__PURE__ */ jsx10("p", { className: `text-xs sm:text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u70B9\u51FB\u64AD\u653E\u97F3\u6548" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx10("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3", children: soundEffects.map((sound) => /* @__PURE__ */ jsx10(
+  return /* @__PURE__ */ jsxDEV10("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+    /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-3 mb-4 sm:mb-6", children: [
+      /* @__PURE__ */ jsxDEV10("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV10(LucideVolume22, { className: theme === "dark" ? "text-white/70" : "text-gray-600", size: 20 }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 136,
+        columnNumber: 21
+      }, this) }, void 0, !1, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 131,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV10("div", { children: [
+        /* @__PURE__ */ jsxDEV10("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u97F3\u6548\u76D2" }, void 0, !1, {
+          fileName: "app/components/ui/SoundEffectsBox.tsx",
+          lineNumber: 139,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV10("p", { className: `text-xs sm:text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u70B9\u51FB\u64AD\u653E\u97F3\u6548" }, void 0, !1, {
+          fileName: "app/components/ui/SoundEffectsBox.tsx",
+          lineNumber: 144,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 138,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/SoundEffectsBox.tsx",
+      lineNumber: 130,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV10("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3", children: soundEffects.map((sound) => /* @__PURE__ */ jsxDEV10(
       "button",
       {
         onClick: () => playSound(sound),
         className: `p-3 sm:p-4 rounded-lg border transition-all duration-200 hover:scale-105 active:scale-95 bg-gradient-to-br ${sound.color} hover:shadow-lg active:shadow-sm group`,
         title: `\u64AD\u653E ${sound.name}`,
-        children: /* @__PURE__ */ jsxs9("div", { className: "flex flex-col items-center gap-2", children: [
-          /* @__PURE__ */ jsx10("div", { className: "transition-transform duration-200 group-hover:scale-110", children: sound.icon }),
-          /* @__PURE__ */ jsx10("span", { className: "text-xs sm:text-sm font-medium text-center leading-tight", children: sound.name })
-        ] })
+        children: /* @__PURE__ */ jsxDEV10("div", { className: "flex flex-col items-center gap-2", children: [
+          /* @__PURE__ */ jsxDEV10("div", { className: "transition-transform duration-200 group-hover:scale-110", children: sound.icon }, void 0, !1, {
+            fileName: "app/components/ui/SoundEffectsBox.tsx",
+            lineNumber: 161,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV10("span", { className: "text-xs sm:text-sm font-medium text-center leading-tight", children: sound.name }, void 0, !1, {
+            fileName: "app/components/ui/SoundEffectsBox.tsx",
+            lineNumber: 164,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/SoundEffectsBox.tsx",
+          lineNumber: 160,
+          columnNumber: 25
+        }, this)
       },
-      sound.id
-    )) }),
-    /* @__PURE__ */ jsx10("div", { className: `mt-4 p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: /* @__PURE__ */ jsx10("p", { className: `text-xs text-center ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u{1F4A1} \u63D0\u793A\uFF1A\u5728\u6BD4\u8D5B\u4E2D\u4F7F\u7528\u97F3\u6548\u589E\u52A0\u4E50\u8DA3\uFF01" }) }),
-    /* @__PURE__ */ jsx10("div", { className: "hidden", children: soundEffects.filter((sound) => sound.youtubeId).map((sound) => /* @__PURE__ */ jsx10(
+      sound.id,
+      !1,
+      {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 154,
+        columnNumber: 21
+      },
+      this
+    )) }, void 0, !1, {
+      fileName: "app/components/ui/SoundEffectsBox.tsx",
+      lineNumber: 152,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV10("div", { className: `mt-4 p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: /* @__PURE__ */ jsxDEV10("p", { className: `text-xs text-center ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u{1F4A1} \u63D0\u793A\uFF1A\u5728\u6BD4\u8D5B\u4E2D\u4F7F\u7528\u97F3\u6548\u589E\u52A0\u4E50\u8DA3\uFF01" }, void 0, !1, {
+      fileName: "app/components/ui/SoundEffectsBox.tsx",
+      lineNumber: 175,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/components/ui/SoundEffectsBox.tsx",
+      lineNumber: 172,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV10("div", { className: "hidden", children: soundEffects.filter((sound) => sound.youtubeId).map((sound) => /* @__PURE__ */ jsxDEV10(
       "iframe",
       {
         ref: (el) => youtubeRefs.current[sound.id] = el,
@@ -745,9 +1518,24 @@ var SoundEffectsBox = () => {
         allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
         style: { display: "none", position: "absolute", left: "-9999px", top: "-9999px" }
       },
-      sound.id
-    )) })
-  ] });
+      sound.id,
+      !1,
+      {
+        fileName: "app/components/ui/SoundEffectsBox.tsx",
+        lineNumber: 185,
+        columnNumber: 21
+      },
+      this
+    )) }, void 0, !1, {
+      fileName: "app/components/ui/SoundEffectsBox.tsx",
+      lineNumber: 183,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/SoundEffectsBox.tsx",
+    lineNumber: 125,
+    columnNumber: 9
+  }, this);
 }, SoundEffectsBox_default = SoundEffectsBox;
 
 // app/components/pages/HomePage.tsx
@@ -755,66 +1543,181 @@ import { LucideCat as LucideCat2, LucideCrown } from "lucide-react";
 
 // app/components/ui/PlayerProfiles.tsx
 import { LucideUsers } from "lucide-react";
-import { jsx as jsx11, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV11 } from "react/jsx-dev-runtime";
 var PlayerProfiles = ({ players, onPlayerClick }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxs10("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
-    /* @__PURE__ */ jsx11("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }),
-    /* @__PURE__ */ jsxs10("div", { className: "relative z-10 p-4 sm:p-6", children: [
-      /* @__PURE__ */ jsxs10("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsx11("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.2)]", children: /* @__PURE__ */ jsx11(LucideUsers, { size: 14, className: "text-blue-400 sm:w-4 sm:h-4" }) }),
-        /* @__PURE__ */ jsx11("h3", { className: `text-base sm:text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Player Profiles" })
-      ] }),
-      /* @__PURE__ */ jsx11("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p) => /* @__PURE__ */ jsxs10(
+  return /* @__PURE__ */ jsxDEV11("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
+    /* @__PURE__ */ jsxDEV11("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }, void 0, !1, {
+      fileName: "app/components/ui/PlayerProfiles.tsx",
+      lineNumber: 11,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV11("div", { className: "relative z-10 p-4 sm:p-6", children: [
+      /* @__PURE__ */ jsxDEV11("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV11("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.2)]", children: /* @__PURE__ */ jsxDEV11(LucideUsers, { size: 14, className: "text-blue-400 sm:w-4 sm:h-4" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfiles.tsx",
+          lineNumber: 15,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfiles.tsx",
+          lineNumber: 14,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV11("h3", { className: `text-base sm:text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Player Profiles" }, void 0, !1, {
+          fileName: "app/components/ui/PlayerProfiles.tsx",
+          lineNumber: 17,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfiles.tsx",
+        lineNumber: 13,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV11("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p) => /* @__PURE__ */ jsxDEV11(
         "div",
         {
           className: `group relative p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border border-transparent active:scale-[0.98] ${theme === "dark" ? "hover:bg-white/5 hover:border-white/10 active:bg-white/10" : "hover:bg-gray-100/50 hover:border-gray-200 active:bg-gray-200/50"}`,
           onClick: () => onPlayerClick && onPlayerClick(p),
           children: [
-            /* @__PURE__ */ jsxs10("div", { className: "flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3", children: [
-              /* @__PURE__ */ jsx11("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }),
-              /* @__PURE__ */ jsx11("span", { className: `font-medium text-sm sm:text-base truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: p.name })
-            ] }),
-            /* @__PURE__ */ jsxs10("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
-              /* @__PURE__ */ jsxs10("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs font-medium text-yellow-400", children: [
-                /* @__PURE__ */ jsx11("span", { children: "\u{1F3C6}" }),
-                /* @__PURE__ */ jsxs10("span", { className: "hidden xs:inline", children: [
+            /* @__PURE__ */ jsxDEV11("div", { className: "flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3", children: [
+              /* @__PURE__ */ jsxDEV11("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }, void 0, !1, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 31,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV11("span", { className: `font-medium text-sm sm:text-base truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: p.name }, void 0, !1, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 32,
+                columnNumber: 33
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/PlayerProfiles.tsx",
+              lineNumber: 30,
+              columnNumber: 29
+            }, this),
+            /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
+              /* @__PURE__ */ jsxDEV11("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs font-medium text-yellow-400", children: [
+                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F3C6}" }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 36,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
                   p.championships || 0,
                   " \u51A0\u519B"
-                ] }),
-                /* @__PURE__ */ jsx11("span", { className: "xs:hidden", children: p.championships || 0 })
-              ] }),
-              /* @__PURE__ */ jsxs10("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 bg-gray-400/10 border border-gray-400/20 rounded text-xs font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
-                /* @__PURE__ */ jsx11("span", { children: "\u{1F948}" }),
-                /* @__PURE__ */ jsxs10("span", { className: "hidden xs:inline", children: [
+                ] }, void 0, !0, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 37,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.championships || 0 }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 38,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 35,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 bg-gray-400/10 border border-gray-400/20 rounded text-xs font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
+                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F948}" }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 41,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
                   p.runnerUp || 0,
                   " \u4E9A\u519B"
-                ] }),
-                /* @__PURE__ */ jsx11("span", { className: "xs:hidden", children: p.runnerUp || 0 })
-              ] }),
-              /* @__PURE__ */ jsxs10("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-orange-500/10 border border-orange-500/20 rounded text-xs font-medium text-orange-400", children: [
-                /* @__PURE__ */ jsx11("span", { children: "\u{1F949}" }),
-                /* @__PURE__ */ jsxs10("span", { className: "hidden xs:inline", children: [
+                ] }, void 0, !0, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 42,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.runnerUp || 0 }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 43,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 40,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV11("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-orange-500/10 border border-orange-500/20 rounded text-xs font-medium text-orange-400", children: [
+                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F949}" }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 46,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
                   p.thirdPlace || 0,
                   " \u5B63\u519B"
-                ] }),
-                /* @__PURE__ */ jsx11("span", { className: "xs:hidden", children: p.thirdPlace || 0 })
-              ] }),
-              /* @__PURE__ */ jsxs10("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"} border`, children: [
-                /* @__PURE__ */ jsx11("span", { className: "hidden sm:inline", children: p.history.length > 0 ? `${p.history.length} Games` : "New Player" }),
-                /* @__PURE__ */ jsx11("span", { className: "sm:hidden", children: p.history.length > 0 ? `${p.history.length}G` : "New" })
-              ] })
-            ] })
+                ] }, void 0, !0, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 47,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.thirdPlace || 0 }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 48,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 45,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"} border`, children: [
+                /* @__PURE__ */ jsxDEV11("span", { className: "hidden sm:inline", children: p.history.length > 0 ? `${p.history.length} Games` : "New Player" }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 55,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV11("span", { className: "sm:hidden", children: p.history.length > 0 ? `${p.history.length}G` : "New" }, void 0, !1, {
+                  fileName: "app/components/ui/PlayerProfiles.tsx",
+                  lineNumber: 56,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/ui/PlayerProfiles.tsx",
+                lineNumber: 50,
+                columnNumber: 33
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/PlayerProfiles.tsx",
+              lineNumber: 34,
+              columnNumber: 29
+            }, this)
           ]
         },
-        p.id
-      )) })
-    ] })
-  ] });
+        p.id,
+        !0,
+        {
+          fileName: "app/components/ui/PlayerProfiles.tsx",
+          lineNumber: 21,
+          columnNumber: 25
+        },
+        this
+      )) }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfiles.tsx",
+        lineNumber: 19,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfiles.tsx",
+      lineNumber: 12,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/PlayerProfiles.tsx",
+    lineNumber: 10,
+    columnNumber: 9
+  }, this);
 }, PlayerProfiles_default = PlayerProfiles;
 
 // app/components/pages/HomePage.tsx
-import { Fragment as Fragment2, jsx as jsx12, jsxs as jsxs11 } from "react/jsx-runtime";
+import { Fragment as Fragment2, jsxDEV as jsxDEV12 } from "react/jsx-dev-runtime";
 var HomePage = ({
   leagueState,
   players,
@@ -824,87 +1727,247 @@ var HomePage = ({
   setCurrentPage
 }) => {
   let { theme } = useTheme();
-  return !leagueState || leagueState.status === "setup" ? /* @__PURE__ */ jsxs11("div", { className: "space-y-6 sm:space-y-8", children: [
-    /* @__PURE__ */ jsx12("div", { className: "text-center", children: /* @__PURE__ */ jsxs11("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8", children: [
-      /* @__PURE__ */ jsx12("div", { className: "relative p-4 sm:p-6 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_40px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsx12(LucideCat2, { className: "text-orange-400", size: 32 }) }),
-      /* @__PURE__ */ jsxs11("div", { className: "text-center sm:text-left", children: [
-        /* @__PURE__ */ jsx12("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-orange-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-orange-500 bg-clip-text text-transparent"}`, children: "Boom League" }),
-        /* @__PURE__ */ jsx12("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "Professional Tournament Management" })
-      ] })
-    ] }) }),
-    players.length > 0 && /* @__PURE__ */ jsxs11("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
-      /* @__PURE__ */ jsx12("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }),
-      /* @__PURE__ */ jsxs11("div", { className: "relative z-10", children: [
-        /* @__PURE__ */ jsxs11("div", { className: "flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6", children: [
-          /* @__PURE__ */ jsx12("div", { className: "w-1 h-6 sm:h-8 bg-gradient-to-b from-orange-400 to-orange-600 rounded-full shadow-[0_0_10px_rgba(251,146,60,0.5)]" }),
-          /* @__PURE__ */ jsx12("h2", { className: `text-xl sm:text-2xl font-semibold tracking-tight ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "Quick Start" })
-        ] }),
-        /* @__PURE__ */ jsxs11("p", { className: `text-base sm:text-lg mb-6 sm:mb-8 ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: [
-          /* @__PURE__ */ jsx12("span", { className: "text-orange-400 font-semibold", children: players.length }),
+  return !leagueState || leagueState.status === "setup" ? /* @__PURE__ */ jsxDEV12("div", { className: "space-y-6 sm:space-y-8", children: [
+    /* @__PURE__ */ jsxDEV12("div", { className: "text-center", children: /* @__PURE__ */ jsxDEV12("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8", children: [
+      /* @__PURE__ */ jsxDEV12("div", { className: "relative p-4 sm:p-6 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_40px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsxDEV12(LucideCat2, { className: "text-orange-400", size: 32 }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 25,
+        columnNumber: 29
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 24,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV12("div", { className: "text-center sm:text-left", children: [
+        /* @__PURE__ */ jsxDEV12("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-orange-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-orange-500 bg-clip-text text-transparent"}`, children: "Boom League" }, void 0, !1, {
+          fileName: "app/components/pages/HomePage.tsx",
+          lineNumber: 28,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV12("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "Professional Tournament Management" }, void 0, !1, {
+          fileName: "app/components/pages/HomePage.tsx",
+          lineNumber: 35,
+          columnNumber: 29
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 27,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 23,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 22,
+      columnNumber: 17
+    }, this),
+    players.length > 0 && /* @__PURE__ */ jsxDEV12("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
+      /* @__PURE__ */ jsxDEV12("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 42,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV12("div", { className: "relative z-10", children: [
+        /* @__PURE__ */ jsxDEV12("div", { className: "flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6", children: [
+          /* @__PURE__ */ jsxDEV12("div", { className: "w-1 h-6 sm:h-8 bg-gradient-to-b from-orange-400 to-orange-600 rounded-full shadow-[0_0_10px_rgba(251,146,60,0.5)]" }, void 0, !1, {
+            fileName: "app/components/pages/HomePage.tsx",
+            lineNumber: 45,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV12("h2", { className: `text-xl sm:text-2xl font-semibold tracking-tight ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "Quick Start" }, void 0, !1, {
+            fileName: "app/components/pages/HomePage.tsx",
+            lineNumber: 46,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/HomePage.tsx",
+          lineNumber: 44,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV12("p", { className: `text-base sm:text-lg mb-6 sm:mb-8 ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: [
+          /* @__PURE__ */ jsxDEV12("span", { className: "text-orange-400 font-semibold", children: players.length }, void 0, !1, {
+            fileName: "app/components/pages/HomePage.tsx",
+            lineNumber: 49,
+            columnNumber: 33
+          }, this),
           " players registered and ready to compete"
-        ] }),
-        /* @__PURE__ */ jsxs11(
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/HomePage.tsx",
+          lineNumber: 48,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV12(
           "button",
           {
             onClick: () => setCurrentPage("league"),
             disabled: players.length < 2,
             className: `relative group bg-gradient-to-r from-orange-500/20 to-orange-600/20 hover:from-orange-500/30 hover:to-orange-600/30 active:from-orange-500/40 active:to-orange-600/40 text-orange-400 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg border border-orange-500/30 shadow-[0_0_30px_rgba(251,146,60,0.2)] transition-all duration-200 hover:shadow-[0_0_40px_rgba(251,146,60,0.3)] active:scale-[0.98] text-sm sm:text-base ${players.length < 2 ? "disabled:from-white/5 disabled:to-white/5 disabled:text-white/40 disabled:border-white/10 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100" : ""}`,
             children: [
-              /* @__PURE__ */ jsx12("span", { className: "relative z-10", children: "Start New Tournament" }),
-              /* @__PURE__ */ jsx12("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" })
+              /* @__PURE__ */ jsxDEV12("span", { className: "relative z-10", children: "Start New Tournament" }, void 0, !1, {
+                fileName: "app/components/pages/HomePage.tsx",
+                lineNumber: 60,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV12("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" }, void 0, !1, {
+                fileName: "app/components/pages/HomePage.tsx",
+                lineNumber: 61,
+                columnNumber: 33
+              }, this)
             ]
-          }
+          },
+          void 0,
+          !0,
+          {
+            fileName: "app/components/pages/HomePage.tsx",
+            lineNumber: 51,
+            columnNumber: 29
+          },
+          this
         )
-      ] })
-    ] })
-  ] }) : leagueState.status === "in_progress" ? /* @__PURE__ */ jsxs11("div", { className: "space-y-4 sm:space-y-6", children: [
-    /* @__PURE__ */ jsxs11("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsx12("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-400 mb-2", children: leagueState.league_name || "\u8054\u8D5B\u8FDB\u884C\u4E2D" }),
-      /* @__PURE__ */ jsxs11("p", { className: `text-sm sm:text-base ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 43,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 41,
+      columnNumber: 21
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/HomePage.tsx",
+    lineNumber: 21,
+    columnNumber: 13
+  }, this) : leagueState.status === "in_progress" ? /* @__PURE__ */ jsxDEV12("div", { className: "space-y-4 sm:space-y-6", children: [
+    /* @__PURE__ */ jsxDEV12("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxDEV12("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-400 mb-2", children: leagueState.league_name || "\u8054\u8D5B\u8FDB\u884C\u4E2D" }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 74,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV12("p", { className: `text-sm sm:text-base ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
         "\u7B2C ",
         leagueState.current_round,
         " / ",
         GAME_RULES.MAX_ROUNDS,
         " \u8F6E",
-        leagueState.season_number && /* @__PURE__ */ jsxs11("span", { className: "ml-2", children: [
+        leagueState.season_number && /* @__PURE__ */ jsxDEV12("span", { className: "ml-2", children: [
           "\u2022 Season ",
           leagueState.season_number
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxs11("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6", children: [
-      /* @__PURE__ */ jsx12(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }),
-      /* @__PURE__ */ jsx12(PlayerProfiles_default, { players, onPlayerClick: handlePlayerClick })
-    ] })
-  ] }) : leagueState.status === "finished" ? /* @__PURE__ */ jsx12("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxs11("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
-    /* @__PURE__ */ jsx12(LucideCrown, { className: "text-yellow-400", size: 60 }),
-    /* @__PURE__ */ jsxs11("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsx12("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }),
-      leagueState.season_number && /* @__PURE__ */ jsxs11("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/HomePage.tsx",
+          lineNumber: 80,
+          columnNumber: 29
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 77,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 73,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV12("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6", children: [
+      /* @__PURE__ */ jsxDEV12(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 85,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV12(PlayerProfiles_default, { players, onPlayerClick: handlePlayerClick }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 86,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 84,
+      columnNumber: 17
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/HomePage.tsx",
+    lineNumber: 72,
+    columnNumber: 13
+  }, this) : leagueState.status === "finished" ? /* @__PURE__ */ jsxDEV12("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxDEV12("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
+    /* @__PURE__ */ jsxDEV12(LucideCrown, { className: "text-yellow-400", size: 60 }, void 0, !1, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 96,
+      columnNumber: 21
+    }, this),
+    /* @__PURE__ */ jsxDEV12("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxDEV12("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 98,
+        columnNumber: 25
+      }, this),
+      leagueState.season_number && /* @__PURE__ */ jsxDEV12("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
         "Season ",
         leagueState.season_number,
         " \u5B8C\u6210"
-      ] })
-    ] }),
-    leagueState.winner && /* @__PURE__ */ jsxs11(Fragment2, { children: [
-      /* @__PURE__ */ jsx12("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }),
-      /* @__PURE__ */ jsx12("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }),
-      /* @__PURE__ */ jsx12("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason })
-    ] }),
-    /* @__PURE__ */ jsx12(
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 102,
+        columnNumber: 29
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 97,
+      columnNumber: 21
+    }, this),
+    leagueState.winner && /* @__PURE__ */ jsxDEV12(Fragment2, { children: [
+      /* @__PURE__ */ jsxDEV12("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 109,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ jsxDEV12("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 110,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ jsxDEV12("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason }, void 0, !1, {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 111,
+        columnNumber: 29
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/HomePage.tsx",
+      lineNumber: 108,
+      columnNumber: 25
+    }, this),
+    /* @__PURE__ */ jsxDEV12(
       "button",
       {
         onClick: handleResetLeague,
         className: "mt-6 sm:mt-8 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base",
         children: "\u5F00\u542F\u65B0\u8054\u8D5B"
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/components/pages/HomePage.tsx",
+        lineNumber: 114,
+        columnNumber: 21
+      },
+      this
     )
-  ] }) }) : null;
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/HomePage.tsx",
+    lineNumber: 95,
+    columnNumber: 17
+  }, this) }, void 0, !1, {
+    fileName: "app/components/pages/HomePage.tsx",
+    lineNumber: 94,
+    columnNumber: 13
+  }, this) : null;
 }, HomePage_default = HomePage;
 
 // app/components/pages/PlayerRegistrationPage.tsx
 import { LucidePlus, LucideTrash2 } from "lucide-react";
-import { jsx as jsx13, jsxs as jsxs12 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV13 } from "react/jsx-dev-runtime";
 var PlayerRegistrationPage = ({
   players,
   handleAddPlayer,
@@ -918,79 +1981,179 @@ var PlayerRegistrationPage = ({
   setShowPlayerModal
 }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxs12("div", { className: "space-y-8", children: [
-    /* @__PURE__ */ jsxs12("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsx13("h2", { className: `text-4xl font-bold mb-3 ${theme === "dark" ? "bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent" : "bg-gradient-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent"}`, children: "\u73A9\u5BB6\u6CE8\u518C" }),
-      /* @__PURE__ */ jsx13("p", { className: `text-lg ${theme === "dark" ? "text-slate-400" : "text-gray-600"}`, children: "\u7BA1\u7406\u53C2\u4E0E\u8054\u8D5B\u7684\u73A9\u5BB6" })
-    ] }),
-    /* @__PURE__ */ jsxs12("div", { className: `backdrop-blur-xl rounded-3xl p-8 border shadow-2xl ${theme === "dark" ? "bg-slate-800/40 border-slate-700/30" : "bg-white/60 border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxs12("div", { className: "flex justify-between items-center mb-6", children: [
-        /* @__PURE__ */ jsxs12("h3", { className: `text-2xl font-bold flex items-center gap-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
-          /* @__PURE__ */ jsx13("div", { className: "w-2 h-8 bg-gradient-to-b from-emerald-400 to-emerald-600 rounded-full" }),
+  return /* @__PURE__ */ jsxDEV13("div", { className: "space-y-8", children: [
+    /* @__PURE__ */ jsxDEV13("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxDEV13("h2", { className: `text-4xl font-bold mb-3 ${theme === "dark" ? "bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent" : "bg-gradient-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent"}`, children: "\u73A9\u5BB6\u6CE8\u518C" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+        lineNumber: 24,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV13("p", { className: `text-lg ${theme === "dark" ? "text-slate-400" : "text-gray-600"}`, children: "\u7BA1\u7406\u53C2\u4E0E\u8054\u8D5B\u7684\u73A9\u5BB6" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+        lineNumber: 31,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+      lineNumber: 23,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV13("div", { className: `backdrop-blur-xl rounded-3xl p-8 border shadow-2xl ${theme === "dark" ? "bg-slate-800/40 border-slate-700/30" : "bg-white/60 border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV13("div", { className: "flex justify-between items-center mb-6", children: [
+        /* @__PURE__ */ jsxDEV13("h3", { className: `text-2xl font-bold flex items-center gap-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
+          /* @__PURE__ */ jsxDEV13("div", { className: "w-2 h-8 bg-gradient-to-b from-emerald-400 to-emerald-600 rounded-full" }, void 0, !1, {
+            fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+            lineNumber: 41,
+            columnNumber: 25
+          }, this),
           "\u5DF2\u6CE8\u518C\u73A9\u5BB6",
-          /* @__PURE__ */ jsxs12("span", { className: "text-orange-400", children: [
+          /* @__PURE__ */ jsxDEV13("span", { className: "text-orange-400", children: [
             "(",
             players.length,
             "/6)"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs12(
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+            lineNumber: 43,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+          lineNumber: 40,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV13(
           "button",
           {
             onClick: () => setShowPlayerModal(!0),
             disabled: players.length >= 6,
             className: "flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-200 hover:scale-105 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none",
             children: [
-              /* @__PURE__ */ jsx13(LucidePlus, { size: 18 }),
+              /* @__PURE__ */ jsxDEV13(LucidePlus, { size: 18 }, void 0, !1, {
+                fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                lineNumber: 50,
+                columnNumber: 25
+              }, this),
               " \u6DFB\u52A0\u73A9\u5BB6"
             ]
-          }
+          },
+          void 0,
+          !0,
+          {
+            fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+            lineNumber: 45,
+            columnNumber: 21
+          },
+          this
         )
-      ] }),
-      /* @__PURE__ */ jsx13("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: players.map((p) => {
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+        lineNumber: 39,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV13("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: players.map((p) => {
         let stats = UTILS.calculatePlayerStats(p);
-        return /* @__PURE__ */ jsxs12("div", { className: `flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all duration-200 hover:scale-[1.02] shadow-lg ${theme === "dark" ? "bg-slate-800/50 hover:bg-slate-700/60 border-slate-700/30" : "bg-white/50 hover:bg-gray-100/60 border-gray-200/30"}`, children: [
-          /* @__PURE__ */ jsxs12(
+        return /* @__PURE__ */ jsxDEV13("div", { className: `flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all duration-200 hover:scale-[1.02] shadow-lg ${theme === "dark" ? "bg-slate-800/50 hover:bg-slate-700/60 border-slate-700/30" : "bg-white/50 hover:bg-gray-100/60 border-gray-200/30"}`, children: [
+          /* @__PURE__ */ jsxDEV13(
             "div",
             {
               className: "flex items-center gap-4 flex-1",
               onClick: () => handlePlayerClick(p),
               children: [
-                /* @__PURE__ */ jsx13("div", { className: "text-4xl", children: p.avatar }),
-                /* @__PURE__ */ jsxs12("div", { className: "flex flex-col", children: [
-                  /* @__PURE__ */ jsx13("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: p.name }),
-                  /* @__PURE__ */ jsxs12("div", { className: "flex flex-wrap gap-2 mt-1", children: [
-                    stats.championships > 0 && /* @__PURE__ */ jsxs12("span", { className: "text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full", children: [
+                /* @__PURE__ */ jsxDEV13("div", { className: "text-4xl", children: p.avatar }, void 0, !1, {
+                  fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                  lineNumber: 67,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV13("div", { className: "flex flex-col", children: [
+                  /* @__PURE__ */ jsxDEV13("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: p.name }, void 0, !1, {
+                    fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                    lineNumber: 69,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV13("div", { className: "flex flex-wrap gap-2 mt-1", children: [
+                    stats.championships > 0 && /* @__PURE__ */ jsxDEV13("span", { className: "text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full", children: [
                       "\u{1F3C6} ",
                       stats.championships,
                       "\u51A0"
-                    ] }),
-                    /* @__PURE__ */ jsx13("span", { className: `text-xs px-2 py-1 rounded-full ${theme === "dark" ? "bg-slate-700/50 text-slate-300" : "bg-gray-200/50 text-gray-600"}`, children: stats.totalGames > 0 ? `${stats.totalGames}\u573A \u2022 ${stats.winRate}%\u80DC\u7387` : "\u65B0\u73A9\u5BB6" })
-                  ] })
-                ] })
+                    ] }, void 0, !0, {
+                      fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                      lineNumber: 72,
+                      columnNumber: 49
+                    }, this),
+                    /* @__PURE__ */ jsxDEV13("span", { className: `text-xs px-2 py-1 rounded-full ${theme === "dark" ? "bg-slate-700/50 text-slate-300" : "bg-gray-200/50 text-gray-600"}`, children: stats.totalGames > 0 ? `${stats.totalGames}\u573A \u2022 ${stats.winRate}%\u80DC\u7387` : "\u65B0\u73A9\u5BB6" }, void 0, !1, {
+                      fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                      lineNumber: 76,
+                      columnNumber: 45
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                    lineNumber: 70,
+                    columnNumber: 41
+                  }, this)
+                ] }, void 0, !0, {
+                  fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                  lineNumber: 68,
+                  columnNumber: 37
+                }, this)
               ]
-            }
+            },
+            void 0,
+            !0,
+            {
+              fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+              lineNumber: 63,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx13(
+          /* @__PURE__ */ jsxDEV13(
             "button",
             {
               onClick: (e) => {
                 e.stopPropagation(), handleDeletePlayer(p.id);
               },
               className: "p-2 text-red-400 hover:text-white hover:bg-red-500/20 rounded-xl transition-all duration-200",
-              children: /* @__PURE__ */ jsx13(LucideTrash2, { size: 18 })
-            }
+              children: /* @__PURE__ */ jsxDEV13(LucideTrash2, { size: 18 }, void 0, !1, {
+                fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+                lineNumber: 93,
+                columnNumber: 37
+              }, this)
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+              lineNumber: 86,
+              columnNumber: 33
+            },
+            this
           )
-        ] }, p.id);
-      }) })
-    ] })
-  ] });
+        ] }, p.id, !0, {
+          fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+          lineNumber: 58,
+          columnNumber: 29
+        }, this);
+      }) }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+        lineNumber: 54,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+      lineNumber: 34,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/PlayerRegistrationPage.tsx",
+    lineNumber: 22,
+    columnNumber: 9
+  }, this);
 }, PlayerRegistrationPage_default = PlayerRegistrationPage;
 
 // app/components/pages/LeagueManagementPage.tsx
 import { useState as useState2 } from "react";
 import { LucideCrown as LucideCrown2, LucideSettings, LucideCheck, LucideHistory as LucideHistory2, LucidePlay as LucidePlay2, LucideTrophy as LucideTrophy2, LucideCalendar, LucideUsers as LucideUsers2 } from "lucide-react";
-import { jsx as jsx14, jsxs as jsxs13 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV14 } from "react/jsx-dev-runtime";
 var LeagueManagementPage = ({
   leagueState,
   players,
@@ -1020,16 +2183,36 @@ var LeagueManagementPage = ({
     let start = new Date(startDate), end = new Date(endDate), diffTime = Math.abs(end.getTime() - start.getTime());
     return `${Math.ceil(diffTime / (1e3 * 60 * 60 * 24))} \u5929`;
   };
-  return /* @__PURE__ */ jsxs13("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxs13("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsx14("h2", { className: "text-4xl font-bold text-orange-400 mb-2", children: "\u8054\u8D5B\u7BA1\u7406" }),
-      /* @__PURE__ */ jsx14("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u521B\u5EFA\u548C\u7BA1\u7406\u4F60\u7684 Boom League" })
-    ] }),
-    (!leagueState || leagueState.status === "setup") && /* @__PURE__ */ jsxs13("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
-      /* @__PURE__ */ jsx14("h3", { className: `text-2xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u521B\u5EFA\u65B0\u8054\u8D5B" }),
-      /* @__PURE__ */ jsxs13("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsx14("label", { className: `block text-sm font-medium mb-2 ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "\u8054\u8D5B\u540D\u79F0" }),
-        /* @__PURE__ */ jsx14(
+  return /* @__PURE__ */ jsxDEV14("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV14("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxDEV14("h2", { className: "text-4xl font-bold text-orange-400 mb-2", children: "\u8054\u8D5B\u7BA1\u7406" }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 57,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV14("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u521B\u5EFA\u548C\u7BA1\u7406\u4F60\u7684 Boom League" }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 58,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueManagementPage.tsx",
+      lineNumber: 56,
+      columnNumber: 13
+    }, this),
+    (!leagueState || leagueState.status === "setup") && /* @__PURE__ */ jsxDEV14("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
+      /* @__PURE__ */ jsxDEV14("h3", { className: `text-2xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u521B\u5EFA\u65B0\u8054\u8D5B" }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 64,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV14("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxDEV14("label", { className: `block text-sm font-medium mb-2 ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "\u8054\u8D5B\u540D\u79F0" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 68,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14(
           "input",
           {
             type: "text",
@@ -1037,278 +2220,764 @@ var LeagueManagementPage = ({
             onChange: (e) => setCurrentLeagueName(e.target.value),
             placeholder: `Boom League S${nextSeasonNumber}`,
             className: `w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/30 transition-all duration-200 backdrop-blur-sm ${theme === "dark" ? "bg-white/5 text-white border-white/10" : "bg-white/80 text-gray-900 border-gray-200"}`
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 71,
+            columnNumber: 25
+          },
+          this
         ),
-        /* @__PURE__ */ jsxs13("p", { className: `text-xs mt-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
+        /* @__PURE__ */ jsxDEV14("p", { className: `text-xs mt-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
           "\u7559\u7A7A\u5C06\u4F7F\u7528\u9ED8\u8BA4\u540D\u79F0: Boom League S",
           nextSeasonNumber
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxs13("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxs13("div", { className: "flex items-center gap-2 mb-3", children: [
-          /* @__PURE__ */ jsx14(LucideSettings, { className: "text-orange-400", size: 20 }),
-          /* @__PURE__ */ jsx14("label", { className: `text-sm font-medium ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "\u7279\u6B8A\u89C4\u5219\u53EF\u80FD\u6027\u9009\u62E9" })
-        ] }),
-        /* @__PURE__ */ jsx14("p", { className: `text-xs mb-3 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u9009\u62E9\u8054\u8D5B\u4E2D\u53EF\u80FD\u51FA\u73B0\u7684\u7279\u6B8A\u89C4\u5219\u3002\u7CFB\u7EDF\u5C06\u4ECE\u9009\u4E2D\u7684\u89C4\u5219\u4E2D\u968F\u673A\u9009\u62E9\u3002" }),
-        /* @__PURE__ */ jsx14("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2", children: GAME_RULES.SPECIAL_RULES.map((rule) => /* @__PURE__ */ jsx14(
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 82,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 67,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV14("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center gap-2 mb-3", children: [
+          /* @__PURE__ */ jsxDEV14(LucideSettings, { className: "text-orange-400", size: 20 }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 90,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV14("label", { className: `text-sm font-medium ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "\u7279\u6B8A\u89C4\u5219\u53EF\u80FD\u6027\u9009\u62E9" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 91,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 89,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14("p", { className: `text-xs mb-3 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u9009\u62E9\u8054\u8D5B\u4E2D\u53EF\u80FD\u51FA\u73B0\u7684\u7279\u6B8A\u89C4\u5219\u3002\u7CFB\u7EDF\u5C06\u4ECE\u9009\u4E2D\u7684\u89C4\u5219\u4E2D\u968F\u673A\u9009\u62E9\u3002" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 95,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2", children: GAME_RULES.SPECIAL_RULES.map((rule) => /* @__PURE__ */ jsxDEV14(
           "button",
           {
             onClick: () => toggleSpecialRule(rule),
             className: `p-3 rounded-lg border text-sm font-medium transition-all duration-200 text-left ${selectedSpecialRules.includes(rule) ? theme === "dark" ? "bg-orange-500/20 border-orange-500/50 text-orange-400" : "bg-orange-100 border-orange-300 text-orange-700" : theme === "dark" ? "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20" : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300"}`,
-            children: /* @__PURE__ */ jsxs13("div", { className: "flex items-center justify-between", children: [
-              /* @__PURE__ */ jsx14("span", { children: rule }),
-              selectedSpecialRules.includes(rule) && /* @__PURE__ */ jsx14(LucideCheck, { size: 16, className: "text-orange-400" })
-            ] })
+            children: /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center justify-between", children: [
+              /* @__PURE__ */ jsxDEV14("span", { children: rule }, void 0, !1, {
+                fileName: "app/components/pages/LeagueManagementPage.tsx",
+                lineNumber: 115,
+                columnNumber: 41
+              }, this),
+              selectedSpecialRules.includes(rule) && /* @__PURE__ */ jsxDEV14(LucideCheck, { size: 16, className: "text-orange-400" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueManagementPage.tsx",
+                lineNumber: 117,
+                columnNumber: 45
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 114,
+              columnNumber: 37
+            }, this)
           },
-          rule
-        )) }),
-        /* @__PURE__ */ jsxs13("div", { className: `mt-2 text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
+          rule,
+          !1,
+          {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 101,
+            columnNumber: 33
+          },
+          this
+        )) }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 99,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: `mt-2 text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
           "\u5DF2\u9009\u62E9 ",
           selectedSpecialRules.length,
           " / ",
           GAME_RULES.SPECIAL_RULES.length,
           " \u79CD\u53EF\u80FD\u6027"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxs13("p", { className: `mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 124,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 88,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV14("p", { className: `mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
         "\u5F53\u524D\u6709 ",
         players.length,
         " \u540D\u73A9\u5BB6\u6CE8\u518C\u3002\u9700\u8981\u81F3\u5C11 2 \u540D\u73A9\u5BB6\u624D\u80FD\u5F00\u59CB\u8054\u8D5B\u3002"
-      ] }),
-      /* @__PURE__ */ jsx14(
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 129,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV14(
         "button",
         {
           onClick: handleStartLeagueWithRules,
           disabled: players.length < 2 || selectedSpecialRules.length === 0,
           className: "bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg shadow-xl transition-transform transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:scale-100",
           children: "\u5F00\u59CB\u8054\u8D5B"
-        }
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 132,
+          columnNumber: 21
+        },
+        this
       )
-    ] }),
-    leagueState && leagueState.status !== "setup" && /* @__PURE__ */ jsxs13("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
-      /* @__PURE__ */ jsxs13("div", { className: "flex items-center justify-between mb-4", children: [
-        /* @__PURE__ */ jsx14("h3", { className: `text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u5F53\u524D\u8054\u8D5B\u72B6\u6001" }),
-        leagueState.status === "in_progress" && /* @__PURE__ */ jsxs13(
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueManagementPage.tsx",
+      lineNumber: 63,
+      columnNumber: 17
+    }, this),
+    leagueState && leagueState.status !== "setup" && /* @__PURE__ */ jsxDEV14("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
+      /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center justify-between mb-4", children: [
+        /* @__PURE__ */ jsxDEV14("h3", { className: `text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u5F53\u524D\u8054\u8D5B\u72B6\u6001" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 146,
+          columnNumber: 25
+        }, this),
+        leagueState.status === "in_progress" && /* @__PURE__ */ jsxDEV14(
           "button",
           {
             onClick: () => setCurrentPage("in_progress"),
             className: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 flex items-center gap-2",
             children: [
-              /* @__PURE__ */ jsx14(LucidePlay2, { size: 16 }),
+              /* @__PURE__ */ jsxDEV14(LucidePlay2, { size: 16 }, void 0, !1, {
+                fileName: "app/components/pages/LeagueManagementPage.tsx",
+                lineNumber: 152,
+                columnNumber: 33
+              }, this),
               "\u8FDB\u5165\u8054\u8D5B"
             ]
-          }
+          },
+          void 0,
+          !0,
+          {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 148,
+            columnNumber: 29
+          },
+          this
         )
-      ] }),
-      /* @__PURE__ */ jsxs13("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
-        /* @__PURE__ */ jsxs13("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsx14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u8054\u8D5B\u540D\u79F0" }),
-          /* @__PURE__ */ jsx14("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.league_name || "\u672A\u547D\u540D\u8054\u8D5B" })
-        ] }),
-        /* @__PURE__ */ jsxs13("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsx14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u72B6\u6001" }),
-          /* @__PURE__ */ jsx14("p", { className: `font-bold text-lg ${leagueState.status === "in_progress" ? "text-green-400" : leagueState.status === "finished" ? "text-yellow-400" : leagueState.status === "pending_confirmation" ? "text-orange-400" : "text-gray-400"}`, children: leagueState.status === "in_progress" ? "\u8FDB\u884C\u4E2D" : leagueState.status === "finished" ? "\u5DF2\u7ED3\u675F" : leagueState.status === "pending_confirmation" ? "\u5F85\u786E\u8BA4" : "\u8BBE\u7F6E\u4E2D" })
-        ] }),
-        /* @__PURE__ */ jsxs13("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsx14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u5F53\u524D\u8F6E\u6B21" }),
-          /* @__PURE__ */ jsxs13("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 145,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV14("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u8054\u8D5B\u540D\u79F0" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 160,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV14("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.league_name || "\u672A\u547D\u540D\u8054\u8D5B" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 161,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 159,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u72B6\u6001" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 166,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV14("p", { className: `font-bold text-lg ${leagueState.status === "in_progress" ? "text-green-400" : leagueState.status === "finished" ? "text-yellow-400" : leagueState.status === "pending_confirmation" ? "text-orange-400" : "text-gray-400"}`, children: leagueState.status === "in_progress" ? "\u8FDB\u884C\u4E2D" : leagueState.status === "finished" ? "\u5DF2\u7ED3\u675F" : leagueState.status === "pending_confirmation" ? "\u5F85\u786E\u8BA4" : "\u8BBE\u7F6E\u4E2D" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 167,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 165,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: `p-4 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV14("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u5F53\u524D\u8F6E\u6B21" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 178,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV14("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
             leagueState.current_round,
             " / ",
             leagueState.schedule?.length || 5
-          ] })
-        ] })
-      ] }),
-      leagueState.status === "finished" && leagueState.winner && /* @__PURE__ */ jsxs13("div", { className: `mt-4 p-4 rounded-lg border-2 border-yellow-400 ${theme === "dark" ? "bg-yellow-500/10" : "bg-yellow-50"}`, children: [
-        /* @__PURE__ */ jsxs13("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsx14(LucideCrown2, { className: "text-yellow-400", size: 24 }),
-          /* @__PURE__ */ jsxs13("div", { children: [
-            /* @__PURE__ */ jsxs13("p", { className: `font-bold ${theme === "dark" ? "text-yellow-400" : "text-yellow-700"}`, children: [
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 179,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 177,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 158,
+        columnNumber: 21
+      }, this),
+      leagueState.status === "finished" && leagueState.winner && /* @__PURE__ */ jsxDEV14("div", { className: `mt-4 p-4 rounded-lg border-2 border-yellow-400 ${theme === "dark" ? "bg-yellow-500/10" : "bg-yellow-50"}`, children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxDEV14(LucideCrown2, { className: "text-yellow-400", size: 24 }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 188,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV14("div", { children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: `font-bold ${theme === "dark" ? "text-yellow-400" : "text-yellow-700"}`, children: [
               "\u{1F3C6} ",
               leagueState.winner.name
-            ] }),
-            /* @__PURE__ */ jsx14("p", { className: `text-sm ${theme === "dark" ? "text-yellow-300/80" : "text-yellow-600"}`, children: leagueState.winner.reason })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx14(
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 190,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-sm ${theme === "dark" ? "text-yellow-300/80" : "text-yellow-600"}`, children: leagueState.winner.reason }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 193,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 189,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 187,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV14(
           "button",
           {
             onClick: handleResetLeague,
             className: "mt-3 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105",
             children: "\u5F00\u542F\u65B0\u8054\u8D5B"
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 198,
+            columnNumber: 29
+          },
+          this
         )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxs13("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
-      /* @__PURE__ */ jsxs13("div", { className: "flex items-center justify-between mb-4", children: [
-        /* @__PURE__ */ jsx14("h3", { className: `text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u8054\u8D5B\u8BB0\u5F55" }),
-        /* @__PURE__ */ jsxs13("div", { className: "flex rounded-lg overflow-hidden", children: [
-          /* @__PURE__ */ jsx14(
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 186,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueManagementPage.tsx",
+      lineNumber: 144,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV14("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"} backdrop-blur-sm shadow-xl`, children: [
+      /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center justify-between mb-4", children: [
+        /* @__PURE__ */ jsxDEV14("h3", { className: `text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u8054\u8D5B\u8BB0\u5F55" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 212,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex rounded-lg overflow-hidden", children: [
+          /* @__PURE__ */ jsxDEV14(
             "button",
             {
               onClick: () => setViewMode("ongoing"),
               className: `px-4 py-2 text-sm font-medium transition-colors ${viewMode === "ongoing" ? "bg-orange-500 text-white" : theme === "dark" ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`,
               children: "\u6B63\u5728\u8FDB\u884C"
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 214,
+              columnNumber: 25
+            },
+            this
           ),
-          /* @__PURE__ */ jsx14(
+          /* @__PURE__ */ jsxDEV14(
             "button",
             {
               onClick: () => setViewMode("history"),
               className: `px-4 py-2 text-sm font-medium transition-colors ${viewMode === "history" ? "bg-orange-500 text-white" : theme === "dark" ? "bg-white/10 text-white/70 hover:bg-white/20" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`,
               children: "\u5386\u53F2\u8BB0\u5F55"
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 226,
+              columnNumber: 25
+            },
+            this
           )
-        ] })
-      ] }),
-      viewMode === "ongoing" ? /* @__PURE__ */ jsx14("div", { className: "space-y-4", children: leagueState && leagueState.status !== "setup" && leagueState.status !== "finished" ? /* @__PURE__ */ jsx14("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50 border-gray-200"}`, children: /* @__PURE__ */ jsxs13("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxs13("div", { children: [
-          /* @__PURE__ */ jsx14("h4", { className: `font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.league_name || "\u5F53\u524D\u8054\u8D5B" }),
-          /* @__PURE__ */ jsxs13("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 213,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 211,
+        columnNumber: 17
+      }, this),
+      viewMode === "ongoing" ? /* @__PURE__ */ jsxDEV14("div", { className: "space-y-4", children: leagueState && leagueState.status !== "setup" && leagueState.status !== "finished" ? /* @__PURE__ */ jsxDEV14("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50 border-gray-200"}`, children: /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxDEV14("div", { children: [
+          /* @__PURE__ */ jsxDEV14("h4", { className: `font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.league_name || "\u5F53\u524D\u8054\u8D5B" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 247,
+            columnNumber: 41
+          }, this),
+          /* @__PURE__ */ jsxDEV14("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
             "\u7B2C ",
             leagueState.current_round,
             " \u8F6E / \u5171 ",
             leagueState.schedule?.length || 5,
             " \u8F6E"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs13("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ jsx14("span", { className: `px-2 py-1 text-xs rounded-full ${leagueState.status === "in_progress" ? "bg-green-500/20 text-green-400" : leagueState.status === "pending_confirmation" ? "bg-orange-500/20 text-orange-400" : "bg-gray-500/20 text-gray-400"}`, children: leagueState.status === "in_progress" ? "\u8FDB\u884C\u4E2D" : leagueState.status === "pending_confirmation" ? "\u5F85\u786E\u8BA4" : "\u672A\u77E5" }),
-          /* @__PURE__ */ jsx14(
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 250,
+            columnNumber: 41
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 246,
+          columnNumber: 37
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxDEV14("span", { className: `px-2 py-1 text-xs rounded-full ${leagueState.status === "in_progress" ? "bg-green-500/20 text-green-400" : leagueState.status === "pending_confirmation" ? "bg-orange-500/20 text-orange-400" : "bg-gray-500/20 text-gray-400"}`, children: leagueState.status === "in_progress" ? "\u8FDB\u884C\u4E2D" : leagueState.status === "pending_confirmation" ? "\u5F85\u786E\u8BA4" : "\u672A\u77E5" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 255,
+            columnNumber: 41
+          }, this),
+          /* @__PURE__ */ jsxDEV14(
             "button",
             {
               onClick: () => setCurrentPage("in_progress"),
               className: "bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded transition-colors",
               children: "\u67E5\u770B"
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 262,
+              columnNumber: 41
+            },
+            this
           )
-        ] })
-      ] }) }) : /* @__PURE__ */ jsxs13("div", { className: `p-8 text-center ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
-        /* @__PURE__ */ jsx14(LucidePlay2, { size: 48, className: "mx-auto mb-3 opacity-50" }),
-        /* @__PURE__ */ jsx14("p", { children: "\u6682\u65E0\u6B63\u5728\u8FDB\u884C\u7684\u8054\u8D5B" }),
-        /* @__PURE__ */ jsx14("p", { className: "text-sm mt-1", children: "\u521B\u5EFA\u65B0\u8054\u8D5B\u5F00\u59CB\u6E38\u620F\u5427\uFF01" })
-      ] }) }) : /* @__PURE__ */ jsx14("div", { className: "space-y-4", children: leagueHistory.length > 0 ? /* @__PURE__ */ jsx14("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: leagueHistory.map((league) => /* @__PURE__ */ jsxs13("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50 border-gray-200"}`, children: [
-        /* @__PURE__ */ jsxs13("div", { className: "flex items-start justify-between mb-3", children: [
-          /* @__PURE__ */ jsxs13("div", { children: [
-            /* @__PURE__ */ jsx14("h4", { className: `font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: league.league_name }),
-            /* @__PURE__ */ jsxs13("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 254,
+          columnNumber: 37
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 245,
+        columnNumber: 33
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 244,
+        columnNumber: 29
+      }, this) : /* @__PURE__ */ jsxDEV14("div", { className: `p-8 text-center ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
+        /* @__PURE__ */ jsxDEV14(LucidePlay2, { size: 48, className: "mx-auto mb-3 opacity-50" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 273,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV14("p", { children: "\u6682\u65E0\u6B63\u5728\u8FDB\u884C\u7684\u8054\u8D5B" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 274,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV14("p", { className: "text-sm mt-1", children: "\u521B\u5EFA\u65B0\u8054\u8D5B\u5F00\u59CB\u6E38\u620F\u5427\uFF01" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 275,
+          columnNumber: 33
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 272,
+        columnNumber: 29
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 242,
+        columnNumber: 21
+      }, this) : /* @__PURE__ */ jsxDEV14("div", { className: "space-y-4", children: leagueHistory.length > 0 ? /* @__PURE__ */ jsxDEV14("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: leagueHistory.map((league) => /* @__PURE__ */ jsxDEV14("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50 border-gray-200"}`, children: [
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex items-start justify-between mb-3", children: [
+          /* @__PURE__ */ jsxDEV14("div", { children: [
+            /* @__PURE__ */ jsxDEV14("h4", { className: `font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: league.league_name }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 287,
+              columnNumber: 49
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
               "Season ",
               league.season_number
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxs13("div", { className: "text-right", children: [
-            /* @__PURE__ */ jsx14("p", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: formatDate(league.end_date) }),
-            /* @__PURE__ */ jsx14("p", { className: `text-xs ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, children: formatDuration(league.start_date, league.end_date) })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs13("div", { className: "flex items-center gap-3 mb-3", children: [
-          /* @__PURE__ */ jsx14("div", { className: "text-2xl", children: league.winner.avatar }),
-          /* @__PURE__ */ jsx14("div", { children: /* @__PURE__ */ jsxs13("p", { className: `font-medium ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 290,
+              columnNumber: 49
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 286,
+            columnNumber: 45
+          }, this),
+          /* @__PURE__ */ jsxDEV14("div", { className: "text-right", children: [
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: formatDate(league.end_date) }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 295,
+              columnNumber: 49
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-xs ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, children: formatDuration(league.start_date, league.end_date) }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 298,
+              columnNumber: 49
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 294,
+            columnNumber: 45
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 285,
+          columnNumber: 41
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "flex items-center gap-3 mb-3", children: [
+          /* @__PURE__ */ jsxDEV14("div", { className: "text-2xl", children: league.winner.avatar }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 305,
+            columnNumber: 45
+          }, this),
+          /* @__PURE__ */ jsxDEV14("div", { children: /* @__PURE__ */ jsxDEV14("p", { className: `font-medium ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`, children: [
             "\u{1F3C6} ",
             league.winner.name
-          ] }) })
-        ] }),
-        /* @__PURE__ */ jsxs13("div", { className: "grid grid-cols-3 gap-3 text-center", children: [
-          /* @__PURE__ */ jsxs13("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
-            /* @__PURE__ */ jsx14(LucideUsers2, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }),
-            /* @__PURE__ */ jsxs13("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 307,
+            columnNumber: 49
+          }, this) }, void 0, !1, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 306,
+            columnNumber: 45
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 304,
+          columnNumber: 41
+        }, this),
+        /* @__PURE__ */ jsxDEV14("div", { className: "grid grid-cols-3 gap-3 text-center", children: [
+          /* @__PURE__ */ jsxDEV14("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
+            /* @__PURE__ */ jsxDEV14(LucideUsers2, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 315,
+              columnNumber: 49
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
               league.total_players,
               "\u4EBA"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxs13("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
-            /* @__PURE__ */ jsx14(LucideCalendar, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }),
-            /* @__PURE__ */ jsxs13("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 316,
+              columnNumber: 49
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 314,
+            columnNumber: 45
+          }, this),
+          /* @__PURE__ */ jsxDEV14("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
+            /* @__PURE__ */ jsxDEV14(LucideCalendar, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 321,
+              columnNumber: 49
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
               league.total_rounds,
               "\u8F6E"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxs13("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
-            /* @__PURE__ */ jsx14(LucideTrophy2, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }),
-            /* @__PURE__ */ jsx14("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: "\u5B8C\u6210" })
-          ] })
-        ] })
-      ] }, league.id)) }) : /* @__PURE__ */ jsxs13("div", { className: `p-8 text-center ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
-        /* @__PURE__ */ jsx14(LucideHistory2, { size: 48, className: "mx-auto mb-3 opacity-50" }),
-        /* @__PURE__ */ jsx14("p", { children: "\u6682\u65E0\u5386\u53F2\u8054\u8D5B\u8BB0\u5F55" }),
-        /* @__PURE__ */ jsx14("p", { className: "text-sm mt-1", children: "\u5B8C\u6210\u9996\u573A\u8054\u8D5B\u540E\uFF0C\u8BB0\u5F55\u5C06\u663E\u793A\u5728\u8FD9\u91CC" })
-      ] }) })
-    ] })
-  ] });
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 322,
+              columnNumber: 49
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 320,
+            columnNumber: 45
+          }, this),
+          /* @__PURE__ */ jsxDEV14("div", { className: `p-2 rounded ${theme === "dark" ? "bg-white/5" : "bg-gray-100"}`, children: [
+            /* @__PURE__ */ jsxDEV14(LucideTrophy2, { size: 14, className: `mx-auto mb-1 ${theme === "dark" ? "text-white/60" : "text-gray-500"}` }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 327,
+              columnNumber: 49
+            }, this),
+            /* @__PURE__ */ jsxDEV14("p", { className: `text-xs ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: "\u5B8C\u6210" }, void 0, !1, {
+              fileName: "app/components/pages/LeagueManagementPage.tsx",
+              lineNumber: 328,
+              columnNumber: 49
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueManagementPage.tsx",
+            lineNumber: 326,
+            columnNumber: 45
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 313,
+          columnNumber: 41
+        }, this)
+      ] }, league.id, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 284,
+        columnNumber: 37
+      }, this)) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 282,
+        columnNumber: 29
+      }, this) : /* @__PURE__ */ jsxDEV14("div", { className: `p-8 text-center ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
+        /* @__PURE__ */ jsxDEV14(LucideHistory2, { size: 48, className: "mx-auto mb-3 opacity-50" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 338,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV14("p", { children: "\u6682\u65E0\u5386\u53F2\u8054\u8D5B\u8BB0\u5F55" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 339,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV14("p", { className: "text-sm mt-1", children: "\u5B8C\u6210\u9996\u573A\u8054\u8D5B\u540E\uFF0C\u8BB0\u5F55\u5C06\u663E\u793A\u5728\u8FD9\u91CC" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueManagementPage.tsx",
+          lineNumber: 340,
+          columnNumber: 33
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 337,
+        columnNumber: 29
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueManagementPage.tsx",
+        lineNumber: 280,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueManagementPage.tsx",
+      lineNumber: 210,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/LeagueManagementPage.tsx",
+    lineNumber: 55,
+    columnNumber: 9
+  }, this);
 }, LeagueManagementPage_default = LeagueManagementPage;
 
 // app/components/pages/PlayerRankingsPage.tsx
 import { LucideTrophy as LucideTrophy3, LucideUsers as LucideUsers3 } from "lucide-react";
-import { jsx as jsx15, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
 var PlayerRankingsPage = ({ players, onPlayerClick }) => {
   let { theme } = useTheme(), sortedPlayers = [...players].sort((a, b) => b.championships !== a.championships ? (b.championships || 0) - (a.championships || 0) : b.score - a.score);
-  return /* @__PURE__ */ jsxs14("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxs14("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsx15("h2", { className: "text-4xl font-bold text-orange-400 mb-2", children: "\u73A9\u5BB6\u6392\u884C\u699C" }),
-      /* @__PURE__ */ jsx15("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u67E5\u770B\u6240\u6709\u73A9\u5BB6\u7684\u8BE6\u7EC6\u7EDF\u8BA1\u548C\u6392\u540D" })
-    ] }),
-    /* @__PURE__ */ jsxs14("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxs14("h3", { className: `text-2xl font-bold mb-6 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
-        /* @__PURE__ */ jsx15(LucideTrophy3, { className: "text-yellow-400" }),
+  return /* @__PURE__ */ jsxDEV15("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV15("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxDEV15("h2", { className: "text-4xl font-bold text-orange-400 mb-2", children: "\u73A9\u5BB6\u6392\u884C\u699C" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 21,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV15("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u67E5\u770B\u6240\u6709\u73A9\u5BB6\u7684\u8BE6\u7EC6\u7EDF\u8BA1\u548C\u6392\u540D" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 22,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+      lineNumber: 20,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV15("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV15("h3", { className: `text-2xl font-bold mb-6 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
+        /* @__PURE__ */ jsxDEV15(LucideTrophy3, { className: "text-yellow-400" }, void 0, !1, {
+          fileName: "app/components/pages/PlayerRankingsPage.tsx",
+          lineNumber: 27,
+          columnNumber: 21
+        }, this),
         "\u603B\u6392\u884C\u699C"
-      ] }),
-      /* @__PURE__ */ jsx15("div", { className: "space-y-4", children: sortedPlayers.map((player, index) => {
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 26,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV15("div", { className: "space-y-4", children: sortedPlayers.map((player, index) => {
         let stats = UTILS.calculatePlayerStats(player);
-        return /* @__PURE__ */ jsxs14(
+        return /* @__PURE__ */ jsxDEV15(
           "div",
           {
             className: `flex items-center justify-between p-4 rounded-lg shadow-md cursor-pointer transition-colors ${theme === "dark" ? "bg-gray-700/70 hover:bg-gray-600/70" : "bg-white/70 hover:bg-gray-100/70"}`,
             onClick: () => onPlayerClick(player),
             children: [
-              /* @__PURE__ */ jsxs14("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsx15("span", { className: `font-bold text-2xl w-8 text-center ${index === 0 ? "text-yellow-400" : index === 1 ? "text-gray-300" : index === 2 ? "text-orange-400" : "text-gray-500"}`, children: index + 1 }),
-                /* @__PURE__ */ jsx15("span", { className: "text-3xl", children: player.avatar }),
-                /* @__PURE__ */ jsxs14("div", { className: "flex flex-col", children: [
-                  /* @__PURE__ */ jsx15("span", { className: `font-semibold text-xl ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }),
-                  /* @__PURE__ */ jsxs14("div", { className: `flex gap-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
-                    /* @__PURE__ */ jsxs14("span", { children: [
+              /* @__PURE__ */ jsxDEV15("div", { className: "flex items-center gap-4", children: [
+                /* @__PURE__ */ jsxDEV15("span", { className: `font-bold text-2xl w-8 text-center ${index === 0 ? "text-yellow-400" : index === 1 ? "text-gray-300" : index === 2 ? "text-orange-400" : "text-gray-500"}`, children: index + 1 }, void 0, !1, {
+                  fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                  lineNumber: 45,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV15("span", { className: "text-3xl", children: player.avatar }, void 0, !1, {
+                  fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                  lineNumber: 53,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col", children: [
+                  /* @__PURE__ */ jsxDEV15("span", { className: `font-semibold text-xl ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
+                    fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                    lineNumber: 55,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV15("div", { className: `flex gap-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
+                    /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F3C6} ",
                       stats.championships,
                       "\u51A0"
-                    ] }),
-                    /* @__PURE__ */ jsxs14("span", { children: [
+                    ] }, void 0, !0, {
+                      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                      lineNumber: 57,
+                      columnNumber: 45
+                    }, this),
+                    /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F3AE} ",
                       stats.totalGames,
                       "\u573A"
-                    ] }),
-                    /* @__PURE__ */ jsxs14("span", { children: [
+                    ] }, void 0, !0, {
+                      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                      lineNumber: 58,
+                      columnNumber: 45
+                    }, this),
+                    /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F4CA} \u80DC\u7387",
                       stats.winRate,
                       "%"
-                    ] }),
-                    /* @__PURE__ */ jsxs14("span", { children: [
+                    ] }, void 0, !0, {
+                      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                      lineNumber: 59,
+                      columnNumber: 45
+                    }, this),
+                    /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F4C8} \u5E73\u5747\u6392\u540D",
                       stats.averagePlacement
-                    ] })
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxs14("div", { className: "text-right", children: [
-                /* @__PURE__ */ jsx15("div", { className: "text-2xl font-bold text-green-400", children: player.score }),
-                /* @__PURE__ */ jsx15("div", { className: `text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" })
-              ] })
+                    ] }, void 0, !0, {
+                      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                      lineNumber: 60,
+                      columnNumber: 45
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                    lineNumber: 56,
+                    columnNumber: 41
+                  }, this)
+                ] }, void 0, !0, {
+                  fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                  lineNumber: 54,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                lineNumber: 44,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV15("div", { className: "text-right", children: [
+                /* @__PURE__ */ jsxDEV15("div", { className: "text-2xl font-bold text-green-400", children: player.score }, void 0, !1, {
+                  fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                  lineNumber: 65,
+                  columnNumber: 37
+                }, this),
+                /* @__PURE__ */ jsxDEV15("div", { className: `text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" }, void 0, !1, {
+                  fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                  lineNumber: 66,
+                  columnNumber: 37
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                lineNumber: 64,
+                columnNumber: 33
+              }, this)
             ]
           },
-          player.id
+          player.id,
+          !0,
+          {
+            fileName: "app/components/pages/PlayerRankingsPage.tsx",
+            lineNumber: 35,
+            columnNumber: 29
+          },
+          this
         );
-      }) }),
-      players.length === 0 && /* @__PURE__ */ jsxs14("div", { className: `text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
-        /* @__PURE__ */ jsx15(LucideUsers3, { size: 48, className: "mx-auto mb-4 opacity-50" }),
-        /* @__PURE__ */ jsx15("p", { children: "\u8FD8\u6CA1\u6709\u6CE8\u518C\u7684\u73A9\u5BB6" }),
-        /* @__PURE__ */ jsx15("p", { className: "text-sm", children: "\u524D\u5F80\u73A9\u5BB6\u6CE8\u518C\u9875\u9762\u6DFB\u52A0\u73A9\u5BB6" })
-      ] })
-    ] })
-  ] });
+      }) }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 31,
+        columnNumber: 17
+      }, this),
+      players.length === 0 && /* @__PURE__ */ jsxDEV15("div", { className: `text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
+        /* @__PURE__ */ jsxDEV15(LucideUsers3, { size: 48, className: "mx-auto mb-4 opacity-50" }, void 0, !1, {
+          fileName: "app/components/pages/PlayerRankingsPage.tsx",
+          lineNumber: 75,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV15("p", { children: "\u8FD8\u6CA1\u6709\u6CE8\u518C\u7684\u73A9\u5BB6" }, void 0, !1, {
+          fileName: "app/components/pages/PlayerRankingsPage.tsx",
+          lineNumber: 76,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV15("p", { className: "text-sm", children: "\u524D\u5F80\u73A9\u5BB6\u6CE8\u518C\u9875\u9762\u6DFB\u52A0\u73A9\u5BB6" }, void 0, !1, {
+          fileName: "app/components/pages/PlayerRankingsPage.tsx",
+          lineNumber: 77,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 74,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+      lineNumber: 25,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/PlayerRankingsPage.tsx",
+    lineNumber: 19,
+    columnNumber: 9
+  }, this);
 }, PlayerRankingsPage_default = PlayerRankingsPage;
 
 // app/components/pages/LeagueHistoryPage.tsx
 import { LucideHistory as LucideHistory3, LucideTrophy as LucideTrophy4, LucideCrown as LucideCrown3, LucideCalendar as LucideCalendar2, LucideUsers as LucideUsers4, LucideTarget } from "lucide-react";
-import { jsx as jsx16, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
 var LeagueHistoryPage = ({ leagueHistory }) => {
   let { theme } = useTheme(), formatDate = (dateString) => new Date(dateString).toLocaleDateString("zh-CN", {
     year: "numeric",
@@ -1318,104 +2987,356 @@ var LeagueHistoryPage = ({ leagueHistory }) => {
     let start = new Date(startDate), end = new Date(endDate), diffTime = Math.abs(end.getTime() - start.getTime()), diffDays = Math.ceil(diffTime / (1e3 * 60 * 60 * 24));
     return diffDays === 1 ? "1 \u5929" : `${diffDays} \u5929`;
   };
-  return leagueHistory.length === 0 ? /* @__PURE__ */ jsxs15("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsx16("div", { className: "text-center", children: /* @__PURE__ */ jsxs15("div", { className: "inline-flex items-center gap-4 mb-6", children: [
-      /* @__PURE__ */ jsx16("div", { className: "relative p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-lg shadow-[0_0_40px_rgba(147,51,234,0.3)]", children: /* @__PURE__ */ jsx16(LucideHistory3, { className: "text-purple-400", size: 32 }) }),
-      /* @__PURE__ */ jsxs15("div", { className: "text-left", children: [
-        /* @__PURE__ */ jsx16("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-purple-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-purple-500 bg-clip-text text-transparent"}`, children: "\u8054\u8D5B\u5386\u53F2" }),
-        /* @__PURE__ */ jsx16("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "League History" })
-      ] })
-    ] }) }),
-    /* @__PURE__ */ jsxs15("div", { className: `text-center p-10 ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg shadow-lg`, children: [
-      /* @__PURE__ */ jsx16(LucideHistory3, { className: `mx-auto mb-4 ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, size: 64 }),
-      /* @__PURE__ */ jsx16("h3", { className: `text-xl font-semibold mb-2 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: "\u6682\u65E0\u5386\u53F2\u8BB0\u5F55" }),
-      /* @__PURE__ */ jsx16("p", { className: `${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u5B8C\u6210\u7B2C\u4E00\u4E2A\u8054\u8D5B\u540E\uFF0C\u5386\u53F2\u8BB0\u5F55\u5C06\u5728\u8FD9\u91CC\u663E\u793A" })
-    ] })
-  ] }) : /* @__PURE__ */ jsxs15("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsx16("div", { className: "text-center", children: /* @__PURE__ */ jsxs15("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6", children: [
-      /* @__PURE__ */ jsx16("div", { className: "relative p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-lg shadow-[0_0_40px_rgba(147,51,234,0.3)]", children: /* @__PURE__ */ jsx16(LucideHistory3, { className: "text-purple-400", size: 32 }) }),
-      /* @__PURE__ */ jsxs15("div", { className: "text-center sm:text-left", children: [
-        /* @__PURE__ */ jsx16("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-purple-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-purple-500 bg-clip-text text-transparent"}`, children: "\u8054\u8D5B\u5386\u53F2" }),
-        /* @__PURE__ */ jsxs15("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+  return leagueHistory.length === 0 ? /* @__PURE__ */ jsxDEV16("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV16("div", { className: "text-center", children: /* @__PURE__ */ jsxDEV16("div", { className: "inline-flex items-center gap-4 mb-6", children: [
+      /* @__PURE__ */ jsxDEV16("div", { className: "relative p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-lg shadow-[0_0_40px_rgba(147,51,234,0.3)]", children: /* @__PURE__ */ jsxDEV16(LucideHistory3, { className: "text-purple-400", size: 32 }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 35,
+        columnNumber: 29
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 34,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV16("div", { className: "text-left", children: [
+        /* @__PURE__ */ jsxDEV16("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-purple-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-purple-500 bg-clip-text text-transparent"}`, children: "\u8054\u8D5B\u5386\u53F2" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 38,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV16("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "League History" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 45,
+          columnNumber: 29
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 37,
+        columnNumber: 25
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 33,
+      columnNumber: 21
+    }, this) }, void 0, !1, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 32,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV16("div", { className: `text-center p-10 ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg shadow-lg`, children: [
+      /* @__PURE__ */ jsxDEV16(LucideHistory3, { className: `mx-auto mb-4 ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, size: 64 }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 51,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV16("h3", { className: `text-xl font-semibold mb-2 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: "\u6682\u65E0\u5386\u53F2\u8BB0\u5F55" }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 52,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV16("p", { className: `${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u5B8C\u6210\u7B2C\u4E00\u4E2A\u8054\u8D5B\u540E\uFF0C\u5386\u53F2\u8BB0\u5F55\u5C06\u5728\u8FD9\u91CC\u663E\u793A" }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 53,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 50,
+      columnNumber: 17
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/LeagueHistoryPage.tsx",
+    lineNumber: 31,
+    columnNumber: 13
+  }, this) : /* @__PURE__ */ jsxDEV16("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV16("div", { className: "text-center", children: /* @__PURE__ */ jsxDEV16("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6", children: [
+      /* @__PURE__ */ jsxDEV16("div", { className: "relative p-4 bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-lg shadow-[0_0_40px_rgba(147,51,234,0.3)]", children: /* @__PURE__ */ jsxDEV16(LucideHistory3, { className: "text-purple-400", size: 32 }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 64,
+        columnNumber: 25
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 63,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV16("div", { className: "text-center sm:text-left", children: [
+        /* @__PURE__ */ jsxDEV16("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-purple-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-purple-500 bg-clip-text text-transparent"}`, children: "\u8054\u8D5B\u5386\u53F2" }, void 0, !1, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 67,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV16("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
           leagueHistory.length,
           " \u4E2A\u5DF2\u5B8C\u6210\u7684\u8054\u8D5B"
-        ] })
-      ] })
-    ] }) }),
-    /* @__PURE__ */ jsx16("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6", children: leagueHistory.map((league, index) => /* @__PURE__ */ jsxs15("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl shadow-lg overflow-hidden`, children: [
-      /* @__PURE__ */ jsx16("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }),
-      /* @__PURE__ */ jsxs15("div", { className: "relative z-10 p-4 sm:p-6", children: [
-        /* @__PURE__ */ jsxs15("div", { className: "flex items-center justify-between mb-4", children: [
-          /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsx16("div", { className: `p-2 rounded-lg ${index === 0 ? "bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30" : theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx16(LucideTrophy4, { className: index === 0 ? "text-yellow-400" : theme === "dark" ? "text-white/70" : "text-gray-600", size: 16 }) }),
-            /* @__PURE__ */ jsxs15("div", { children: [
-              /* @__PURE__ */ jsx16("h3", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.league_name }),
-              /* @__PURE__ */ jsxs15("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 74,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 66,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 62,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 61,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV16("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6", children: leagueHistory.map((league, index) => /* @__PURE__ */ jsxDEV16("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl shadow-lg overflow-hidden`, children: [
+      /* @__PURE__ */ jsxDEV16("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg sm:rounded-xl` }, void 0, !1, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 84,
+        columnNumber: 25
+      }, this),
+      /* @__PURE__ */ jsxDEV16("div", { className: "relative z-10 p-4 sm:p-6", children: [
+        /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxDEV16("div", { className: `p-2 rounded-lg ${index === 0 ? "bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30" : theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV16(LucideTrophy4, { className: index === 0 ? "text-yellow-400" : theme === "dark" ? "text-white/70" : "text-gray-600", size: 16 }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 91,
+              columnNumber: 41
+            }, this) }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 90,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("div", { children: [
+              /* @__PURE__ */ jsxDEV16("h3", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.league_name }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 94,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV16("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
                 "Season ",
                 league.season_number
-              ] })
-            ] })
-          ] }),
-          index === 0 && /* @__PURE__ */ jsx16("div", { className: "px-2 py-1 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 rounded text-xs font-medium text-yellow-400", children: "\u6700\u65B0" })
-        ] }),
-        /* @__PURE__ */ jsx16("div", { className: `p-3 rounded-lg mb-4 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsx16(LucideCrown3, { className: "text-yellow-400", size: 20 }),
-          /* @__PURE__ */ jsxs15("div", { children: [
-            /* @__PURE__ */ jsx16("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u51A0\u519B" }),
-            /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsx16("span", { className: "text-lg", children: league.winner.avatar }),
-              /* @__PURE__ */ jsx16("span", { className: `font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.winner.name })
-            ] })
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxs15("div", { className: "grid grid-cols-2 gap-3 mb-4", children: [
-          /* @__PURE__ */ jsxs15("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-            /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-2 mb-1", children: [
-              /* @__PURE__ */ jsx16(LucideUsers4, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }),
-              /* @__PURE__ */ jsx16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u53C2\u8D5B\u4EBA\u6570" })
-            ] }),
-            /* @__PURE__ */ jsx16("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.total_players })
-          ] }),
-          /* @__PURE__ */ jsxs15("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-            /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-2 mb-1", children: [
-              /* @__PURE__ */ jsx16(LucideTarget, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }),
-              /* @__PURE__ */ jsx16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u603B\u8F6E\u6570" })
-            ] }),
-            /* @__PURE__ */ jsx16("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.total_rounds })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs15("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsxs15("div", { className: "flex items-center gap-2 mb-2", children: [
-            /* @__PURE__ */ jsx16(LucideCalendar2, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }),
-            /* @__PURE__ */ jsx16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u65F6\u95F4\u4FE1\u606F" })
-          ] }),
-          /* @__PURE__ */ jsxs15("div", { className: "text-sm space-y-1", children: [
-            /* @__PURE__ */ jsxs15("div", { children: [
-              /* @__PURE__ */ jsx16("span", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u521B\u5EFA\uFF1A" }),
-              /* @__PURE__ */ jsx16("span", { className: `ml-1 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: formatDate(league.created_at) })
-            ] }),
-            /* @__PURE__ */ jsxs15("div", { children: [
-              /* @__PURE__ */ jsx16("span", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u6BD4\u8D5B\uFF1A" }),
-              /* @__PURE__ */ jsxs15("span", { className: `ml-1 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
+              ] }, void 0, !0, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 97,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 93,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 89,
+            columnNumber: 33
+          }, this),
+          index === 0 && /* @__PURE__ */ jsxDEV16("div", { className: "px-2 py-1 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 rounded text-xs font-medium text-yellow-400", children: "\u6700\u65B0" }, void 0, !1, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 103,
+            columnNumber: 37
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 88,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg mb-4 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxDEV16(LucideCrown3, { className: "text-yellow-400", size: 20 }, void 0, !1, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 112,
+            columnNumber: 37
+          }, this),
+          /* @__PURE__ */ jsxDEV16("div", { children: [
+            /* @__PURE__ */ jsxDEV16("p", { className: `text-sm font-medium ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u51A0\u519B" }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 114,
+              columnNumber: 41
+            }, this),
+            /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxDEV16("span", { className: "text-lg", children: league.winner.avatar }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 116,
+                columnNumber: 45
+              }, this),
+              /* @__PURE__ */ jsxDEV16("span", { className: `font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.winner.name }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 117,
+                columnNumber: 45
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 115,
+              columnNumber: 41
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 113,
+            columnNumber: 37
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 111,
+          columnNumber: 33
+        }, this) }, void 0, !1, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 110,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV16("div", { className: "grid grid-cols-2 gap-3 mb-4", children: [
+          /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+            /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-2 mb-1", children: [
+              /* @__PURE__ */ jsxDEV16(LucideUsers4, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 129,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u53C2\u8D5B\u4EBA\u6570" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 130,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 128,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.total_players }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 132,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 127,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+            /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-2 mb-1", children: [
+              /* @__PURE__ */ jsxDEV16(LucideTarget, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 138,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u603B\u8F6E\u6570" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 139,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 137,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("span", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: league.total_rounds }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 141,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 136,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 126,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-2 mb-2", children: [
+            /* @__PURE__ */ jsxDEV16(LucideCalendar2, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 150,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("span", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u65F6\u95F4\u4FE1\u606F" }, void 0, !1, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 151,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 149,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV16("div", { className: "text-sm space-y-1", children: [
+            /* @__PURE__ */ jsxDEV16("div", { children: [
+              /* @__PURE__ */ jsxDEV16("span", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u521B\u5EFA\uFF1A" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 155,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV16("span", { className: `ml-1 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: formatDate(league.created_at) }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 156,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 154,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("div", { children: [
+              /* @__PURE__ */ jsxDEV16("span", { className: `text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`, children: "\u6BD4\u8D5B\uFF1A" }, void 0, !1, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 161,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV16("span", { className: `ml-1 ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: [
                 formatDate(league.start_date),
                 " - ",
                 formatDate(league.end_date)
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs15("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+              ] }, void 0, !0, {
+                fileName: "app/components/pages/LeagueHistoryPage.tsx",
+                lineNumber: 162,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 160,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV16("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
               "\u6301\u7EED ",
               formatDuration(league.start_date, league.end_date)
-            ] })
-          ] })
-        ] })
-      ] })
-    ] }, league.id)) })
-  ] });
+            ] }, void 0, !0, {
+              fileName: "app/components/pages/LeagueHistoryPage.tsx",
+              lineNumber: 166,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/LeagueHistoryPage.tsx",
+            lineNumber: 153,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/LeagueHistoryPage.tsx",
+          lineNumber: 148,
+          columnNumber: 29
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/LeagueHistoryPage.tsx",
+        lineNumber: 86,
+        columnNumber: 25
+      }, this)
+    ] }, league.id, !0, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 83,
+      columnNumber: 21
+    }, this)) }, void 0, !1, {
+      fileName: "app/components/pages/LeagueHistoryPage.tsx",
+      lineNumber: 81,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/LeagueHistoryPage.tsx",
+    lineNumber: 60,
+    columnNumber: 9
+  }, this);
 }, LeagueHistoryPage_default = LeagueHistoryPage;
 
 // app/components/pages/ScheduleConfirmationPage.tsx
 import { LucideCheck as LucideCheck2, LucideDice6, LucideCalendar as LucideCalendar3, LucideShield, LucideBomb as LucideBomb2, LucideSwords, LucideTrophy as LucideTrophy5, LucideDices, LucideAlertTriangle, LucideSettings as LucideSettings2 } from "lucide-react";
-import { jsx as jsx17, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 var ScheduleConfirmationPage = ({
   leagueState,
   players,
@@ -1423,173 +3344,496 @@ var ScheduleConfirmationPage = ({
   onRerollSchedule
 }) => {
   let { theme } = useTheme();
-  return !leagueState || !leagueState.schedule || leagueState.schedule.length === 0 ? /* @__PURE__ */ jsx17("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }) : /* @__PURE__ */ jsxs16("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsx17("div", { className: "text-center", children: /* @__PURE__ */ jsxs16("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6", children: [
-      /* @__PURE__ */ jsx17("div", { className: "relative p-4 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_40px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsx17(LucideCalendar3, { className: "text-orange-400", size: 32 }) }),
-      /* @__PURE__ */ jsxs16("div", { className: "text-center sm:text-left", children: [
-        /* @__PURE__ */ jsx17("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-orange-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-orange-500 bg-clip-text text-transparent"}`, children: "\u786E\u8BA4\u8D5B\u7A0B\u5B89\u6392" }),
-        /* @__PURE__ */ jsxs16("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+  return !leagueState || !leagueState.schedule || leagueState.schedule.length === 0 ? /* @__PURE__ */ jsxDEV17("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
+    fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+    lineNumber: 23,
+    columnNumber: 16
+  }, this) : /* @__PURE__ */ jsxDEV17("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxDEV17("div", { className: "text-center", children: /* @__PURE__ */ jsxDEV17("div", { className: "inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6", children: [
+      /* @__PURE__ */ jsxDEV17("div", { className: "relative p-4 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_40px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsxDEV17(LucideCalendar3, { className: "text-orange-400", size: 32 }, void 0, !1, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 31,
+        columnNumber: 25
+      }, this) }, void 0, !1, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 30,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { className: "text-center sm:text-left", children: [
+        /* @__PURE__ */ jsxDEV17("h1", { className: `text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight ${theme === "dark" ? "bg-gradient-to-r from-white via-white to-orange-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-gray-900 via-gray-800 to-orange-500 bg-clip-text text-transparent"}`, children: "\u786E\u8BA4\u8D5B\u7A0B\u5B89\u6392" }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 34,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV17("p", { className: `text-base sm:text-lg font-medium mt-2 ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
           leagueState.league_name,
           " - Season ",
           leagueState.season_number
-        ] })
-      ] })
-    ] }) }),
-    /* @__PURE__ */ jsx17("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-yellow-500/10 border-yellow-500/30" : "bg-yellow-50 border-yellow-200"}`, children: /* @__PURE__ */ jsxs16("div", { className: "flex items-center gap-3", children: [
-      /* @__PURE__ */ jsx17(LucideAlertTriangle, { className: "text-yellow-500 flex-shrink-0", size: 20 }),
-      /* @__PURE__ */ jsxs16("div", { children: [
-        /* @__PURE__ */ jsx17("p", { className: `font-semibold ${theme === "dark" ? "text-yellow-400" : "text-yellow-800"}`, children: "\u8BF7\u4ED4\u7EC6\u68C0\u67E5\u8D5B\u7A0B\u5B89\u6392" }),
-        /* @__PURE__ */ jsx17("p", { className: `text-sm mt-1 ${theme === "dark" ? "text-yellow-300/80" : "text-yellow-700"}`, children: "\u786E\u8BA4\u540E\u8054\u8D5B\u5C06\u6B63\u5F0F\u5F00\u59CB\u3002\u5982\u679C\u4E0D\u6EE1\u610F\u5F53\u524D\u5B89\u6392\uFF0C\u53EF\u4EE5\u91CD\u65B0\u751F\u6210\u8D5B\u7A0B\u3002" })
-      ] })
-    ] }) }),
-    /* @__PURE__ */ jsxs16("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxs16("div", { className: "flex items-center gap-3 mb-4", children: [
-        /* @__PURE__ */ jsx17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx17(LucideTrophy5, { className: "text-orange-400", size: 20 }) }),
-        /* @__PURE__ */ jsx17("div", { children: /* @__PURE__ */ jsx17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8054\u8D5B\u4FE1\u606F" }) })
-      ] }),
-      /* @__PURE__ */ jsxs16("div", { className: "grid grid-cols-2 sm:grid-cols-3 gap-3", children: [
-        /* @__PURE__ */ jsxs16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsx17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u53C2\u8D5B\u4EBA\u6570" }),
-          /* @__PURE__ */ jsxs16("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 41,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 33,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 29,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 28,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV17("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-yellow-500/10 border-yellow-500/30" : "bg-yellow-50 border-yellow-200"}`, children: /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-3", children: [
+      /* @__PURE__ */ jsxDEV17(LucideAlertTriangle, { className: "text-yellow-500 flex-shrink-0", size: 20 }, void 0, !1, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 51,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { children: [
+        /* @__PURE__ */ jsxDEV17("p", { className: `font-semibold ${theme === "dark" ? "text-yellow-400" : "text-yellow-800"}`, children: "\u8BF7\u4ED4\u7EC6\u68C0\u67E5\u8D5B\u7A0B\u5B89\u6392" }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 53,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV17("p", { className: `text-sm mt-1 ${theme === "dark" ? "text-yellow-300/80" : "text-yellow-700"}`, children: "\u786E\u8BA4\u540E\u8054\u8D5B\u5C06\u6B63\u5F0F\u5F00\u59CB\u3002\u5982\u679C\u4E0D\u6EE1\u610F\u5F53\u524D\u5B89\u6392\uFF0C\u53EF\u4EE5\u91CD\u65B0\u751F\u6210\u8D5B\u7A0B\u3002" }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 56,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 52,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 50,
+      columnNumber: 17
+    }, this) }, void 0, !1, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 49,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV17("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-3 mb-4", children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV17(LucideTrophy5, { className: "text-orange-400", size: 20 }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 71,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 70,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV17("div", { children: /* @__PURE__ */ jsxDEV17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8054\u8D5B\u4FE1\u606F" }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 74,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 73,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 69,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { className: "grid grid-cols-2 sm:grid-cols-3 gap-3", children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u53C2\u8D5B\u4EBA\u6570" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 81,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV17("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
             players.length,
             " \u4EBA"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
-          /* @__PURE__ */ jsx17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u603B\u8F6E\u6570" }),
-          /* @__PURE__ */ jsxs16("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 82,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 80,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV17("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
+          /* @__PURE__ */ jsxDEV17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u603B\u8F6E\u6570" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 87,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV17("p", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
             leagueState.schedule.length,
             " \u8F6E"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"} col-span-2 sm:col-span-1`, children: [
-          /* @__PURE__ */ jsx17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u521B\u5EFA\u65F6\u95F4" }),
-          /* @__PURE__ */ jsx17("p", { className: `font-bold text-sm ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.created_at && new Date(leagueState.created_at).toLocaleDateString("zh-CN", {
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 88,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 86,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV17("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"} col-span-2 sm:col-span-1`, children: [
+          /* @__PURE__ */ jsxDEV17("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: "\u521B\u5EFA\u65F6\u95F4" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 93,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV17("p", { className: `font-bold text-sm ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.created_at && new Date(leagueState.created_at).toLocaleDateString("zh-CN", {
             month: "short",
             day: "numeric",
             hour: "2-digit",
             minute: "2-digit"
-          }) })
-        ] })
-      ] })
-    ] }),
-    leagueState.selected_special_rules && leagueState.selected_special_rules.length > 0 && /* @__PURE__ */ jsxs16("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxs16("div", { className: "flex items-center gap-3 mb-4", children: [
-        /* @__PURE__ */ jsx17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx17(LucideSettings2, { className: "text-orange-400", size: 20 }) }),
-        /* @__PURE__ */ jsxs16("div", { children: [
-          /* @__PURE__ */ jsx17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u7279\u6B8A\u89C4\u5219\u8BBE\u7F6E" }),
-          /* @__PURE__ */ jsx17("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u7CFB\u7EDF\u5C06\u4ECE\u4EE5\u4E0B\u89C4\u5219\u4E2D\u968F\u673A\u9009\u62E9" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx17("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2", children: leagueState.selected_special_rules.map((rule, index) => /* @__PURE__ */ jsx17(
+          }) }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 94,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 92,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 79,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 64,
+      columnNumber: 13
+    }, this),
+    leagueState.selected_special_rules && leagueState.selected_special_rules.length > 0 && /* @__PURE__ */ jsxDEV17("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-3 mb-4", children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV17(LucideSettings2, { className: "text-orange-400", size: 20 }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 115,
+          columnNumber: 29
+        }, this) }, void 0, !1, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 114,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV17("div", { children: [
+          /* @__PURE__ */ jsxDEV17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u7279\u6B8A\u89C4\u5219\u8BBE\u7F6E" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 118,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV17("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u7CFB\u7EDF\u5C06\u4ECE\u4EE5\u4E0B\u89C4\u5219\u4E2D\u968F\u673A\u9009\u62E9" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 121,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 117,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 113,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2", children: leagueState.selected_special_rules.map((rule, index) => /* @__PURE__ */ jsxDEV17(
         "div",
         {
           className: `p-3 rounded-lg border text-sm ${theme === "dark" ? "bg-orange-500/10 border-orange-500/30 text-orange-400" : "bg-orange-50 border-orange-200 text-orange-700"}`,
-          children: /* @__PURE__ */ jsxs16("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsx17(LucideCheck2, { size: 14, className: "text-orange-400 flex-shrink-0" }),
-            /* @__PURE__ */ jsx17("span", { children: rule })
-          ] })
+          children: /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxDEV17(LucideCheck2, { size: 14, className: "text-orange-400 flex-shrink-0" }, void 0, !1, {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 137,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV17("span", { children: rule }, void 0, !1, {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 138,
+              columnNumber: 37
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 136,
+            columnNumber: 33
+          }, this)
         },
-        index
-      )) }),
-      /* @__PURE__ */ jsxs16("div", { className: `mt-3 text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
+        index,
+        !1,
+        {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 128,
+          columnNumber: 29
+        },
+        this
+      )) }, void 0, !1, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 126,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { className: `mt-3 text-xs ${theme === "dark" ? "text-white/60" : "text-gray-500"}`, children: [
         "\u5171 ",
         leagueState.selected_special_rules.length,
         " \u79CD\u53EF\u80FD\u7684\u7279\u6B8A\u89C4\u5219"
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxs16("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxs16("div", { className: "flex items-center justify-between mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsxs16("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsx17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx17(LucideCalendar3, { className: "text-blue-400", size: 20 }) }),
-          /* @__PURE__ */ jsx17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8D5B\u7A0B\u9884\u89C8" })
-        ] }),
-        /* @__PURE__ */ jsxs16(
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 143,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 108,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV17("div", { className: `p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border backdrop-blur-2xl ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center justify-between mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxDEV17("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV17(LucideCalendar3, { className: "text-blue-400", size: 20 }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 158,
+            columnNumber: 29
+          }, this) }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 157,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV17("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8D5B\u7A0B\u9884\u89C8" }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 160,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 156,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV17(
           "button",
           {
             onClick: onRerollSchedule,
             className: "flex items-center gap-2 px-3 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-all duration-200",
             children: [
-              /* @__PURE__ */ jsx17(LucideDice6, { size: 16 }),
-              /* @__PURE__ */ jsx17("span", { className: "text-sm font-medium", children: "\u91CD\u65B0\u751F\u6210" })
+              /* @__PURE__ */ jsxDEV17(LucideDice6, { size: 16 }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 168,
+                columnNumber: 25
+              }, this),
+              /* @__PURE__ */ jsxDEV17("span", { className: "text-sm font-medium", children: "\u91CD\u65B0\u751F\u6210" }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 169,
+                columnNumber: 25
+              }, this)
             ]
-          }
+          },
+          void 0,
+          !0,
+          {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 164,
+            columnNumber: 21
+          },
+          this
         )
-      ] }),
-      /* @__PURE__ */ jsx17("div", { className: "space-y-4", children: leagueState.schedule.map((round, index) => /* @__PURE__ */ jsxs16("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"}`, children: [
-        /* @__PURE__ */ jsxs16("div", { className: "flex items-center justify-between mb-3", children: [
-          /* @__PURE__ */ jsxs16("h4", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
+      ] }, void 0, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 155,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV17("div", { className: "space-y-4", children: leagueState.schedule.map((round, index) => /* @__PURE__ */ jsxDEV17("div", { className: `p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"}`, children: [
+        /* @__PURE__ */ jsxDEV17("div", { className: "flex items-center justify-between mb-3", children: [
+          /* @__PURE__ */ jsxDEV17("h4", { className: `font-bold text-lg ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: [
             "\u7B2C ",
             round.round,
             " \u8F6E"
-          ] }),
-          /* @__PURE__ */ jsx17("div", { className: `px-2 py-1 rounded text-xs font-medium ${theme === "dark" ? "bg-blue-500/20 text-blue-400" : "bg-blue-100 text-blue-700"}`, children: round.vpMode.name })
-        ] }),
-        /* @__PURE__ */ jsxs16("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm", children: [
-          /* @__PURE__ */ jsx17(
+          ] }, void 0, !0, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 181,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV17("div", { className: `px-2 py-1 rounded text-xs font-medium ${theme === "dark" ? "bg-blue-500/20 text-blue-400" : "bg-blue-100 text-blue-700"}`, children: round.vpMode.name }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 184,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 180,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV17("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm", children: [
+          /* @__PURE__ */ jsxDEV17(
             InfoCard_default,
             {
-              icon: /* @__PURE__ */ jsx17(LucideShield, { className: "text-blue-400" }),
+              icon: /* @__PURE__ */ jsxDEV17(LucideShield, { className: "text-blue-400" }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 194,
+                columnNumber: 43
+              }, this),
               title: "\u5B89\u5168\u724C",
               value: round.safeCards
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 193,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx17(
+          /* @__PURE__ */ jsxDEV17(
             InfoCard_default,
             {
-              icon: /* @__PURE__ */ jsx17(LucideBomb2, { className: "text-red-400" }),
+              icon: /* @__PURE__ */ jsxDEV17(LucideBomb2, { className: "text-red-400" }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 199,
+                columnNumber: 43
+              }, this),
               title: "\u70B8\u5F39\u724C",
               value: round.bombCards
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 198,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx17(
+          /* @__PURE__ */ jsxDEV17(
             InfoCard_default,
             {
-              icon: /* @__PURE__ */ jsx17(LucideSwords, { className: "text-yellow-400" }),
+              icon: /* @__PURE__ */ jsxDEV17(LucideSwords, { className: "text-yellow-400" }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 204,
+                columnNumber: 43
+              }, this),
               title: "\u624B\u724C\u4E0A\u9650",
               value: round.handLimit === 1 / 0 ? "\u65E0\u9650\u5236" : round.handLimit
-            }
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 203,
+              columnNumber: 33
+            },
+            this
           ),
-          /* @__PURE__ */ jsx17("div", { className: "sm:col-span-1 col-span-2", children: /* @__PURE__ */ jsx17(
+          /* @__PURE__ */ jsxDEV17("div", { className: "sm:col-span-1 col-span-2", children: /* @__PURE__ */ jsxDEV17(
             InfoCard_default,
             {
-              icon: /* @__PURE__ */ jsx17(LucideDices, { className: "text-purple-400" }),
+              icon: /* @__PURE__ */ jsxDEV17(LucideDices, { className: "text-purple-400" }, void 0, !1, {
+                fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+                lineNumber: 210,
+                columnNumber: 47
+              }, this),
               title: "\u7279\u6B8A\u89C4\u5219",
               value: round.specialRule
-            }
-          ) })
-        ] })
-      ] }, round.round)) })
-    ] }),
-    /* @__PURE__ */ jsxs16("div", { className: "flex flex-col sm:flex-row gap-4 justify-center", children: [
-      /* @__PURE__ */ jsxs16(
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 209,
+              columnNumber: 37
+            },
+            this
+          ) }, void 0, !1, {
+            fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+            lineNumber: 208,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 192,
+          columnNumber: 29
+        }, this)
+      ] }, round.round, !0, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 175,
+        columnNumber: 25
+      }, this)) }, void 0, !1, {
+        fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+        lineNumber: 173,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 150,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV17("div", { className: "flex flex-col sm:flex-row gap-4 justify-center", children: [
+      /* @__PURE__ */ jsxDEV17(
         "button",
         {
           onClick: onRerollSchedule,
           className: "flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-all duration-200 font-medium",
           children: [
-            /* @__PURE__ */ jsx17(LucideDice6, { size: 20 }),
+            /* @__PURE__ */ jsxDEV17(LucideDice6, { size: 20 }, void 0, !1, {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 227,
+              columnNumber: 21
+            }, this),
             "\u91CD\u65B0\u751F\u6210\u8D5B\u7A0B"
           ]
-        }
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 223,
+          columnNumber: 17
+        },
+        this
       ),
-      /* @__PURE__ */ jsxs16(
+      /* @__PURE__ */ jsxDEV17(
         "button",
         {
           onClick: onConfirmSchedule,
           className: "flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold transition-all duration-200 shadow-lg",
           children: [
-            /* @__PURE__ */ jsx17(LucideCheck2, { size: 20 }),
+            /* @__PURE__ */ jsxDEV17(LucideCheck2, { size: 20 }, void 0, !1, {
+              fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+              lineNumber: 234,
+              columnNumber: 21
+            }, this),
             "\u786E\u8BA4\u5E76\u5F00\u59CB\u8054\u8D5B"
           ]
-        }
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+          lineNumber: 230,
+          columnNumber: 17
+        },
+        this
       )
-    ] })
-  ] });
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+      lineNumber: 222,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
+    lineNumber: 27,
+    columnNumber: 9
+  }, this);
 }, ScheduleConfirmationPage_default = ScheduleConfirmationPage;
 
 // app/routes/_index.tsx
-import { Fragment as Fragment3, jsx as jsx18, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
 var supabase;
 function Index() {
   let [leagueState, setLeagueState] = useState3(null), [players, setPlayers] = useState3([]), [session, setSession] = useState3(null), [isAuthReady, setIsAuthReady] = useState3(!1), [showPlayerModal, setShowPlayerModal] = useState3(!1), [showResultsModal, setShowResultsModal] = useState3(!1), [newPlayerName, setNewPlayerName] = useState3(""), [selectedAvatar, setSelectedAvatar] = useState3(GAME_RULES.AVATARS[0]), [showPlayerProfileModal, setShowPlayerProfileModal] = useState3(!1), [selectedPlayerForProfile, setSelectedPlayerForProfile] = useState3(null), [winner, setWinner] = useState3(null), [appId, setAppId] = useState3("default"), [currentPage, setCurrentPage] = useState3("home"), [sidebarOpen, setSidebarOpen] = useState3(!1), [sidebarCollapsed, setSidebarCollapsed] = useState3(!1), [musicPlaying, setMusicPlaying] = useState3(!1), [musicMuted, setMusicMuted] = useState3(!0), [leagueHistory, setLeagueHistory] = useState3([]), [currentLeagueName, setCurrentLeagueName] = useState3(""), [nextSeasonNumber, setNextSeasonNumber] = useState3(1);
@@ -1891,66 +4135,170 @@ function Index() {
     setShowResultsModal(!1);
   }, renderInProgress = () => {
     if (!leagueState)
-      return /* @__PURE__ */ jsx18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." });
+      return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 639,
+        columnNumber: 34
+      }, this);
     if (leagueState.status === "setup")
-      return setCurrentPage("league"), /* @__PURE__ */ jsx18("div", { className: "text-white", children: "\u91CD\u5B9A\u5411\u5230\u8054\u8D5B\u7BA1\u7406..." });
+      return setCurrentPage("league"), /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u91CD\u5B9A\u5411\u5230\u8054\u8D5B\u7BA1\u7406..." }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 644,
+        columnNumber: 20
+      }, this);
     if (leagueState.status === "finished")
-      return /* @__PURE__ */ jsx18("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxs17("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
-        /* @__PURE__ */ jsx18(LucideCrown4, { className: "text-yellow-400", size: 60 }),
-        /* @__PURE__ */ jsxs17("div", { className: "text-center", children: [
-          /* @__PURE__ */ jsx18("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }),
-          leagueState.season_number && /* @__PURE__ */ jsxs17("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
+      return /* @__PURE__ */ jsxDEV18("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxDEV18("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
+        /* @__PURE__ */ jsxDEV18(LucideCrown4, { className: "text-yellow-400", size: 60 }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 651,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV18("div", { className: "text-center", children: [
+          /* @__PURE__ */ jsxDEV18("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 653,
+            columnNumber: 29
+          }, this),
+          leagueState.season_number && /* @__PURE__ */ jsxDEV18("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
             "Season ",
             leagueState.season_number,
             " \u5B8C\u6210"
-          ] })
-        ] }),
-        leagueState.winner && /* @__PURE__ */ jsxs17(Fragment3, { children: [
-          /* @__PURE__ */ jsx18("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }),
-          /* @__PURE__ */ jsx18("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }),
-          /* @__PURE__ */ jsx18("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason })
-        ] }),
-        /* @__PURE__ */ jsx18(
+          ] }, void 0, !0, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 657,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 652,
+          columnNumber: 25
+        }, this),
+        leagueState.winner && /* @__PURE__ */ jsxDEV18(Fragment3, { children: [
+          /* @__PURE__ */ jsxDEV18("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 664,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV18("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 665,
+            columnNumber: 33
+          }, this),
+          /* @__PURE__ */ jsxDEV18("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 666,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 663,
+          columnNumber: 29
+        }, this),
+        /* @__PURE__ */ jsxDEV18(
           "button",
           {
             onClick: handleResetLeague,
             className: "mt-6 sm:mt-8 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base",
             children: "\u5F00\u542F\u65B0\u8054\u8D5B"
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 669,
+            columnNumber: 25
+          },
+          this
         )
-      ] }) });
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 650,
+        columnNumber: 21
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 649,
+        columnNumber: 17
+      }, this);
     if (!leagueState.schedule || leagueState.schedule.length === 0)
-      return /* @__PURE__ */ jsx18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." });
+      return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 680,
+        columnNumber: 80
+      }, this);
     let currentRoundConfig = leagueState.schedule[leagueState.current_round - 1];
-    return currentRoundConfig ? /* @__PURE__ */ jsxs17("div", { className: "space-y-4 sm:space-y-6", children: [
-      /* @__PURE__ */ jsx18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: /* @__PURE__ */ jsxs17("div", { className: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4", children: [
-        /* @__PURE__ */ jsxs17("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsx18("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx18(LucideGamepad22, { className: "text-orange-400", size: 20 }) }),
-          /* @__PURE__ */ jsxs17("div", { children: [
-            /* @__PURE__ */ jsx18("h1", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8054\u8D5B\u8FDB\u884C\u4E2D" }),
-            /* @__PURE__ */ jsxs17("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+    return currentRoundConfig ? /* @__PURE__ */ jsxDEV18("div", { className: "space-y-4 sm:space-y-6", children: [
+      /* @__PURE__ */ jsxDEV18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4", children: [
+        /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxDEV18("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideGamepad22, { className: "text-orange-400", size: 20 }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 691,
+            columnNumber: 33
+          }, this) }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 690,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV18("div", { children: [
+            /* @__PURE__ */ jsxDEV18("h1", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: "\u8054\u8D5B\u8FDB\u884C\u4E2D" }, void 0, !1, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 694,
+              columnNumber: 33
+            }, this),
+            /* @__PURE__ */ jsxDEV18("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
               "\u7B2C ",
               leagueState.current_round,
               " \u8F6E / \u5171 ",
               GAME_RULES.MAX_ROUNDS,
               " \u8F6E"
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxs17("div", { className: "flex items-center gap-2 sm:gap-3", children: [
-          /* @__PURE__ */ jsxs17(
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 697,
+              columnNumber: 33
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 693,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 689,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2 sm:gap-3", children: [
+          /* @__PURE__ */ jsxDEV18(
             "button",
             {
               onClick: handleBackToLeagueManagement,
               className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${theme === "dark" ? "bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white border border-slate-600/50" : "bg-gray-200/50 hover:bg-gray-300/50 text-gray-700 hover:text-gray-900 border border-gray-300/50"}`,
               children: [
-                /* @__PURE__ */ jsx18(LucideChevronLeft2, { size: 16 }),
-                /* @__PURE__ */ jsx18("span", { className: "hidden xs:inline", children: "\u8FD4\u56DE\u7BA1\u7406" }),
-                /* @__PURE__ */ jsx18("span", { className: "xs:hidden", children: "\u8FD4\u56DE" })
+                /* @__PURE__ */ jsxDEV18(LucideChevronLeft2, { size: 16 }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 711,
+                  columnNumber: 33
+                }, this),
+                /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8FD4\u56DE\u7BA1\u7406" }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 712,
+                  columnNumber: 33
+                }, this),
+                /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u8FD4\u56DE" }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 713,
+                  columnNumber: 33
+                }, this)
               ]
-            }
+            },
+            void 0,
+            !0,
+            {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 703,
+              columnNumber: 29
+            },
+            this
           ),
-          /* @__PURE__ */ jsxs17(
+          /* @__PURE__ */ jsxDEV18(
             "button",
             {
               onClick: () => {
@@ -1958,90 +4306,286 @@ function Index() {
               },
               className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${theme === "dark" ? "bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50" : "bg-red-100/50 hover:bg-red-200/50 text-red-700 hover:text-red-800 border border-red-300/50"}`,
               children: [
-                /* @__PURE__ */ jsx18(LucideX3, { size: 16 }),
-                /* @__PURE__ */ jsx18("span", { className: "hidden xs:inline", children: "\u4E2D\u6B62\u8054\u8D5B" }),
-                /* @__PURE__ */ jsx18("span", { className: "xs:hidden", children: "\u4E2D\u6B62" })
+                /* @__PURE__ */ jsxDEV18(LucideX3, { size: 16 }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 727,
+                  columnNumber: 33
+                }, this),
+                /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u4E2D\u6B62\u8054\u8D5B" }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 728,
+                  columnNumber: 33
+                }, this),
+                /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u4E2D\u6B62" }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 729,
+                  columnNumber: 33
+                }, this)
               ]
-            }
+            },
+            void 0,
+            !0,
+            {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 715,
+              columnNumber: 29
+            },
+            this
           )
-        ] })
-      ] }) }),
-      /* @__PURE__ */ jsxs17("div", { className: "grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6", children: [
-        /* @__PURE__ */ jsx18("div", { className: "xl:col-span-1 flex flex-col gap-4 sm:gap-6 order-2 xl:order-1", children: /* @__PURE__ */ jsx18(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }) }),
-        /* @__PURE__ */ jsxs17("div", { className: "xl:col-span-2 flex flex-col gap-4 sm:gap-6 order-1 xl:order-2", children: [
-          /* @__PURE__ */ jsxs17("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-            /* @__PURE__ */ jsxs17("div", { className: "flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6", children: [
-              /* @__PURE__ */ jsxs17("h2", { className: "text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400", children: [
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 702,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 688,
+        columnNumber: 21
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 687,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6", children: [
+        /* @__PURE__ */ jsxDEV18("div", { className: "xl:col-span-1 flex flex-col gap-4 sm:gap-6 order-2 xl:order-1", children: /* @__PURE__ */ jsxDEV18(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 738,
+          columnNumber: 25
+        }, this) }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 737,
+          columnNumber: 21
+        }, this),
+        /* @__PURE__ */ jsxDEV18("div", { className: "xl:col-span-2 flex flex-col gap-4 sm:gap-6 order-1 xl:order-2", children: [
+          /* @__PURE__ */ jsxDEV18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+            /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6", children: [
+              /* @__PURE__ */ jsxDEV18("h2", { className: "text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400", children: [
                 "\u7B2C ",
                 leagueState.current_round,
                 " / ",
                 GAME_RULES.MAX_ROUNDS,
                 " \u8F6E"
-              ] }),
-              /* @__PURE__ */ jsxs17(
+              ] }, void 0, !0, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 744,
+                columnNumber: 29
+              }, this),
+              /* @__PURE__ */ jsxDEV18(
                 "button",
                 {
                   onClick: () => setShowResultsModal(!0),
                   className: "bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-2.5 sm:py-3 px-4 sm:px-5 rounded-lg shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm sm:text-base",
                   children: [
-                    /* @__PURE__ */ jsx18(LucideClipboardList, { size: 18, className: "flex-shrink-0" }),
-                    /* @__PURE__ */ jsx18("span", { className: "hidden xs:inline", children: "\u8F93\u5165\u672C\u8F6E\u7ED3\u679C" }),
-                    /* @__PURE__ */ jsx18("span", { className: "xs:hidden", children: "\u7ED3\u679C" })
+                    /* @__PURE__ */ jsxDEV18(LucideClipboardList, { size: 18, className: "flex-shrink-0" }, void 0, !1, {
+                      fileName: "app/routes/_index.tsx",
+                      lineNumber: 749,
+                      columnNumber: 33
+                    }, this),
+                    /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8F93\u5165\u672C\u8F6E\u7ED3\u679C" }, void 0, !1, {
+                      fileName: "app/routes/_index.tsx",
+                      lineNumber: 750,
+                      columnNumber: 33
+                    }, this),
+                    /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u7ED3\u679C" }, void 0, !1, {
+                      fileName: "app/routes/_index.tsx",
+                      lineNumber: 751,
+                      columnNumber: 33
+                    }, this)
                   ]
-                }
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 745,
+                  columnNumber: 29
+                },
+                this
               )
-            ] }),
-            /* @__PURE__ */ jsxs17("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base lg:text-lg", children: [
-              /* @__PURE__ */ jsx18(InfoCard_default, { icon: /* @__PURE__ */ jsx18(LucideShield2, { className: "text-blue-400" }), title: "\u5B89\u5168\u724C\u6570\u91CF", value: currentRoundConfig.safeCards }),
-              /* @__PURE__ */ jsx18(InfoCard_default, { icon: /* @__PURE__ */ jsx18(LucideBomb3, { className: "text-red-400" }), title: "\u70B8\u5F39\u724C\u6570\u91CF", value: currentRoundConfig.bombCards }),
-              /* @__PURE__ */ jsx18(InfoCard_default, { icon: /* @__PURE__ */ jsx18(LucideSwords2, { className: "text-yellow-400" }), title: "\u51FA\u6218\u624B\u724C\u4E0A\u9650", value: currentRoundConfig.handLimit === 1 / 0 ? "\u65E0\u9650\u5236" : currentRoundConfig.handLimit }),
-              /* @__PURE__ */ jsx18(InfoCard_default, { icon: /* @__PURE__ */ jsx18(LucideTrophy6, { className: "text-green-400" }), title: "VP \u5956\u52B1\u6A21\u5F0F", value: currentRoundConfig.vpMode.name }),
-              /* @__PURE__ */ jsx18(InfoCard_default, { icon: /* @__PURE__ */ jsx18(LucideDices2, { className: "text-purple-400" }), title: "\u7279\u6B8A\u89C4\u5219", value: currentRoundConfig.specialRule })
-            ] })
-          ] }),
-          leagueState.league_name && /* @__PURE__ */ jsxs17("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
-            /* @__PURE__ */ jsxs17("div", { className: "flex items-center gap-3 mb-3", children: [
-              /* @__PURE__ */ jsx18("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsx18(LucideTrophy6, { className: "text-orange-400", size: 20 }) }),
-              /* @__PURE__ */ jsxs17("div", { children: [
-                /* @__PURE__ */ jsx18("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.league_name }),
-                leagueState.season_number && /* @__PURE__ */ jsxs17("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 743,
+              columnNumber: 26
+            }, this),
+            /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base lg:text-lg", children: [
+              /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideShield2, { className: "text-blue-400" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 755,
+                columnNumber: 45
+              }, this), title: "\u5B89\u5168\u724C\u6570\u91CF", value: currentRoundConfig.safeCards }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 755,
+                columnNumber: 29
+              }, this),
+              /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideBomb3, { className: "text-red-400" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 756,
+                columnNumber: 45
+              }, this), title: "\u70B8\u5F39\u724C\u6570\u91CF", value: currentRoundConfig.bombCards }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 756,
+                columnNumber: 29
+              }, this),
+              /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideSwords2, { className: "text-yellow-400" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 757,
+                columnNumber: 45
+              }, this), title: "\u51FA\u6218\u624B\u724C\u4E0A\u9650", value: currentRoundConfig.handLimit === 1 / 0 ? "\u65E0\u9650\u5236" : currentRoundConfig.handLimit }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 757,
+                columnNumber: 29
+              }, this),
+              /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-green-400" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 758,
+                columnNumber: 45
+              }, this), title: "VP \u5956\u52B1\u6A21\u5F0F", value: currentRoundConfig.vpMode.name }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 758,
+                columnNumber: 29
+              }, this),
+              /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideDices2, { className: "text-purple-400" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 759,
+                columnNumber: 45
+              }, this), title: "\u7279\u6B8A\u89C4\u5219", value: currentRoundConfig.specialRule }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 759,
+                columnNumber: 29
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 754,
+              columnNumber: 25
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 742,
+            columnNumber: 21
+          }, this),
+          leagueState.league_name && /* @__PURE__ */ jsxDEV18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
+            /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3 mb-3", children: [
+              /* @__PURE__ */ jsxDEV18("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-orange-400", size: 20 }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 768,
+                columnNumber: 37
+              }, this) }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 767,
+                columnNumber: 33
+              }, this),
+              /* @__PURE__ */ jsxDEV18("div", { children: [
+                /* @__PURE__ */ jsxDEV18("h3", { className: `text-lg sm:text-xl font-bold ${theme === "dark" ? "text-white/95" : "text-gray-900"}`, children: leagueState.league_name }, void 0, !1, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 771,
+                  columnNumber: 37
+                }, this),
+                leagueState.season_number && /* @__PURE__ */ jsxDEV18("p", { className: `text-sm ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
                   "Season ",
                   leagueState.season_number
-                ] })
-              ] })
-            ] }),
-            leagueState.created_at && /* @__PURE__ */ jsx18("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: /* @__PURE__ */ jsxs17("div", { className: "flex items-center gap-2 text-sm", children: [
-              /* @__PURE__ */ jsx18("span", { className: `${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u521B\u5EFA\u65F6\u95F4\uFF1A" }),
-              /* @__PURE__ */ jsx18("span", { className: `${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: new Date(leagueState.created_at).toLocaleDateString("zh-CN", {
+                ] }, void 0, !0, {
+                  fileName: "app/routes/_index.tsx",
+                  lineNumber: 775,
+                  columnNumber: 41
+                }, this)
+              ] }, void 0, !0, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 770,
+                columnNumber: 33
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 766,
+              columnNumber: 29
+            }, this),
+            leagueState.created_at && /* @__PURE__ */ jsxDEV18("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2 text-sm", children: [
+              /* @__PURE__ */ jsxDEV18("span", { className: `${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: "\u521B\u5EFA\u65F6\u95F4\uFF1A" }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 784,
+                columnNumber: 41
+              }, this),
+              /* @__PURE__ */ jsxDEV18("span", { className: `${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: new Date(leagueState.created_at).toLocaleDateString("zh-CN", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit"
-              }) })
-            ] }) })
-          ] }),
-          /* @__PURE__ */ jsx18(ScheduleTimeline_default, { schedule: leagueState.schedule, currentRound: leagueState.current_round }),
-          /* @__PURE__ */ jsx18(SoundEffectsBox_default, {})
-        ] })
-      ] })
-    ] }) : /* @__PURE__ */ jsx18("div", { className: "text-white", children: "\u6BD4\u8D5B\u7ED3\u675F\uFF01" });
+              }) }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 785,
+                columnNumber: 41
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 783,
+              columnNumber: 37
+            }, this) }, void 0, !1, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 782,
+              columnNumber: 33
+            }, this)
+          ] }, void 0, !0, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 765,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV18(ScheduleTimeline_default, { schedule: leagueState.schedule, currentRound: leagueState.current_round }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 800,
+            columnNumber: 22
+          }, this),
+          /* @__PURE__ */ jsxDEV18(SoundEffectsBox_default, {}, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 801,
+            columnNumber: 22
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 740,
+          columnNumber: 21
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 735,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 685,
+      columnNumber: 13
+    }, this) : /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u6BD4\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 682,
+      columnNumber: 41
+    }, this);
   }, renderCurrentPage = () => {
     if (!isAuthReady)
-      return /* @__PURE__ */ jsx18("div", { className: "text-center text-2xl p-8", children: "\u6B63\u5728\u8FDE\u63A5\u670D\u52A1\u5668..." });
+      return /* @__PURE__ */ jsxDEV18("div", { className: "text-center text-2xl p-8", children: "\u6B63\u5728\u8FDE\u63A5\u670D\u52A1\u5668..." }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 810,
+        columnNumber: 20
+      }, this);
     if (leagueState && leagueState.status === "pending_confirmation")
-      return /* @__PURE__ */ jsx18(
+      return /* @__PURE__ */ jsxDEV18(
         ScheduleConfirmationPage_default,
         {
           leagueState,
           players,
           onConfirmSchedule: handleConfirmSchedule,
           onRerollSchedule: handleRerollSchedule
-        }
+        },
+        void 0,
+        !1,
+        {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 815,
+          columnNumber: 20
+        },
+        this
       );
     switch (currentPage) {
       case "home":
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           HomePage_default,
           {
             leagueState,
@@ -2050,10 +4594,18 @@ function Index() {
             handleResetLeague,
             handlePlayerClick,
             setCurrentPage
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 825,
+            columnNumber: 24
+          },
+          this
         );
       case "registration":
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           PlayerRegistrationPage_default,
           {
             players,
@@ -2066,10 +4618,18 @@ function Index() {
             setSelectedAvatar,
             showPlayerModal,
             setShowPlayerModal
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 834,
+            columnNumber: 24
+          },
+          this
         );
       case "league":
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           LeagueManagementPage_default,
           {
             leagueState,
@@ -2081,27 +4641,51 @@ function Index() {
             nextSeasonNumber,
             leagueHistory,
             setCurrentPage
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 847,
+            columnNumber: 24
+          },
+          this
         );
       case "in_progress":
         return renderInProgress();
       case "rankings":
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           PlayerRankingsPage_default,
           {
             players,
             onPlayerClick: handlePlayerClick
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 861,
+            columnNumber: 24
+          },
+          this
         );
       case "history":
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           LeagueHistoryPage_default,
           {
             leagueHistory
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 866,
+            columnNumber: 24
+          },
+          this
         );
       default:
-        return /* @__PURE__ */ jsx18(
+        return /* @__PURE__ */ jsxDEV18(
           HomePage_default,
           {
             leagueState,
@@ -2109,7 +4693,15 @@ function Index() {
             handleStartLeague,
             handleResetLeague,
             handlePlayerClick
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 870,
+            columnNumber: 24
+          },
+          this
         );
     }
   }, themeClasses = {
@@ -2119,12 +4711,28 @@ function Index() {
     radialGlow2: theme === "dark" ? "absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_rgba(251,146,60,0.08)_0%,_transparent_50%)]" : "absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_rgba(251,146,60,0.06)_0%,_transparent_50%)]",
     pattern: theme === "dark" ? "absolute inset-0 bg-[linear-gradient(45deg,_transparent_48%,_rgba(255,255,255,0.02)_49%,_rgba(255,255,255,0.02)_51%,_transparent_52%)] bg-[length:20px_20px]" : "absolute inset-0 bg-[linear-gradient(45deg,_transparent_48%,_rgba(0,0,0,0.01)_49%,_rgba(0,0,0,0.01)_51%,_transparent_52%)] bg-[length:20px_20px]"
   };
-  return /* @__PURE__ */ jsx18(ThemeContext.Provider, { value: { theme, toggleTheme }, children: /* @__PURE__ */ jsxs17("div", { className: themeClasses.container, children: [
-    /* @__PURE__ */ jsx18("div", { className: themeClasses.background }),
-    /* @__PURE__ */ jsx18("div", { className: themeClasses.radialGlow1 }),
-    /* @__PURE__ */ jsx18("div", { className: themeClasses.radialGlow2 }),
-    /* @__PURE__ */ jsx18("div", { className: themeClasses.pattern }),
-    /* @__PURE__ */ jsx18(
+  return /* @__PURE__ */ jsxDEV18(ThemeContext.Provider, { value: { theme, toggleTheme }, children: /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.container, children: [
+    /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.background }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 901,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow1 }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 902,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow2 }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 903,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.pattern }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 904,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV18(
       Sidebar_default,
       {
         currentPage,
@@ -2137,31 +4745,87 @@ function Index() {
         setMusicPlaying,
         musicMuted,
         setMusicMuted
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 906,
+        columnNumber: 17
+      },
+      this
     ),
-    /* @__PURE__ */ jsxs17("div", { className: `flex-1 transition-all duration-300 ${sidebarCollapsed ? "lg:ml-16" : "lg:ml-0"} relative`, children: [
-      /* @__PURE__ */ jsxs17("header", { className: `lg:hidden flex items-center justify-between p-3 sm:p-4 border-b ${theme === "dark" ? "border-white/10 bg-black/40" : "border-gray-200/50 bg-white/80"} backdrop-blur-2xl sticky top-0 z-40`, children: [
-        /* @__PURE__ */ jsx18(
+    /* @__PURE__ */ jsxDEV18("div", { className: `flex-1 transition-all duration-300 ${sidebarCollapsed ? "lg:ml-16" : "lg:ml-0"} relative`, children: [
+      /* @__PURE__ */ jsxDEV18("header", { className: `lg:hidden flex items-center justify-between p-3 sm:p-4 border-b ${theme === "dark" ? "border-white/10 bg-black/40" : "border-gray-200/50 bg-white/80"} backdrop-blur-2xl sticky top-0 z-40`, children: [
+        /* @__PURE__ */ jsxDEV18(
           "button",
           {
             onClick: () => setSidebarOpen(!0),
             className: `p-2 sm:p-2.5 rounded-lg transition-all duration-200 border border-transparent active:scale-95 ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
-            children: /* @__PURE__ */ jsx18(LucideMenu2, { size: 18 })
-          }
+            children: /* @__PURE__ */ jsxDEV18(LucideMenu2, { size: 18 }, void 0, !1, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 926,
+              columnNumber: 29
+            }, this)
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 922,
+            columnNumber: 25
+          },
+          this
         ),
-        /* @__PURE__ */ jsxs17("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ jsx18("div", { className: "p-1.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg", children: /* @__PURE__ */ jsx18(LucideCat3, { className: "text-orange-400", size: 16 }) }),
-          /* @__PURE__ */ jsx18("h1", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"} tracking-tight`, children: "Boom League" })
-        ] }),
-        /* @__PURE__ */ jsx18("div", { className: "w-8 sm:w-10" }),
+        /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxDEV18("div", { className: "p-1.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg", children: /* @__PURE__ */ jsxDEV18(LucideCat3, { className: "text-orange-400", size: 16 }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 930,
+            columnNumber: 33
+          }, this) }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 929,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV18("h1", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"} tracking-tight`, children: "Boom League" }, void 0, !1, {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 932,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 928,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ jsxDEV18("div", { className: "w-8 sm:w-10" }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 934,
+          columnNumber: 25
+        }, this),
         " "
-      ] }),
-      /* @__PURE__ */ jsx18("main", { className: "p-3 sm:p-4 md:p-6 lg:p-8 relative z-10 min-h-screen", children: renderCurrentPage() })
-    ] }),
-    showPlayerModal && /* @__PURE__ */ jsx18(Modal_default, { onClose: () => setShowPlayerModal(!1), title: "Add New Player", children: /* @__PURE__ */ jsxs17("div", { children: [
-      /* @__PURE__ */ jsxs17("div", { className: "mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsx18("label", { className: `font-medium mb-2 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Player Name" }),
-        /* @__PURE__ */ jsx18(
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 921,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV18("main", { className: "p-3 sm:p-4 md:p-6 lg:p-8 relative z-10 min-h-screen", children: renderCurrentPage() }, void 0, !1, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 938,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 919,
+      columnNumber: 17
+    }, this),
+    showPlayerModal && /* @__PURE__ */ jsxDEV18(Modal_default, { onClose: () => setShowPlayerModal(!1), title: "Add New Player", children: /* @__PURE__ */ jsxDEV18("div", { children: [
+      /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Player Name" }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 947,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV18(
           "input",
           {
             type: "text",
@@ -2169,55 +4833,130 @@ function Index() {
             onChange: (e) => setNewPlayerName(e.target.value),
             placeholder: "Enter player name",
             className: `w-full p-3 sm:p-4 rounded-lg border focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/30 transition-all duration-200 backdrop-blur-sm text-base ${theme === "dark" ? "bg-white/5 text-white border-white/10" : "bg-white/80 text-gray-900 border-gray-200"}`
-          }
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 948,
+            columnNumber: 33
+          },
+          this
         )
-      ] }),
-      /* @__PURE__ */ jsxs17("div", { className: "mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsx18("label", { className: `font-medium mb-2 sm:mb-3 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Choose Avatar" }),
-        /* @__PURE__ */ jsx18("div", { className: `grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-40 sm:max-h-48 overflow-y-auto p-3 sm:p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50/80 border-gray-200"}`, children: GAME_RULES.AVATARS.map((avatar, index) => /* @__PURE__ */ jsx18(
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 946,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
+        /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 sm:mb-3 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Choose Avatar" }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 962,
+          columnNumber: 33
+        }, this),
+        /* @__PURE__ */ jsxDEV18("div", { className: `grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-40 sm:max-h-48 overflow-y-auto p-3 sm:p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50/80 border-gray-200"}`, children: GAME_RULES.AVATARS.map((avatar, index) => /* @__PURE__ */ jsxDEV18(
           "button",
           {
             onClick: () => setSelectedAvatar(avatar),
             className: `text-lg sm:text-xl p-2 sm:p-2.5 rounded-lg transition-all duration-200 border active:scale-95 ${selectedAvatar === avatar ? "bg-gradient-to-br from-orange-500/20 to-orange-600/20 border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.3)] scale-110" : theme === "dark" ? "bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105" : "bg-white/50 border-gray-200 hover:bg-gray-100/50 hover:scale-105"}`,
             children: avatar
           },
-          index
-        )) })
-      ] }),
-      /* @__PURE__ */ jsxs17(
+          index,
+          !1,
+          {
+            fileName: "app/routes/_index.tsx",
+            lineNumber: 969,
+            columnNumber: 41
+          },
+          this
+        )) }, void 0, !1, {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 963,
+          columnNumber: 33
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 961,
+        columnNumber: 29
+      }, this),
+      /* @__PURE__ */ jsxDEV18(
         "button",
         {
           onClick: handleAddPlayer,
           className: "relative group w-full bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 hover:from-emerald-500/30 hover:to-emerald-600/30 active:from-emerald-500/40 active:to-emerald-600/40 text-emerald-400 font-semibold py-3 sm:py-4 px-6 rounded-lg border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-200 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] active:scale-[0.98]",
           children: [
-            /* @__PURE__ */ jsxs17("span", { className: "relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base", children: [
-              /* @__PURE__ */ jsx18(LucidePlus2, { size: 18 }),
+            /* @__PURE__ */ jsxDEV18("span", { className: "relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base", children: [
+              /* @__PURE__ */ jsxDEV18(LucidePlus2, { size: 18 }, void 0, !1, {
+                fileName: "app/routes/_index.tsx",
+                lineNumber: 991,
+                columnNumber: 37
+              }, this),
               "Add Player"
-            ] }),
-            /* @__PURE__ */ jsx18("div", { className: "absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" })
+            ] }, void 0, !0, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 990,
+              columnNumber: 33
+            }, this),
+            /* @__PURE__ */ jsxDEV18("div", { className: "absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" }, void 0, !1, {
+              fileName: "app/routes/_index.tsx",
+              lineNumber: 994,
+              columnNumber: 33
+            }, this)
           ]
-        }
+        },
+        void 0,
+        !0,
+        {
+          fileName: "app/routes/_index.tsx",
+          lineNumber: 986,
+          columnNumber: 29
+        },
+        this
       )
-    ] }) }),
-    showResultsModal && leagueState && /* @__PURE__ */ jsx18(
+    ] }, void 0, !0, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 945,
+      columnNumber: 25
+    }, this) }, void 0, !1, {
+      fileName: "app/routes/_index.tsx",
+      lineNumber: 944,
+      columnNumber: 21
+    }, this),
+    showResultsModal && leagueState && /* @__PURE__ */ jsxDEV18(
       ResultsModal_default,
       {
         players,
         onClose: () => setShowResultsModal(!1),
         onSubmit: handleAdvanceRound,
         round: leagueState.current_round
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 1001,
+        columnNumber: 21
+      },
+      this
     ),
-    showPlayerProfileModal && selectedPlayerForProfile && /* @__PURE__ */ jsx18(
+    showPlayerProfileModal && selectedPlayerForProfile && /* @__PURE__ */ jsxDEV18(
       PlayerProfileModal_default,
       {
         player: selectedPlayerForProfile,
         onClose: () => {
           setShowPlayerProfileModal(!1), setSelectedPlayerForProfile(null);
         }
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 1010,
+        columnNumber: 21
+      },
+      this
     ),
-    !musicMuted && /* @__PURE__ */ jsx18(
+    !musicMuted && /* @__PURE__ */ jsxDEV18(
       "iframe",
       {
         width: "1",
@@ -2228,16 +4967,32 @@ function Index() {
         allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
         className: "fixed top-0 left-0 opacity-0 pointer-events-none",
         style: { width: "1px", height: "1px", position: "fixed", top: "-9999px", left: "-9999px" }
-      }
+      },
+      void 0,
+      !1,
+      {
+        fileName: "app/routes/_index.tsx",
+        lineNumber: 1021,
+        columnNumber: 21
+      },
+      this
     )
-  ] }) });
+  ] }, void 0, !0, {
+    fileName: "app/routes/_index.tsx",
+    lineNumber: 900,
+    columnNumber: 13
+  }, this) }, void 0, !1, {
+    fileName: "app/routes/_index.tsx",
+    lineNumber: 899,
+    columnNumber: 9
+  }, this);
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-P76I4LKJ.js", imports: ["/build/_shared/chunk-325MXIUO.js", "/build/_shared/chunk-TANAHWHW.js", "/build/_shared/chunk-ADMCF34Z.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-QWDPOZRS.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-LV7VDCG2.js", imports: ["/build/_shared/chunk-5EDNXG7T.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "97f85a33", hmr: void 0, url: "/build/manifest-97F85A33.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-S24NZMO4.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-IZ2IJFOH.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-I6HKDNXD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-IKTBL6HQ.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "a25bfc9e", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754712447185 }, url: "/build/manifest-A25BFC9E.js" };
 
 // server-entry-module:@remix-run/dev/server-build
-var mode = "production", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {
+var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {
   root: {
     id: "root",
     parentId: void 0,
@@ -2264,3 +5019,4 @@ export {
   publicPath,
   routes
 };
+//# sourceMappingURL=index.js.map
