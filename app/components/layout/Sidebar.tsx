@@ -97,6 +97,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 >
                                     {musicMuted ? <LucideVolumeX size={16} /> : musicPlaying ? <LucidePause size={16} /> : <LucidePlay size={16} />}
                                 </button>
+                                {/* Rulebook button */}
+                                <button 
+                                    onClick={handleRulebookClick}
+                                    className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                    title="Open rulebook (external link)"
+                                >
+                                    <LucideBook size={16} />
+                                </button>
                                 <button 
                                     onClick={toggleTheme}
                                     className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
