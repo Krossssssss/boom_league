@@ -107,23 +107,25 @@ const SoundEffectsBox: React.FC = () => {
         try {
             const iframe = youtubeRefs.current[soundId];
             if (iframe) {
-                // Reset and play the video starting at 1 second with 2x speed
-                // We'll use a combination of URL parameters and postMessage
+                // Determine playback rate based on sound effect
+                const playbackRate = soundId === 'fart' ? 1 : 2; // Fart sound at 1x speed, others at 2x speed
+                
+                // Reset and play the video starting at 1 second
                 const currentSrc = iframe.src;
                 iframe.src = '';
                 iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
                 
-                // Set playback rate to 2x speed after iframe loads
+                // Set playback rate after iframe loads
                 const handleLoad = () => {
                     setTimeout(() => {
                         try {
                             if (iframe.contentWindow) {
-                                // Send command to set playback rate to 2x
+                                // Send command to set playback rate
                                 iframe.contentWindow.postMessage(
                                     JSON.stringify({
                                         event: 'command',
                                         func: 'setPlaybackRate',
-                                        args: [2]
+                                        args: [playbackRate]
                                     }),
                                     'https://www.youtube.com'
                                 );

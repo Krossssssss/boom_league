@@ -85,7 +85,7 @@ const ResultsModal: React.FC<ResultsModalProps> = ({ players, onClose, onSubmit,
                         拖拽玩家卡片重新排序，从上到下为第 1 名到第 {players.length} 名
                     </p>
                 </div>
-                <div className="space-y-2 sm:space-y-3 max-h-60 sm:max-h-72 overflow-y-auto">
+                <div className="space-y-2 sm:space-y-3">
                     {rankedPlayers.map((playerId, index) => {
                         const player = getPlayerById(playerId);
                         if (!player) return null;
@@ -144,15 +144,12 @@ const ResultsModal: React.FC<ResultsModalProps> = ({ players, onClose, onSubmit,
                                 </span>
                                 
                                 {/* Drag handle indicator */}
-                                <div className={`ml-auto flex flex-col gap-0.5 opacity-40 transition-opacity duration-300 ${
+                                <div className={`ml-auto flex flex-col gap-1 opacity-40 transition-opacity duration-300 ${
                                     isDragging ? 'opacity-70' : 'group-hover:opacity-70'
                                 }`}>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
-                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
+                                    <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
+                                    <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
                                 </div>
                             </div>
                         );

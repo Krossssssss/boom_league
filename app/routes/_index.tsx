@@ -34,6 +34,7 @@ import Modal from '../components/ui/Modal';
 import PlayerProfileModal from '../components/ui/PlayerProfileModal';
 import ResultsModal from '../components/ui/ResultsModal';
 import SoundEffectsBox from '../components/ui/SoundEffectsBox';
+import CardDrawReminder from '../components/ui/CardDrawReminder';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
@@ -57,6 +58,8 @@ export default function Index() {
     const [showPlayerProfileModal, setShowPlayerProfileModal] = useState<boolean>(false);
     const [selectedPlayerForProfile, setSelectedPlayerForProfile] = useState<Player | null>(null);
     const [winner, setWinner] = useState<Winner | null>(null);
+    const [showCardDrawReminder, setShowCardDrawReminder] = useState<boolean>(false);
+    const [cardDrawRound, setCardDrawRound] = useState<number>(1);
     const [appId, setAppId] = useState<string>('default');
     const [currentPage, setCurrentPage] = useState<string>('home');
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -446,41 +449,44 @@ export default function Index() {
     };
 
     const handleAbortLeague = async () => {
+        if (!leagueState) return;
+        
         // Save current league to history before aborting (if it has made progress)
-        if (leagueState && leagueState.current_round > 1) {
-            await saveLeagueToHistory();
+        if (leagueState.current_round > 1) {
+            // Create an aborted league state for history
+            const abortedLeagueState = {
+                ...leagueState,
+                status: 'finished',
+                winner: {
+                    name: '联赛中止',
+                    avatar: '⚠️',
+                    reason: `联赛在第 ${leagueState.current_round - 1} 轮后被中止`
+                },
+                end_date: new Date().toISOString()
+            } as LeagueState;
+            
+            await saveLeagueToHistory(abortedLeagueState, players);
         }
 
-        // Reset player scores and go back to setup
+        // Reset player scores in local state
         setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
-        setLeagueState({
-            app_id: appId,
-            status: 'setup',
-            current_round: 0,
-            schedule: [],
-            winner: null,
-        } as any);
+        
+        // Clear league state completely
+        setLeagueState(null);
         setWinner(null);
         setCurrentPage('league'); // Go back to league management
 
+        // Delete the league from database and reset player scores
         const [{ error: pErr }, { error: lErr }] = await Promise.all([
             supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
-            supabase
-                .from('league_state')
-                .upsert(
-                    {
-                        app_id: appId,
-                        status: 'setup',
-                        current_round: 0,
-                        schedule: [],
-                        winner: null,
-                    },
-                    { onConflict: 'app_id' }
-                ),
+            supabase.from('league_state').delete().eq('app_id', appId)
         ]);
 
         if (pErr || lErr) {
             console.error('Abort league errors:', pErr, lErr);
+        } else {
+            // Reload history after successful abort
+            await loadLeagueHistory();
         }
     };
 
@@ -493,12 +499,12 @@ export default function Index() {
         try {
             const iframe = (window as any).happySoundIframe;
             if (iframe) {
-                // Reset and play the happy sound with 2x speed starting at 1 second
+                // Reset and play the happy sound at normal speed starting from the beginning
                 const currentSrc = iframe.src;
                 iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
+                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${window.location.origin}`;
                 
-                // Set playback rate to 2x speed after iframe loads
+                // Set playback rate to normal speed (1x) after iframe loads
                 const handleLoad = () => {
                     setTimeout(() => {
                         try {
@@ -507,7 +513,7 @@ export default function Index() {
                                     JSON.stringify({
                                         event: 'command',
                                         func: 'setPlaybackRate',
-                                        args: [2]
+                                        args: [1]
                                     }),
                                     'https://www.youtube.com'
                                 );
@@ -696,7 +702,10 @@ export default function Index() {
         // Play happy sound effect after advancing round
         playHappySound();
         
+        // Close results modal and show card draw reminder
         setShowResultsModal(false);
+        setCardDrawRound(leagueState.current_round);
+        setShowCardDrawReminder(true);
     };
 
     const renderInProgress = () => {
@@ -778,7 +787,7 @@ export default function Index() {
                             </button>
                             <button
                                 onClick={() => {
-                                    if (window.confirm('确定要中止当前联赛吗？进度将会保存到历史记录中。')) {
+                                    if (window.confirm('确定要中止当前联赛吗？\n\n• 当前联赛将被删除\n• 如果已进行多轮比赛，进度将保存到历史记录\n• 玩家分数将被重置\n• 您将返回到联赛管理主页')) {
                                         handleAbortLeague();
                                     }
                                 }}
@@ -1081,6 +1090,14 @@ export default function Index() {
                     />
                 )}
 
+                {showCardDrawReminder && (
+                    <CardDrawReminder
+                        players={players}
+                        round={cardDrawRound}
+                        onClose={() => setShowCardDrawReminder(false)}
+                    />
+                )}
+
                 {/* Background Music Player - Hidden iframe for audio-only playback */}
                 {!musicMuted && (
                     <iframe
@@ -1104,7 +1121,7 @@ export default function Index() {
                     }}
                     width="0"
                     height="0"
-                    src="https://www.youtube.com/embed/NSU2hJ5wT08?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=1&enablejsapi=1"
+                    src="https://www.youtube.com/embed/NSU2hJ5wT08?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=0&enablejsapi=1"
                     title="Happy Sound Effect"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
