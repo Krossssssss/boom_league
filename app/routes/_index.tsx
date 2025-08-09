@@ -558,13 +558,11 @@ export default function Index() {
         setCurrentPage('league');
     };
 
-    // Enable audio on first user interaction
+    // Enable audio silently on first user interaction (no popup)
     const enableAudioOnInteraction = async () => {
         if (!audioEnabled) {
-            const success = await audioManager.enableAudio();
-            if (success) {
-                setAudioEnabled(true);
-            }
+            await audioManager.enableAudio();
+            setAudioEnabled(true);
         }
     };
 
@@ -1208,24 +1206,7 @@ export default function Index() {
                     />
                 )}
 
-                {/* Audio enable prompt for mobile devices */}
-                {!audioEnabled && isHydrated && (
-                    <div 
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-                        onClick={enableAudioOnInteraction}
-                    >
-                        <div className={`p-6 rounded-xl max-w-sm text-center ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
-                            <div className="text-4xl mb-4">🔊</div>
-                            <h3 className="text-lg font-semibold mb-2">Enable Audio</h3>
-                            <p className="text-sm opacity-75 mb-4">
-                                Tap anywhere to enable music and sound effects on this device
-                            </p>
-                            <div className="text-xs opacity-50">
-                                Required for mobile browsers
-                            </div>
-                        </div>
-                    </div>
-                )}
+
             </div>
         </ThemeContext.Provider>
     );

@@ -49,15 +49,20 @@ export class AudioManager {
   // Must be called from a user interaction event
   async enableAudio(): Promise<boolean> {
     if (!this.isInitialized || typeof window === 'undefined') {
-      return false;
+      return true; // Return true to dismiss popup even if not initialized
     }
 
     try {
       // Try to play and immediately pause to unlock audio context
       if (this.backgroundMusic) {
-        await this.backgroundMusic.play();
-        this.backgroundMusic.pause();
-        this.backgroundMusic.currentTime = 0;
+        try {
+          await this.backgroundMusic.play();
+          this.backgroundMusic.pause();
+          this.backgroundMusic.currentTime = 0;
+        } catch (e) {
+          // Audio file might not exist, that's okay
+          console.log('Background music file not found');
+        }
       }
 
       // Unlock sound effects
@@ -68,13 +73,14 @@ export class AudioManager {
           audio.currentTime = 0;
         } catch (e) {
           // Ignore individual sound effect failures
+          console.log('Sound effect file not found');
         }
       }
 
-      return true;
+      return true; // Always return true to dismiss popup
     } catch (error) {
       console.log('Audio unlock failed:', error);
-      return false;
+      return true; // Still return true to dismiss popup
     }
   }
 
