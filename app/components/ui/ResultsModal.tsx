@@ -84,22 +84,71 @@ const ResultsModal: React.FC<ResultsModalProps> = ({ players, onClose, onSubmit,
                     {rankedPlayers.map((playerId, index) => {
                         const player = getPlayerById(playerId);
                         if (!player) return null;
+                        
+                        const isDragging = draggedIndex === index;
+                        const isDragOver = dragOverIndex === index;
+                        const isAboveDragOver = dragOverIndex !== null && index < dragOverIndex && draggedIndex !== null && draggedIndex > dragOverIndex;
+                        const isBelowDragOver = dragOverIndex !== null && index > dragOverIndex && draggedIndex !== null && draggedIndex < dragOverIndex;
+                        
                         return (
                             <div
                                 key={playerId}
                                 draggable
                                 onDragStart={(e) => handleDragStart(e, index)}
-                                onDragOver={(e) => e.preventDefault()}
+                                onDragOver={(e) => handleDragOver(e, index)}
+                                onDragEnter={(e) => handleDragEnter(e, index)}
+                                onDragLeave={handleDragLeave}
                                 onDrop={(e) => handleDrop(e, index)}
-                                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-grab active:cursor-grabbing transition-all duration-200 active:scale-[0.98] ${
-                                    theme === 'dark' 
-                                        ? 'bg-gray-700 hover:bg-gray-600 active:bg-gray-600' 
-                                        : 'bg-gray-200 hover:bg-gray-300 active:bg-gray-300'
-                                }`}
+                                onDragEnd={handleDragEnd}
+                                className={`
+                                    flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-grab active:cursor-grabbing 
+                                    transition-all duration-300 ease-in-out transform-gpu
+                                    ${isDragging ? 'scale-105 rotate-2 shadow-2xl z-50' : 'scale-100 rotate-0'}
+                                    ${isDragOver && !isDragging ? 'scale-[1.02] shadow-lg ring-2 ring-orange-400/50' : ''}
+                                    ${isAboveDragOver ? 'translate-y-2' : ''}
+                                    ${isBelowDragOver ? '-translate-y-2' : ''}
+                                    ${theme === 'dark' 
+                                        ? `bg-gray-700 hover:bg-gray-600 active:bg-gray-600 
+                                           ${isDragging ? 'bg-gray-600 border-2 border-orange-400/50' : ''} 
+                                           ${isDragOver && !isDragging ? 'bg-gray-600 border-2 border-orange-400' : ''}` 
+                                        : `bg-gray-200 hover:bg-gray-300 active:bg-gray-300 
+                                           ${isDragging ? 'bg-gray-300 border-2 border-orange-400/50' : ''} 
+                                           ${isDragOver && !isDragging ? 'bg-gray-300 border-2 border-orange-400' : ''}`
+                                    }
+                                    ${isDragging ? 'opacity-80' : 'opacity-100'}
+                                `}
+                                style={{
+                                    transformOrigin: 'center',
+                                    willChange: 'transform, opacity, box-shadow',
+                                }}
                             >
-                                <span className="font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center">{index + 1}</span>
-                                <span className="text-xl sm:text-2xl flex-shrink-0">{player.avatar}</span>
-                                <span className={`font-semibold text-sm sm:text-base truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{player.name}</span>
+                                <span className={`font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center transition-all duration-300 ${
+                                    isDragging ? 'scale-110 text-orange-300' : ''
+                                }`}>
+                                    {index + 1}
+                                </span>
+                                <span className={`text-xl sm:text-2xl flex-shrink-0 transition-all duration-300 ${
+                                    isDragging ? 'scale-110' : ''
+                                }`}>
+                                    {player.avatar}
+                                </span>
+                                <span className={`font-semibold text-sm sm:text-base truncate transition-all duration-300 ${
+                                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                                } ${isDragging ? 'text-orange-300' : ''}`}>
+                                    {player.name}
+                                </span>
+                                
+                                {/* Drag handle indicator */}
+                                <div className={`ml-auto flex flex-col gap-0.5 opacity-40 transition-opacity duration-300 ${
+                                    isDragging ? 'opacity-70' : 'group-hover:opacity-70'
+                                }`}>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                    <div className="w-1 h-1 bg-current rounded-full"></div>
+                                </div>
                             </div>
                         );
                     })}
