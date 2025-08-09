@@ -276,31 +276,30 @@ export default function Index() {
             score: 0,
             history: [],
             
-            // League-level statistics
+            // Database fields
+            championships: 0,
+            runner_up: 0,
+            third_place: 0,
+            total_vp: 0,
+            total_games: 0,
+            average_placement: 0,
+            win_rate: 0,
+            single_round_firsts: 0,
+            single_round_seconds: 0,
+            single_round_thirds: 0,
+            
+            // Compatibility fields
             leagueChampionships: 0,
             leagueRunnerUp: 0,
             leagueThirdPlace: 0,
-            
-            // Round-level statistics
             roundChampionships: 0,
             roundRunnerUp: 0,
             roundThirdPlace: 0,
-            
-            // Score statistics
             totalVP: 0,
-            
-            // Game statistics
             totalLeagues: 0,
             totalRounds: 0,
-            
-            // Average and win rate statistics
             roundAveragePlacement: 0,
             roundWinRate: 0,
-            
-            // Compatibility fields
-            championships: 0,
-            runnerUp: 0,
-            thirdPlace: 0,
             totalGames: 0,
             averagePlacement: 0,
             winRate: 0,
@@ -779,11 +778,11 @@ export default function Index() {
                     
                     // Compatibility fields
                     championships: player.championships,
-                    runnerUp: player.runnerUp,
-                    thirdPlace: player.thirdPlace,
-                    totalGames: player.totalGames,
-                    averagePlacement: player.averagePlacement,
-                    winRate: player.winRate
+                    runner_up: player.runner_up,
+                    third_place: player.third_place,
+                    total_games: player.total_games,
+                    average_placement: player.average_placement,
+                    win_rate: player.win_rate
                 });
                 
                 return [

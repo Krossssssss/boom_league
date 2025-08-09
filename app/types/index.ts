@@ -46,7 +46,7 @@ export interface Player {
     roundThirdPlace?: number;        // 映射到single_round_thirds
     totalVP?: number;                // 映射到total_vp
     totalLeagues?: number;           // 映射到total_games
-    totalRounds?: number;            // 计算得出（从history或其他方式）
+    totalRounds?: number;            // 计算得出（从history.length）
     roundAveragePlacement?: number;  // 映射到average_placement
     roundWinRate?: number;           // 映射到win_rate
     totalGames?: number;             // 映射到total_games

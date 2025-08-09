@@ -20,7 +20,7 @@ const PlayerRankingsPage: React.FC<PlayerRankingsPageProps> = ({ players, onPlay
     const { theme } = useTheme();
     const [selectedCategory, setSelectedCategory] = useState<string>('championships');
 
-    // Define all ranking categories
+    // Define all ranking categories (only using actual database fields)
     const categories: RankingCategory[] = [
         {
             key: 'championships',
@@ -94,7 +94,7 @@ const PlayerRankingsPage: React.FC<PlayerRankingsPageProps> = ({ players, onPlay
         },
         {
             key: 'total_games',
-            name: '总游戏数',
+            name: '总联赛数',
             icon: <LucideTrophy className="w-5 h-5" />,
             getValue: (p) => p.total_games || 0,
             isDescending: true,

@@ -64,142 +64,151 @@ const PlayerProfiles: React.FC<PlayerProfilesProps> = ({ players, onPlayerClick 
                                 <span className="text-lg sm:text-xl flex-shrink-0">{p.avatar}</span>
                                 <span className={`font-medium text-sm sm:text-base truncate ${theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>{p.name}</span>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-3">
+                                {/* 当前分数 */}
+                                <div className="flex items-center gap-2 p-2 rounded-lg bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 border border-emerald-500/20">
+                                    <span className="text-lg">⭐</span>
+                                    <span className={`font-semibold text-sm ${theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                                        当前分数: {p.score || 0}
+                                    </span>
+                                </div>
+
                                 {/* 联赛级别统计 */}
-                                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                    <StatWithRanking
-                                        icon="🏆"
-                                        value={p.championships || 0}
-                                        label="联赛冠军"
-                                        shortLabel="冠军"
-                                        ranking={p.rankings?.championships}
-                                        bgClass="bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
-                                    />
-                                    <StatWithRanking
-                                        icon="🥈"
-                                        value={p.runner_up || 0}
-                                        label="联赛亚军"
-                                        shortLabel="亚军"
-                                        ranking={p.rankings?.runner_up}
-                                        bgClass={`bg-gray-400/10 border-gray-400/20 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
-                                    />
-                                    <StatWithRanking
-                                        icon="🥉"
-                                        value={p.third_place || 0}
-                                        label="联赛季军"
-                                        shortLabel="季军"
-                                        ranking={p.rankings?.third_place}
-                                        bgClass="bg-orange-500/10 border-orange-500/20 text-orange-400"
-                                    />
+                                <div>
+                                    <h4 className={`text-xs font-semibold mb-1.5 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>联赛统计</h4>
+                                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                        <StatWithRanking
+                                            icon="🏆"
+                                            value={p.championships || 0}
+                                            label="联赛冠军"
+                                            shortLabel="冠军"
+                                            ranking={p.rankings?.championships}
+                                            bgClass="bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                                        />
+                                        <StatWithRanking
+                                            icon="🥈"
+                                            value={p.runner_up || 0}
+                                            label="联赛亚军"
+                                            shortLabel="亚军"
+                                            ranking={p.rankings?.runner_up}
+                                            bgClass={`bg-gray-400/10 border-gray-400/20 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
+                                        />
+                                        <StatWithRanking
+                                            icon="🥉"
+                                            value={p.third_place || 0}
+                                            label="联赛季军"
+                                            shortLabel="季军"
+                                            ranking={p.rankings?.third_place}
+                                            bgClass="bg-orange-500/10 border-orange-500/20 text-orange-400"
+                                        />
+                                        <StatWithRanking
+                                            icon="🎮"
+                                            value={p.total_games || 0}
+                                            label="总联赛数"
+                                            shortLabel="联赛"
+                                            ranking={p.rankings?.total_games}
+                                            bgClass="bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
+                                        />
+                                    </div>
                                 </div>
                                 
                                 {/* 单轮级别统计 */}
-                                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                    <StatWithRanking
-                                        icon="🎯"
-                                        value={p.single_round_firsts || 0}
-                                        label="单轮冠军"
-                                        shortLabel="单冠"
-                                        ranking={p.rankings?.single_round_firsts}
-                                        bgClass="bg-blue-500/10 border-blue-500/20 text-blue-400"
-                                    />
-                                    <StatWithRanking
-                                        icon="🎲"
-                                        value={p.single_round_seconds || 0}
-                                        label="单轮亚军"
-                                        shortLabel="单亚"
-                                        ranking={p.rankings?.single_round_seconds}
-                                        bgClass="bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
-                                    />
-                                    <StatWithRanking
-                                        icon="⚡"
-                                        value={p.single_round_thirds || 0}
-                                        label="单轮季军"
-                                        shortLabel="单季"
-                                        ranking={p.rankings?.single_round_thirds}
-                                        bgClass="bg-purple-500/10 border-purple-500/20 text-purple-400"
-                                    />
+                                <div>
+                                    <h4 className={`text-xs font-semibold mb-1.5 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>单轮统计</h4>
+                                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                        <StatWithRanking
+                                            icon="🎯"
+                                            value={p.single_round_firsts || 0}
+                                            label="单轮冠军"
+                                            shortLabel="单冠"
+                                            ranking={p.rankings?.single_round_firsts}
+                                            bgClass="bg-blue-500/10 border-blue-500/20 text-blue-400"
+                                        />
+                                        <StatWithRanking
+                                            icon="🎲"
+                                            value={p.single_round_seconds || 0}
+                                            label="单轮亚军"
+                                            shortLabel="单亚"
+                                            ranking={p.rankings?.single_round_seconds}
+                                            bgClass="bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
+                                        />
+                                        <StatWithRanking
+                                            icon="⚡"
+                                            value={p.single_round_thirds || 0}
+                                            label="单轮季军"
+                                            shortLabel="单季"
+                                            ranking={p.rankings?.single_round_thirds}
+                                            bgClass="bg-purple-500/10 border-purple-500/20 text-purple-400"
+                                        />
+                                        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${
+                                            theme === 'dark' 
+                                                ? 'bg-white/5 border-white/10 text-white/70'
+                                                : 'bg-gray-100/50 border-gray-200 text-gray-600'
+                                        }`}>
+                                            <span>🔄</span>
+                                            <span className="hidden sm:inline">
+                                                总轮次: {(p.history || []).length}
+                                            </span>
+                                            <span className="sm:hidden">
+                                                {(p.history || []).length}轮
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 
-                                {/* 分数和游戏统计 */}
-                                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                    <StatWithRanking
-                                        icon="💎"
-                                        value={p.total_vp || 0}
-                                        label="总VP"
-                                        shortLabel="VP"
-                                        ranking={p.rankings?.total_vp}
-                                        bgClass="bg-green-500/10 border-green-500/20 text-green-400"
-                                    />
-                                    <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${
-                                        theme === 'dark' 
-                                            ? 'bg-white/5 border-white/10 text-white/70'
-                                            : 'bg-gray-100/50 border-gray-200 text-gray-600'
-                                    }`}>
-                                        <span className="hidden sm:inline">
-                                            {p.total_games || 0} 联赛 / {p.totalRounds || 0} 轮次
-                                            {p.rankings?.total_games && (
-                                                <span className={`ml-1 font-bold ${getRankingColorClass(p.rankings.total_games)}`}>
-                                                    #{getRankingSuffix(p.rankings.total_games)}
-                                                </span>
-                                            )}
-                                        </span>
-                                        <span className="sm:hidden">
-                                            {p.total_games || 0}L/{p.totalRounds || 0}R
-                                            {p.rankings?.total_games && (
-                                                <span className={`ml-0.5 font-bold ${getRankingColorClass(p.rankings.total_games)}`}>
-                                                    #{p.rankings.total_games}
-                                                </span>
-                                            )}
-                                        </span>
-                                    </div>
-                                    <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${
-                                        theme === 'dark' 
-                                            ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
-                                            : 'bg-indigo-100/50 border-indigo-200 text-indigo-600'
-                                    }`}>
-                                        <span>📊</span>
-                                        <span className="hidden sm:inline">
-                                            平均: {p.average_placement?.toFixed(1) || '0.0'}
-                                            {p.rankings?.average_placement && (
-                                                <span className={`ml-1 font-bold ${getRankingColorClass(p.rankings.average_placement)}`}>
-                                                    #{getRankingSuffix(p.rankings.average_placement)}
-                                                </span>
-                                            )}
-                                        </span>
-                                        <span className="sm:hidden">
-                                            {p.average_placement?.toFixed(1) || '0.0'}
-                                            {p.rankings?.average_placement && (
-                                                <span className={`ml-0.5 font-bold ${getRankingColorClass(p.rankings.average_placement)}`}>
-                                                    #{p.rankings.average_placement}
-                                                </span>
-                                            )}
-                                        </span>
-                                    </div>
-                                    <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${
-                                        theme === 'dark' 
-                                            ? 'bg-pink-500/10 border-pink-500/20 text-pink-400'
-                                            : 'bg-pink-100/50 border-pink-200 text-pink-600'
-                                    }`}>
-                                        <span>🎪</span>
-                                        <span className="hidden sm:inline">
-                                            胜率: {p.win_rate?.toFixed(0) || '0'}%
-                                            {p.rankings?.win_rate && (
-                                                <span className={`ml-1 font-bold ${getRankingColorClass(p.rankings.win_rate)}`}>
-                                                    #{getRankingSuffix(p.rankings.win_rate)}
-                                                </span>
-                                            )}
-                                        </span>
-                                        <span className="sm:hidden">
-                                            {p.win_rate?.toFixed(0) || '0'}%
-                                            {p.rankings?.win_rate && (
-                                                <span className={`ml-0.5 font-bold ${getRankingColorClass(p.rankings.win_rate)}`}>
-                                                    #{p.rankings.win_rate}
-                                                </span>
-                                            )}
-                                        </span>
+                                {/* 综合表现统计 */}
+                                <div>
+                                    <h4 className={`text-xs font-semibold mb-1.5 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>综合表现</h4>
+                                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                        <StatWithRanking
+                                            icon="💎"
+                                            value={p.total_vp || 0}
+                                            label="总VP"
+                                            shortLabel="VP"
+                                            ranking={p.rankings?.total_vp}
+                                            bgClass="bg-green-500/10 border-green-500/20 text-green-400"
+                                        />
+                                        <StatWithRanking
+                                            icon="📊"
+                                            value={parseFloat((p.average_placement || 0).toFixed(1))}
+                                            label="平均排名"
+                                            shortLabel="平均"
+                                            ranking={p.rankings?.average_placement}
+                                            bgClass="bg-teal-500/10 border-teal-500/20 text-teal-400"
+                                        />
+                                        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border bg-rose-500/10 border-rose-500/20 text-rose-400`}>
+                                            <span>🎪</span>
+                                            <span className="hidden xs:inline">
+                                                {(p.win_rate || 0).toFixed(0)}% 胜率
+                                                {p.rankings?.win_rate && (
+                                                    <span className={`ml-1 font-bold ${getRankingColorClass(p.rankings.win_rate)}`}>
+                                                        #{getRankingSuffix(p.rankings.win_rate)}
+                                                    </span>
+                                                )}
+                                            </span>
+                                            <span className="xs:hidden">
+                                                {(p.win_rate || 0).toFixed(0)}%
+                                                {p.rankings?.win_rate && (
+                                                    <span className={`ml-0.5 font-bold ${getRankingColorClass(p.rankings.win_rate)}`}>
+                                                        #{p.rankings.win_rate}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                {/* 时间信息 */}
+                                {(p.created_at || p.updated_at) && (
+                                    <div className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'} pt-2 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
+                                        {p.created_at && (
+                                            <div>注册时间: {new Date(p.created_at).toLocaleDateString('zh-CN')}</div>
+                                        )}
+                                        {p.updated_at && (
+                                            <div>最后更新: {new Date(p.updated_at).toLocaleDateString('zh-CN')}</div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

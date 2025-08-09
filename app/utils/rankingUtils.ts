@@ -11,7 +11,7 @@ export interface PlayerRankings {
     single_round_seconds: number;    // 单轮亚军次数排名
     single_round_thirds: number;     // 单轮季军次数排名
     total_vp: number;                // 总VP排名
-    total_games: number;             // 总游戏数排名
+    total_games: number;             // 总联赛数排名
     average_placement: number;       // 平均排名的排名 (越小越好)
     win_rate: number;                // 胜率排名
 }
