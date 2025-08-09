@@ -41,6 +41,7 @@ import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../constants/typograph
 
 // Import utilities
 import { selectSpecialRules, formatSpecialRules } from '../utils/specialRulesUtils';
+import { getAudioManager } from '../utils/audioUtils';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
@@ -76,6 +77,8 @@ export default function Index() {
     const [currentLeagueName, setCurrentLeagueName] = useState<string>('');
     const [nextSeasonNumber, setNextSeasonNumber] = useState<number>(1);
     const [isHydrated, setIsHydrated] = useState<boolean>(false);
+    const [audioManager] = useState(() => getAudioManager());
+    const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
 
     // Helper function to update players with rankings
     const updatePlayersWithRankings = (newPlayers: Player[]) => {
@@ -109,7 +112,10 @@ export default function Index() {
         const urlParams = new URLSearchParams(window.location.search);
         const canvasAppId = urlParams.get('app_id') || 'default';
         setAppId(canvasAppId);
-    }, []);
+        
+        // Initialize audio manager
+        audioManager.setMuted(savedMuted !== null ? JSON.parse(savedMuted) : true);
+    }, [audioManager]);
 
     // Save sidebar collapsed state to localStorage (only after hydration)
     useEffect(() => {
@@ -122,8 +128,9 @@ export default function Index() {
     useEffect(() => {
         if (isHydrated) {
             localStorage.setItem('musicMuted', JSON.stringify(musicMuted));
+            audioManager.setMuted(musicMuted);
         }
-    }, [musicMuted, isHydrated]);
+    }, [musicMuted, isHydrated, audioManager]);
     const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
     // Supabase initialization effect (only after hydration)
@@ -551,45 +558,34 @@ export default function Index() {
         setCurrentPage('league');
     };
 
-    // Function to play happy sound effect (only if music is not playing)
-    const playHappySound = () => {
-        // Don't play happy sound if music is currently playing
-        if (musicPlaying && !musicMuted) {
-            return;
-        }
-        
-        try {
-            const iframe = (window as any).happySoundIframe;
-            if (iframe) {
-                // Reset and play the happy sound at normal speed starting from the beginning
-                const currentSrc = iframe.src;
-                iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${window.location.origin}`;
-                
-                // Set playback rate to normal speed (1x) after iframe loads
-                const handleLoad = () => {
-                    setTimeout(() => {
-                        try {
-                            if (iframe.contentWindow) {
-                                iframe.contentWindow.postMessage(
-                                    JSON.stringify({
-                                        event: 'command',
-                                        func: 'setPlaybackRate',
-                                        args: [1]
-                                    }),
-                                    'https://www.youtube.com'
-                                );
-                            }
-                        } catch (postMessageError) {
-                            console.log('Could not set playback rate for happy sound:', postMessageError);
-                        }
-                    }, 500);
-                };
-
-                iframe.onload = handleLoad;
+    // Enable audio on first user interaction
+    const enableAudioOnInteraction = async () => {
+        if (!audioEnabled) {
+            const success = await audioManager.enableAudio();
+            if (success) {
+                setAudioEnabled(true);
             }
-        } catch (error) {
-            console.log('Happy sound failed:', error);
+        }
+    };
+
+    // Function to play happy sound effect (mobile-friendly)
+    const playHappySound = async () => {
+        await enableAudioOnInteraction();
+        await audioManager.playSoundEffect('happy');
+    };
+
+    // Function to toggle background music
+    const toggleBackgroundMusic = async () => {
+        await enableAudioOnInteraction();
+        
+        if (musicPlaying) {
+            audioManager.pauseBackgroundMusic();
+            setMusicPlaying(false);
+        } else {
+            const success = await audioManager.playBackgroundMusic();
+            if (success) {
+                setMusicPlaying(true);
+            }
         }
     };
 
@@ -1101,6 +1097,7 @@ export default function Index() {
                     setMusicPlaying={setMusicPlaying}
                     musicMuted={musicMuted}
                     setMusicMuted={setMusicMuted}
+                    onMusicToggle={toggleBackgroundMusic}
                 />
 
                 <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'} relative`}>
@@ -1211,35 +1208,24 @@ export default function Index() {
                     />
                 )}
 
-                {/* Background Music Player - Hidden iframe for audio-only playback */}
-                {!musicMuted && (
-                    <iframe
-                        width="1"
-                        height="1"
-                        src={`https://www.youtube.com/embed/FeJKBFWYB0o?autoplay=${musicPlaying ? '1' : '0'}&loop=1&playlist=FeJKBFWYB0o&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&volume=30`}
-                        title="Background Music"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        className="fixed top-0 left-0 opacity-0 pointer-events-none"
-                        style={{ width: '1px', height: '1px', position: 'fixed', top: '-9999px', left: '-9999px' }}
-                    ></iframe>
+                {/* Audio enable prompt for mobile devices */}
+                {!audioEnabled && isHydrated && (
+                    <div 
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                        onClick={enableAudioOnInteraction}
+                    >
+                        <div className={`p-6 rounded-xl max-w-sm text-center ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
+                            <div className="text-4xl mb-4">🔊</div>
+                            <h3 className="text-lg font-semibold mb-2">Enable Audio</h3>
+                            <p className="text-sm opacity-75 mb-4">
+                                Tap anywhere to enable music and sound effects on this device
+                            </p>
+                            <div className="text-xs opacity-50">
+                                Required for mobile browsers
+                            </div>
+                        </div>
+                    </div>
                 )}
-
-                {/* Hidden iframe for happy sound effect */}
-                <iframe
-                    ref={(el) => {
-                        if (el) {
-                            (window as any).happySoundIframe = el;
-                        }
-                    }}
-                    width="0"
-                    height="0"
-                    src="https://www.youtube.com/embed/NSU2hJ5wT08?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=0&enablejsapi=1"
-                    title="Happy Sound Effect"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    style={{ display: 'none', position: 'absolute', left: '-9999px', top: '-9999px' }}
-                />
             </div>
         </ThemeContext.Provider>
     );

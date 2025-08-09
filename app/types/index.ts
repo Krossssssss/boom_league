@@ -135,6 +135,7 @@ export interface SidebarProps {
     setMusicPlaying: (playing: boolean) => void;
     musicMuted: boolean;
     setMusicMuted: (muted: boolean) => void;
+    onMusicToggle?: () => Promise<void>;
 }
 
 export interface LeaderboardProps {

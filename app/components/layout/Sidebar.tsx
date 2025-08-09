@@ -14,25 +14,29 @@ const Sidebar: React.FC<SidebarProps> = ({
     musicPlaying,
     setMusicPlaying,
     musicMuted,
-    setMusicMuted
+    setMusicMuted,
+    onMusicToggle
 }) => {
     const { theme, toggleTheme } = useTheme();
     const [soundBoxCollapsed, setSoundBoxCollapsed] = useState(false);
     const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
     const youtubeRefs = useRef<{ [key: string]: HTMLIFrameElement | null }>({});
     
-    const handleMusicToggle = () => {
-        if (musicMuted) {
-            // First unmute, then start playing
-            setMusicMuted(false);
-            setMusicPlaying(true);
+    const handleMusicToggle = async () => {
+        if (onMusicToggle) {
+            await onMusicToggle();
         } else {
-            // If playing, mute it; if muted/paused, start playing
-            if (musicPlaying) {
-                setMusicMuted(true);
-                setMusicPlaying(false);
-            } else {
+            // Fallback to old behavior if onMusicToggle is not provided
+            if (musicMuted) {
+                setMusicMuted(false);
                 setMusicPlaying(true);
+            } else {
+                if (musicPlaying) {
+                    setMusicMuted(true);
+                    setMusicPlaying(false);
+                } else {
+                    setMusicPlaying(true);
+                }
             }
         }
     };
