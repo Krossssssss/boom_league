@@ -449,6 +449,9 @@ video {
 .block {
   display: block;
 }
+.inline {
+  display: inline;
+}
 .flex {
   display: flex;
 }
@@ -908,6 +911,10 @@ video {
 .border-yellow-500\/30 {
   border-color: #eab3084d;
 }
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
 .bg-\[\#0a0a0a\] {
   --tw-bg-opacity: 1;
   background-color: rgb(10 10 10 / var(--tw-bg-opacity, 1));
@@ -1128,6 +1135,13 @@ video {
 }
 .bg-yellow-500\/20 {
   background-color: #eab30833;
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-500\/10 {
+  background-color: #10b9811a;
 }
 .bg-\[linear-gradient\(45deg\,_transparent_48\%\,_rgba\(0\,0\,0\,0\.01\)_49\%\,_rgba\(0\,0\,0\,0\.01\)_51\%\,_transparent_52\%\)\] {
   background-image: linear-gradient(45deg, transparent 48%, rgba(0, 0, 0, .01) 49%, rgba(0, 0, 0, .01) 51%, transparent 52%);
@@ -1720,6 +1734,14 @@ video {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
+}
+.text-emerald-300 {
+  --tw-text-opacity: 1;
+  color: rgb(110 231 183 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
 }
 .opacity-0 {
   opacity: 0;
@@ -2619,4 +2641,4 @@ video {
     display: none;
   }
 }
-/*# sourceMappingURL=/build/_assets/tailwind-Y4USMDJQ.css.map */
+/*# sourceMappingURL=/build/_assets/tailwind-54GW5CN5.css.map */

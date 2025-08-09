@@ -130,7 +130,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-IBLHUO45.css?url";
+var tailwind_default = "/build/_assets/tailwind-HCLS6D7G.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -1613,183 +1613,394 @@ var Modal = ({ children, onClose, title }) => {
 }, Modal_default = Modal;
 
 // app/components/ui/PlayerProfileModal.tsx
+import { useMemo } from "react";
 import { jsxDEV as jsxDEV8 } from "react/jsx-dev-runtime";
 var PlayerProfileModal = ({ player, onClose }) => {
   let { theme } = useTheme();
   if (!player)
     return null;
-  let stats = UTILS.calculatePlayerStats(player);
+  let { totalRounds, placementCounts } = useMemo(() => {
+    let history = Array.isArray(player.history) ? player.history : [], counts = {};
+    for (let h of history)
+      !h || typeof h.placement != "number" || (counts[h.placement] = (counts[h.placement] || 0) + 1);
+    return { totalRounds: history.length, placementCounts: counts };
+  }, [player.history]), StatWithRanking = ({ icon, label, value, ranking, className }) => /* @__PURE__ */ jsxDEV8("div", { className: `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${className || ""}`, children: [
+    /* @__PURE__ */ jsxDEV8("span", { children: icon }, void 0, !1, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 27,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV8("span", { className: "hidden sm:inline", children: [
+      value,
+      " ",
+      label
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 28,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV8("span", { className: "sm:hidden", children: value }, void 0, !1, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 29,
+      columnNumber: 13
+    }, this),
+    !!ranking && /* @__PURE__ */ jsxDEV8("span", { className: `ml-1 font-bold ${getRankingColorClass(ranking)}`, children: [
+      "#",
+      getRankingSuffix(ranking)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 31,
+      columnNumber: 17
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/PlayerProfileModal.tsx",
+    lineNumber: 26,
+    columnNumber: 9
+  }, this);
   return /* @__PURE__ */ jsxDEV8(Modal_default, { onClose, title: `${player.avatar} ${player.name} \u7684\u6863\u6848`, children: /* @__PURE__ */ jsxDEV8("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxDEV8("div", { className: "grid grid-cols-2 gap-4", children: [
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-yellow-400", children: player.championships || 0 }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 20,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F3C6} \u51A0\u519B\u6B21\u6570" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 21,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
+    /* @__PURE__ */ jsxDEV8("div", { className: `flex items-center justify-between p-4 rounded-lg border ${theme === "dark" ? "bg-emerald-500/10 border-emerald-500/20" : "bg-emerald-50 border-emerald-200"}`, children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: `text-sm ${theme === "dark" ? "text-emerald-300" : "text-emerald-700"}`, children: "\u2B50 \u5F53\u524D\u5206\u6570" }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 19,
+        lineNumber: 41,
         columnNumber: 21
       }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-2xl font-bold ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: player.runnerUp || 0 }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 24,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F948} \u4E9A\u519B\u6B21\u6570" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 25,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
+      /* @__PURE__ */ jsxDEV8("div", { className: "text-2xl font-bold text-emerald-400", children: player.score || 0 }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 23,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-orange-400", children: player.thirdPlace || 0 }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 28,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F949} \u5B63\u519B\u6B21\u6570" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 29,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 27,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-emerald-400", children: player.score }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 32,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 33,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 31,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-green-400", children: stats.totalVP }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 36,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F48E} \u603BVP\u83B7\u5F97" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 37,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 35,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-blue-400", children: stats.totalGames }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 40,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u603B\u6E38\u620F\u6570" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 41,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 39,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ jsxDEV8("p", { className: "text-2xl font-bold text-purple-400", children: stats.averagePlacement }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 44,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ jsxDEV8("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5E73\u5747\u6392\u540D" }, void 0, !1, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 45,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, !0, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 43,
+        lineNumber: 42,
         columnNumber: 21
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 18,
+      lineNumber: 40,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u8054\u8D5B\u7EDF\u8BA1" }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 47,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F3C6}",
+            label: "\u8054\u8D5B\u51A0\u519B",
+            value: player.championships || 0,
+            ranking: player.rankings?.championships,
+            className: "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 49,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F948}",
+            label: "\u8054\u8D5B\u4E9A\u519B",
+            value: player.runner_up || 0,
+            ranking: player.rankings?.runner_up,
+            className: `bg-gray-400/10 border-gray-400/20 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 56,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F949}",
+            label: "\u8054\u8D5B\u5B63\u519B",
+            value: player.third_place || 0,
+            ranking: player.rankings?.third_place,
+            className: "bg-orange-500/10 border-orange-500/20 text-orange-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 63,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F3AE}",
+            label: "\u603B\u8054\u8D5B\u6570",
+            value: player.total_games || 0,
+            ranking: player.rankings?.total_games,
+            className: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 70,
+            columnNumber: 25
+          },
+          this
+        )
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 48,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 46,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u5355\u8F6E\u7EDF\u8BA1" }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 82,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F3AF}",
+            label: "\u5355\u8F6E\u51A0\u519B",
+            value: player.single_round_firsts || 0,
+            ranking: player.rankings?.single_round_firsts,
+            className: "bg-blue-500/10 border-blue-500/20 text-blue-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 84,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F3B2}",
+            label: "\u5355\u8F6E\u4E9A\u519B",
+            value: player.single_round_seconds || 0,
+            ranking: player.rankings?.single_round_seconds,
+            className: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 91,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u26A1",
+            label: "\u5355\u8F6E\u5B63\u519B",
+            value: player.single_round_thirds || 0,
+            ranking: player.rankings?.single_round_thirds,
+            className: "bg-purple-500/10 border-purple-500/20 text-purple-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 98,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8("div", { className: `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: [
+          /* @__PURE__ */ jsxDEV8("span", { children: "\u{1F504}" }, void 0, !1, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 106,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV8("span", { className: "hidden sm:inline", children: [
+            "\u603B\u8F6E\u6B21: ",
+            totalRounds
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 107,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV8("span", { className: "sm:hidden", children: [
+            totalRounds,
+            "\u8F6E"
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 108,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 105,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 83,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 81,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ jsxDEV8("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u7EFC\u5408\u8868\u73B0" }, void 0, !1, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 115,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV8("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F48E}",
+            label: "\u603BVP",
+            value: player.total_vp || 0,
+            ranking: player.rankings?.total_vp,
+            className: "bg-green-500/10 border-green-500/20 text-green-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 117,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8(
+          StatWithRanking,
+          {
+            icon: "\u{1F4CA}",
+            label: "\u5E73\u5747\u6392\u540D",
+            value: Number((player.average_placement || 0).toFixed(1)),
+            ranking: player.rankings?.average_placement,
+            className: "bg-teal-500/10 border-teal-500/20 text-teal-400"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 124,
+            columnNumber: 25
+          },
+          this
+        ),
+        /* @__PURE__ */ jsxDEV8("div", { className: "inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border bg-rose-500/10 border-rose-500/20 text-rose-400", children: [
+          /* @__PURE__ */ jsxDEV8("span", { children: "\u{1F3AA}" }, void 0, !1, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 132,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV8("span", { className: "hidden sm:inline", children: [
+            (player.win_rate || 0).toFixed(0),
+            "% \u80DC\u7387"
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 133,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ jsxDEV8("span", { className: "sm:hidden", children: [
+            (player.win_rate || 0).toFixed(0),
+            "%"
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 134,
+            columnNumber: 29
+          }, this),
+          !!player.rankings?.win_rate && /* @__PURE__ */ jsxDEV8("span", { className: `ml-1 font-bold ${getRankingColorClass(player.rankings.win_rate)}`, children: [
+            "#",
+            getRankingSuffix(player.rankings.win_rate)
+          ] }, void 0, !0, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 136,
+            columnNumber: 33
+          }, this)
+        ] }, void 0, !0, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 131,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 116,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 114,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center mb-2", children: [
         /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold`, children: "\u80DC\u7387" }, void 0, !1, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 52,
+          lineNumber: 147,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV8("span", { className: "text-orange-400 font-bold", children: [
-          stats.winRate,
+          (player.win_rate || 0).toFixed(0),
           "%"
         ] }, void 0, !0, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 53,
+          lineNumber: 148,
           columnNumber: 25
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 51,
+        lineNumber: 146,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ jsxDEV8("div", { className: `w-full ${theme === "dark" ? "bg-gray-600" : "bg-gray-300"} rounded-full h-2`, children: /* @__PURE__ */ jsxDEV8(
         "div",
         {
           className: "bg-orange-400 h-2 rounded-full transition-all duration-300",
-          style: { width: `${stats.winRate}%` }
+          style: { width: `${Math.max(0, Math.min(100, Number((player.win_rate || 0).toFixed(0))))}%` }
         },
         void 0,
         !1,
         {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 56,
+          lineNumber: 151,
           columnNumber: 25
         },
         this
       ) }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 55,
+        lineNumber: 150,
         columnNumber: 21
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 50,
+      lineNumber: 145,
       columnNumber: 17
     }, this),
-    stats.totalGames > 0 && /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
+    totalRounds > 0 && /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ jsxDEV8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6392\u540D\u5206\u5E03" }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 66,
+        lineNumber: 161,
         columnNumber: 25
       }, this),
       /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2", children: [1, 2, 3, 4, 5, 6].map((place) => {
-        let count = stats.placements[place] || 0, percentage = stats.totalGames > 0 ? (count / stats.totalGames * 100).toFixed(1) : 0;
+        let count = placementCounts[place] || 0, percentage = totalRounds > 0 ? (count / totalRounds * 100).toFixed(1) : 0;
         return count > 0 ? /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center", children: [
           /* @__PURE__ */ jsxDEV8("span", { className: `text-sm ${place === 1 ? "text-yellow-400" : place === 2 ? "text-gray-300" : place === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
             "\u7B2C",
@@ -1797,7 +2008,7 @@ var PlayerProfileModal = ({ player, onClose }) => {
             "\u540D"
           ] }, void 0, !0, {
             fileName: "app/components/ui/PlayerProfileModal.tsx",
-            lineNumber: 73,
+            lineNumber: 168,
             columnNumber: 41
           }, this),
           /* @__PURE__ */ jsxDEV8("div", { className: "flex items-center gap-2", children: [
@@ -1806,7 +2017,7 @@ var PlayerProfileModal = ({ player, onClose }) => {
               "\u6B21"
             ] }, void 0, !0, {
               fileName: "app/components/ui/PlayerProfileModal.tsx",
-              lineNumber: 77,
+              lineNumber: 172,
               columnNumber: 45
             }, this),
             /* @__PURE__ */ jsxDEV8("span", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-500"} text-xs`, children: [
@@ -1815,33 +2026,33 @@ var PlayerProfileModal = ({ player, onClose }) => {
               "%)"
             ] }, void 0, !0, {
               fileName: "app/components/ui/PlayerProfileModal.tsx",
-              lineNumber: 78,
+              lineNumber: 173,
               columnNumber: 45
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/ui/PlayerProfileModal.tsx",
-            lineNumber: 76,
+            lineNumber: 171,
             columnNumber: 41
           }, this)
         ] }, place, !0, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 72,
+          lineNumber: 167,
           columnNumber: 37
         }, this) : null;
       }) }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 67,
+        lineNumber: 162,
         columnNumber: 25
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 65,
+      lineNumber: 160,
       columnNumber: 21
     }, this),
     player.history && player.history.length > 0 && /* @__PURE__ */ jsxDEV8("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ jsxDEV8("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6700\u8FD1\u6BD4\u8D5B" }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 90,
+        lineNumber: 185,
         columnNumber: 25
       }, this),
       /* @__PURE__ */ jsxDEV8("div", { className: "space-y-2 max-h-32 overflow-y-auto", children: player.history.slice(-5).reverse().map((game, index) => /* @__PURE__ */ jsxDEV8("div", { className: "flex justify-between items-center text-sm", children: [
@@ -1851,7 +2062,7 @@ var PlayerProfileModal = ({ player, onClose }) => {
           "\u8F6E"
         ] }, void 0, !0, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 94,
+          lineNumber: 189,
           columnNumber: 37
         }, this),
         /* @__PURE__ */ jsxDEV8("span", { className: `font-semibold ${game.placement === 1 ? "text-yellow-400" : game.placement === 2 ? "text-gray-300" : game.placement === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
@@ -1860,30 +2071,30 @@ var PlayerProfileModal = ({ player, onClose }) => {
           "\u540D"
         ] }, void 0, !0, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 95,
+          lineNumber: 190,
           columnNumber: 37
         }, this)
       ] }, index, !0, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 93,
+        lineNumber: 188,
         columnNumber: 33
       }, this)) }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 91,
+        lineNumber: 186,
         columnNumber: 25
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 89,
+      lineNumber: 184,
       columnNumber: 21
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/ui/PlayerProfileModal.tsx",
-    lineNumber: 16,
+    lineNumber: 38,
     columnNumber: 13
   }, this) }, void 0, !1, {
     fileName: "app/components/ui/PlayerProfileModal.tsx",
-    lineNumber: 15,
+    lineNumber: 37,
     columnNumber: 9
   }, this);
 }, PlayerProfileModal_default = PlayerProfileModal;
@@ -6384,7 +6595,7 @@ function Index() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-NRVAJQ34.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-VUD4ATTL.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-SJQUH5HM.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-2NGR4QMF.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "3492b03c", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754726309467 }, url: "/build/manifest-3492B03C.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-N66DQM74.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-FWFLRLK7.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-35UWXC5K.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-S3WE2NQA.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "e0afee66", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754726459726 }, url: "/build/manifest-E0AFEE66.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {

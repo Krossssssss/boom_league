@@ -12,7 +12,7 @@ import {
 } from "/build/_shared/chunk-2Z2JGDFU.js";
 import {
   createHotContext
-} from "/build/_shared/chunk-E7FOCUHM.js";
+} from "/build/_shared/chunk-XVHGACUF.js";
 import "/build/_shared/chunk-JR22VO6P.js";
 import {
   __commonJS,
@@ -1258,7 +1258,7 @@ var require_cjs = __commonJS({
 });
 
 // app/routes/_index.tsx
-var import_react8 = __toESM(require_react(), 1);
+var import_react9 = __toESM(require_react(), 1);
 
 // node_modules/@supabase/functions-js/dist/module/helper.js
 var resolveFetch = (customFetch) => {
@@ -9965,6 +9965,7 @@ window.$RefreshReg$ = prevRefreshReg;
 window.$RefreshSig$ = prevRefreshSig;
 
 // app/components/ui/PlayerProfileModal.tsx
+var import_react5 = __toESM(require_react(), 1);
 var import_jsx_dev_runtime6 = __toESM(require_jsx_dev_runtime(), 1);
 if (!window.$RefreshReg$ || !window.$RefreshSig$ || !window.$RefreshRuntime$) {
   console.warn("remix:hmr: React Fast Refresh only works when the Remix compiler is running in development mode.");
@@ -9984,7 +9985,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\PlayerProfileModal.tsx"
   );
-  import.meta.hot.lastModified = "1754712763506.6548";
+  import.meta.hot.lastModified = "1754726428580.7063";
 }
 var PlayerProfileModal = ({
   player,
@@ -9996,171 +9997,281 @@ var PlayerProfileModal = ({
   } = useTheme();
   if (!player)
     return null;
-  const stats = UTILS.calculatePlayerStats(player);
+  const {
+    totalRounds,
+    placementCounts
+  } = (0, import_react5.useMemo)(() => {
+    const history = Array.isArray(player.history) ? player.history : [];
+    const counts = {};
+    for (const h of history) {
+      if (!h || typeof h.placement !== "number")
+        continue;
+      counts[h.placement] = (counts[h.placement] || 0) + 1;
+    }
+    return {
+      totalRounds: history.length,
+      placementCounts: counts
+    };
+  }, [player.history]);
+  const StatWithRanking = ({
+    icon,
+    label,
+    value,
+    ranking,
+    className
+  }) => /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${className || ""}`, children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { children: icon }, void 0, false, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 61,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "hidden sm:inline", children: [
+      value,
+      " ",
+      label
+    ] }, void 0, true, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 62,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "sm:hidden", children: value }, void 0, false, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 63,
+      columnNumber: 13
+    }, this),
+    !!ranking && /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `ml-1 font-bold ${getRankingColorClass(ranking)}`, children: [
+      "#",
+      getRankingSuffix(ranking)
+    ] }, void 0, true, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 64,
+      columnNumber: 27
+    }, this)
+  ] }, void 0, true, {
+    fileName: "app/components/ui/PlayerProfileModal.tsx",
+    lineNumber: 60,
+    columnNumber: 9
+  }, this);
   return /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(Modal_default, { onClose, title: `${player.avatar} ${player.name} \u7684\u6863\u6848`, children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "grid grid-cols-2 gap-4", children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-yellow-400", children: player.championships || 0 }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 41,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F3C6} \u51A0\u519B\u6B21\u6570" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 42,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `flex items-center justify-between p-4 rounded-lg border ${theme === "dark" ? "bg-emerald-500/10 border-emerald-500/20" : "bg-emerald-50 border-emerald-200"}`, children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `text-sm ${theme === "dark" ? "text-emerald-300" : "text-emerald-700"}`, children: "\u2B50 \u5F53\u524D\u5206\u6570" }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 40,
+        lineNumber: 70,
         columnNumber: 21
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-2xl font-bold ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: player.runnerUp || 0 }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 45,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F948} \u4E9A\u519B\u6B21\u6570" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 46,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "text-2xl font-bold text-emerald-400", children: player.score || 0 }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 44,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-orange-400", children: player.thirdPlace || 0 }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 49,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F949} \u5B63\u519B\u6B21\u6570" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 50,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 48,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-emerald-400", children: player.score }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 53,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 54,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 52,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-green-400", children: stats.totalVP }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 57,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u{1F48E} \u603BVP\u83B7\u5F97" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 58,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 56,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-blue-400", children: stats.totalGames }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 61,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u603B\u6E38\u620F\u6570" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 62,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 60,
-        columnNumber: 21
-      }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border p-4 rounded-lg text-center`, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: "text-2xl font-bold text-purple-400", children: stats.averagePlacement }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 65,
-          columnNumber: 25
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("p", { className: `text-sm ${theme === "dark" ? "text-white/70" : "text-gray-600"}`, children: "\u5E73\u5747\u6392\u540D" }, void 0, false, {
-          fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 66,
-          columnNumber: 25
-        }, this)
-      ] }, void 0, true, {
-        fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 64,
+        lineNumber: 71,
         columnNumber: 21
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 39,
+      lineNumber: 69,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u8054\u8D5B\u7EDF\u8BA1" }, void 0, false, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 76,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F3C6}", label: "\u8054\u8D5B\u51A0\u519B", value: player.championships || 0, ranking: player.rankings?.championships, className: "bg-yellow-500/10 border-yellow-500/20 text-yellow-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 78,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F948}", label: "\u8054\u8D5B\u4E9A\u519B", value: player.runner_up || 0, ranking: player.rankings?.runner_up, className: `bg-gray-400/10 border-gray-400/20 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}` }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 79,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F949}", label: "\u8054\u8D5B\u5B63\u519B", value: player.third_place || 0, ranking: player.rankings?.third_place, className: "bg-orange-500/10 border-orange-500/20 text-orange-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 80,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F3AE}", label: "\u603B\u8054\u8D5B\u6570", value: player.total_games || 0, ranking: player.rankings?.total_games, className: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 81,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, true, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 77,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, true, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 75,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u5355\u8F6E\u7EDF\u8BA1" }, void 0, false, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 87,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F3AF}", label: "\u5355\u8F6E\u51A0\u519B", value: player.single_round_firsts || 0, ranking: player.rankings?.single_round_firsts, className: "bg-blue-500/10 border-blue-500/20 text-blue-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 89,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F3B2}", label: "\u5355\u8F6E\u4E9A\u519B", value: player.single_round_seconds || 0, ranking: player.rankings?.single_round_seconds, className: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 90,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u26A1", label: "\u5355\u8F6E\u5B63\u519B", value: player.single_round_thirds || 0, ranking: player.rankings?.single_round_thirds, className: "bg-purple-500/10 border-purple-500/20 text-purple-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 91,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { children: "\u{1F504}" }, void 0, false, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 93,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "hidden sm:inline", children: [
+            "\u603B\u8F6E\u6B21: ",
+            totalRounds
+          ] }, void 0, true, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 94,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "sm:hidden", children: [
+            totalRounds,
+            "\u8F6E"
+          ] }, void 0, true, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 95,
+            columnNumber: 29
+          }, this)
+        ] }, void 0, true, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 92,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, true, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 88,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, true, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 86,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-2", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/80" : "text-gray-700"}`, children: "\u7EFC\u5408\u8868\u73B0" }, void 0, false, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 102,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex flex-wrap gap-1.5", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F48E}", label: "\u603BVP", value: player.total_vp || 0, ranking: player.rankings?.total_vp, className: "bg-green-500/10 border-green-500/20 text-green-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 104,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)(StatWithRanking, { icon: "\u{1F4CA}", label: "\u5E73\u5747\u6392\u540D", value: Number((player.average_placement || 0).toFixed(1)), ranking: player.rankings?.average_placement, className: "bg-teal-500/10 border-teal-500/20 text-teal-400" }, void 0, false, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 105,
+          columnNumber: 25
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border bg-rose-500/10 border-rose-500/20 text-rose-400`, children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { children: "\u{1F3AA}" }, void 0, false, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 107,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "hidden sm:inline", children: [
+            (player.win_rate || 0).toFixed(0),
+            "% \u80DC\u7387"
+          ] }, void 0, true, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 108,
+            columnNumber: 29
+          }, this),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "sm:hidden", children: [
+            (player.win_rate || 0).toFixed(0),
+            "%"
+          ] }, void 0, true, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 109,
+            columnNumber: 29
+          }, this),
+          !!player.rankings?.win_rate && /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `ml-1 font-bold ${getRankingColorClass(player.rankings.win_rate)}`, children: [
+            "#",
+            getRankingSuffix(player.rankings.win_rate)
+          ] }, void 0, true, {
+            fileName: "app/components/ui/PlayerProfileModal.tsx",
+            lineNumber: 110,
+            columnNumber: 61
+          }, this)
+        ] }, void 0, true, {
+          fileName: "app/components/ui/PlayerProfileModal.tsx",
+          lineNumber: 106,
+          columnNumber: 25
+        }, this)
+      ] }, void 0, true, {
+        fileName: "app/components/ui/PlayerProfileModal.tsx",
+        lineNumber: 103,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, true, {
+      fileName: "app/components/ui/PlayerProfileModal.tsx",
+      lineNumber: 101,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex justify-between items-center mb-2", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold`, children: "\u80DC\u7387" }, void 0, false, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 73,
+          lineNumber: 120,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: "text-orange-400 font-bold", children: [
-          stats.winRate,
+          (player.win_rate || 0).toFixed(0),
           "%"
         ] }, void 0, true, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 74,
+          lineNumber: 121,
           columnNumber: 25
         }, this)
       ] }, void 0, true, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 72,
+        lineNumber: 119,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `w-full ${theme === "dark" ? "bg-gray-600" : "bg-gray-300"} rounded-full h-2`, children: /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "bg-orange-400 h-2 rounded-full transition-all duration-300", style: {
-        width: `${stats.winRate}%`
+        width: `${Math.max(0, Math.min(100, Number((player.win_rate || 0).toFixed(0))))}%`
       } }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 77,
+        lineNumber: 124,
         columnNumber: 25
       }, this) }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 76,
+        lineNumber: 123,
         columnNumber: 21
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 71,
+      lineNumber: 118,
       columnNumber: 17
     }, this),
-    stats.totalGames > 0 && /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
+    totalRounds > 0 && /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6392\u540D\u5206\u5E03" }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 85,
+        lineNumber: 132,
         columnNumber: 25
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-2", children: [1, 2, 3, 4, 5, 6].map((place) => {
-        const count = stats.placements[place] || 0;
-        const percentage = stats.totalGames > 0 ? (count / stats.totalGames * 100).toFixed(1) : 0;
+        const count = placementCounts[place] || 0;
+        const percentage = totalRounds > 0 ? (count / totalRounds * 100).toFixed(1) : 0;
         return count > 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex justify-between items-center", children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `text-sm ${place === 1 ? "text-yellow-400" : place === 2 ? "text-gray-300" : place === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
             "\u7B2C",
@@ -10168,7 +10279,7 @@ var PlayerProfileModal = ({
             "\u540D"
           ] }, void 0, true, {
             fileName: "app/components/ui/PlayerProfileModal.tsx",
-            lineNumber: 91,
+            lineNumber: 138,
             columnNumber: 41
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex items-center gap-2", children: [
@@ -10177,7 +10288,7 @@ var PlayerProfileModal = ({
               "\u6B21"
             ] }, void 0, true, {
               fileName: "app/components/ui/PlayerProfileModal.tsx",
-              lineNumber: 95,
+              lineNumber: 142,
               columnNumber: 45
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-500"} text-xs`, children: [
@@ -10186,33 +10297,33 @@ var PlayerProfileModal = ({
               "%)"
             ] }, void 0, true, {
               fileName: "app/components/ui/PlayerProfileModal.tsx",
-              lineNumber: 96,
+              lineNumber: 143,
               columnNumber: 45
             }, this)
           ] }, void 0, true, {
             fileName: "app/components/ui/PlayerProfileModal.tsx",
-            lineNumber: 94,
+            lineNumber: 141,
             columnNumber: 41
           }, this)
         ] }, place, true, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 90,
+          lineNumber: 137,
           columnNumber: 32
         }, this) : null;
       }) }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 86,
+        lineNumber: 133,
         columnNumber: 25
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 84,
-      columnNumber: 42
+      lineNumber: 131,
+      columnNumber: 37
     }, this),
     player.history && player.history.length > 0 && /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: `${theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"} p-4 rounded-lg`, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("h4", { className: `${theme === "dark" ? "text-white" : "text-gray-900"} font-semibold mb-3`, children: "\u6700\u8FD1\u6BD4\u8D5B" }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 105,
+        lineNumber: 152,
         columnNumber: 25
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "space-y-2 max-h-32 overflow-y-auto", children: player.history.slice(-5).reverse().map((game, index2) => /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("div", { className: "flex justify-between items-center text-sm", children: [
@@ -10222,7 +10333,7 @@ var PlayerProfileModal = ({
           "\u8F6E"
         ] }, void 0, true, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 108,
+          lineNumber: 155,
           columnNumber: 37
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime6.jsxDEV)("span", { className: `font-semibold ${game.placement === 1 ? "text-yellow-400" : game.placement === 2 ? "text-gray-300" : game.placement === 3 ? "text-orange-400" : "text-gray-500"}`, children: [
@@ -10231,34 +10342,34 @@ var PlayerProfileModal = ({
           "\u540D"
         ] }, void 0, true, {
           fileName: "app/components/ui/PlayerProfileModal.tsx",
-          lineNumber: 109,
+          lineNumber: 156,
           columnNumber: 37
         }, this)
       ] }, index2, true, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 107,
+        lineNumber: 154,
         columnNumber: 86
       }, this)) }, void 0, false, {
         fileName: "app/components/ui/PlayerProfileModal.tsx",
-        lineNumber: 106,
+        lineNumber: 153,
         columnNumber: 25
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/ui/PlayerProfileModal.tsx",
-      lineNumber: 104,
+      lineNumber: 151,
       columnNumber: 65
     }, this)
   ] }, void 0, true, {
     fileName: "app/components/ui/PlayerProfileModal.tsx",
-    lineNumber: 37,
+    lineNumber: 67,
     columnNumber: 13
   }, this) }, void 0, false, {
     fileName: "app/components/ui/PlayerProfileModal.tsx",
-    lineNumber: 36,
+    lineNumber: 66,
     columnNumber: 10
   }, this);
 };
-_s6(PlayerProfileModal, "JkSxfi8+JQlqgIgDOc3wQN+nVIw=", false, function() {
+_s6(PlayerProfileModal, "j9aHtrUgO1slyvQl2KDLQ6HpMZo=", false, function() {
   return [useTheme];
 });
 _c6 = PlayerProfileModal;
@@ -10269,7 +10380,7 @@ window.$RefreshReg$ = prevRefreshReg;
 window.$RefreshSig$ = prevRefreshSig;
 
 // app/components/ui/ResultsModal.tsx
-var import_react5 = __toESM(require_react(), 1);
+var import_react6 = __toESM(require_react(), 1);
 var import_jsx_dev_runtime7 = __toESM(require_jsx_dev_runtime(), 1);
 if (!window.$RefreshReg$ || !window.$RefreshSig$ || !window.$RefreshRuntime$) {
   console.warn("remix:hmr: React Fast Refresh only works when the Remix compiler is running in development mode.");
@@ -10301,9 +10412,9 @@ var ResultsModal = ({
   const {
     theme
   } = useTheme();
-  const [rankedPlayers, setRankedPlayers] = (0, import_react5.useState)(players.map((p) => p.id));
-  const [draggedIndex, setDraggedIndex] = (0, import_react5.useState)(null);
-  const [dragOverIndex, setDragOverIndex] = (0, import_react5.useState)(null);
+  const [rankedPlayers, setRankedPlayers] = (0, import_react6.useState)(players.map((p) => p.id));
+  const [draggedIndex, setDraggedIndex] = (0, import_react6.useState)(null);
+  const [dragOverIndex, setDragOverIndex] = (0, import_react6.useState)(null);
   const handleDragStart = (e, index2) => {
     e.dataTransfer.setData("draggedIndex", index2.toString());
     e.dataTransfer.effectAllowed = "move";
@@ -11559,7 +11670,7 @@ window.$RefreshReg$ = prevRefreshReg;
 window.$RefreshSig$ = prevRefreshSig;
 
 // app/components/pages/LeagueManagementPage.tsx
-var import_react6 = __toESM(require_react(), 1);
+var import_react7 = __toESM(require_react(), 1);
 var import_jsx_dev_runtime12 = __toESM(require_jsx_dev_runtime(), 1);
 if (!window.$RefreshReg$ || !window.$RefreshSig$ || !window.$RefreshRuntime$) {
   console.warn("remix:hmr: React Fast Refresh only works when the Remix compiler is running in development mode.");
@@ -11596,8 +11707,8 @@ var LeagueManagementPage = ({
   const {
     theme
   } = useTheme();
-  const [selectedSpecialRules, setSelectedSpecialRules] = (0, import_react6.useState)(GAME_RULES.SPECIAL_RULES.slice());
-  const [viewMode, setViewMode] = (0, import_react6.useState)("ongoing");
+  const [selectedSpecialRules, setSelectedSpecialRules] = (0, import_react7.useState)(GAME_RULES.SPECIAL_RULES.slice());
+  const [viewMode, setViewMode] = (0, import_react7.useState)("ongoing");
   const toggleSpecialRule = (rule) => {
     setSelectedSpecialRules((prev) => prev.includes(rule) ? prev.filter((r) => r !== rule) : [...prev, rule]);
   };
@@ -12157,7 +12268,7 @@ window.$RefreshReg$ = prevRefreshReg;
 window.$RefreshSig$ = prevRefreshSig;
 
 // app/components/pages/PlayerRankingsPage.tsx
-var import_react7 = __toESM(require_react(), 1);
+var import_react8 = __toESM(require_react(), 1);
 var import_jsx_dev_runtime13 = __toESM(require_jsx_dev_runtime(), 1);
 if (!window.$RefreshReg$ || !window.$RefreshSig$ || !window.$RefreshRuntime$) {
   console.warn("remix:hmr: React Fast Refresh only works when the Remix compiler is running in development mode.");
@@ -12187,7 +12298,7 @@ var PlayerRankingsPage = ({
   const {
     theme
   } = useTheme();
-  const [selectedCategory, setSelectedCategory] = (0, import_react7.useState)("championships");
+  const [selectedCategory, setSelectedCategory] = (0, import_react8.useState)("championships");
   const categories = [{
     key: "championships",
     name: "\u8054\u8D5B\u51A0\u519B",
@@ -13427,33 +13538,33 @@ if (import.meta) {
 var supabase;
 function Index() {
   _s16();
-  const [leagueState, setLeagueState] = (0, import_react8.useState)(null);
-  const [players, setPlayers] = (0, import_react8.useState)([]);
-  const [session, setSession] = (0, import_react8.useState)(null);
-  const [isAuthReady, setIsAuthReady] = (0, import_react8.useState)(false);
-  const [showPlayerModal, setShowPlayerModal] = (0, import_react8.useState)(false);
-  const [showResultsModal, setShowResultsModal] = (0, import_react8.useState)(false);
-  const [newPlayerName, setNewPlayerName] = (0, import_react8.useState)("");
-  const [selectedAvatar, setSelectedAvatar] = (0, import_react8.useState)(GAME_RULES.AVATARS[0]);
-  const [showPlayerProfileModal, setShowPlayerProfileModal] = (0, import_react8.useState)(false);
-  const [selectedPlayerForProfile, setSelectedPlayerForProfile] = (0, import_react8.useState)(null);
-  const [winner, setWinner] = (0, import_react8.useState)(null);
-  const [showCardDrawReminder, setShowCardDrawReminder] = (0, import_react8.useState)(false);
-  const [cardDrawRound, setCardDrawRound] = (0, import_react8.useState)(1);
-  const [appId, setAppId] = (0, import_react8.useState)("default");
-  const [currentPage, setCurrentPage] = (0, import_react8.useState)("home");
-  const [sidebarOpen, setSidebarOpen] = (0, import_react8.useState)(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = (0, import_react8.useState)(false);
-  const [musicPlaying, setMusicPlaying] = (0, import_react8.useState)(false);
-  const [musicMuted, setMusicMuted] = (0, import_react8.useState)(true);
-  const [leagueHistory, setLeagueHistory] = (0, import_react8.useState)([]);
-  const [currentLeagueName, setCurrentLeagueName] = (0, import_react8.useState)("");
-  const [nextSeasonNumber, setNextSeasonNumber] = (0, import_react8.useState)(1);
+  const [leagueState, setLeagueState] = (0, import_react9.useState)(null);
+  const [players, setPlayers] = (0, import_react9.useState)([]);
+  const [session, setSession] = (0, import_react9.useState)(null);
+  const [isAuthReady, setIsAuthReady] = (0, import_react9.useState)(false);
+  const [showPlayerModal, setShowPlayerModal] = (0, import_react9.useState)(false);
+  const [showResultsModal, setShowResultsModal] = (0, import_react9.useState)(false);
+  const [newPlayerName, setNewPlayerName] = (0, import_react9.useState)("");
+  const [selectedAvatar, setSelectedAvatar] = (0, import_react9.useState)(GAME_RULES.AVATARS[0]);
+  const [showPlayerProfileModal, setShowPlayerProfileModal] = (0, import_react9.useState)(false);
+  const [selectedPlayerForProfile, setSelectedPlayerForProfile] = (0, import_react9.useState)(null);
+  const [winner, setWinner] = (0, import_react9.useState)(null);
+  const [showCardDrawReminder, setShowCardDrawReminder] = (0, import_react9.useState)(false);
+  const [cardDrawRound, setCardDrawRound] = (0, import_react9.useState)(1);
+  const [appId, setAppId] = (0, import_react9.useState)("default");
+  const [currentPage, setCurrentPage] = (0, import_react9.useState)("home");
+  const [sidebarOpen, setSidebarOpen] = (0, import_react9.useState)(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = (0, import_react9.useState)(false);
+  const [musicPlaying, setMusicPlaying] = (0, import_react9.useState)(false);
+  const [musicMuted, setMusicMuted] = (0, import_react9.useState)(true);
+  const [leagueHistory, setLeagueHistory] = (0, import_react9.useState)([]);
+  const [currentLeagueName, setCurrentLeagueName] = (0, import_react9.useState)("");
+  const [nextSeasonNumber, setNextSeasonNumber] = (0, import_react9.useState)(1);
   const updatePlayersWithRankings = (newPlayers) => {
     const playersWithRankings = calculatePlayerRankings(newPlayers);
     setPlayers(playersWithRankings);
   };
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (typeof window !== "undefined") {
       const savedCollapsed = localStorage.getItem("sidebarCollapsed");
       if (savedCollapsed !== null) {
@@ -13461,12 +13572,12 @@ function Index() {
       }
     }
   }, []);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("sidebarCollapsed", JSON.stringify(sidebarCollapsed));
     }
   }, [sidebarCollapsed]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (typeof window !== "undefined") {
       const savedMuted = localStorage.getItem("musicMuted");
       if (savedMuted !== null) {
@@ -13474,13 +13585,13 @@ function Index() {
       }
     }
   }, []);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("musicMuted", JSON.stringify(musicMuted));
     }
   }, [musicMuted]);
-  const [theme, setTheme] = (0, import_react8.useState)("dark");
-  (0, import_react8.useEffect)(() => {
+  const [theme, setTheme] = (0, import_react9.useState)("dark");
+  (0, import_react9.useEffect)(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const canvasAppId = urlParams.get("app_id") || "default";
@@ -13537,7 +13648,7 @@ function Index() {
       console.error("Error in loadLeagueHistory:", error);
     }
   };
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (!isAuthReady || !supabase)
       return;
     const fetchInitialData = async () => {
@@ -15158,4 +15269,4 @@ lucide-react/dist/esm/lucide-react.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=/build/routes/_index-2NGR4QMF.js.map
+//# sourceMappingURL=/build/routes/_index-VSKDMHJA.js.map

@@ -1018,6 +1018,10 @@ video {
 .border-emerald-500\/20 {
   border-color: #10b98133;
 }
+.border-emerald-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
+}
 .bg-\[\#0a0a0a\] {
   --tw-bg-opacity: 1;
   background-color: rgb(10 10 10 / var(--tw-bg-opacity, 1));
@@ -1265,6 +1269,13 @@ video {
 }
 .bg-teal-500\/10 {
   background-color: #14b8a61a;
+}
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-500\/10 {
+  background-color: #10b9811a;
 }
 .bg-\[linear-gradient\(45deg\,_transparent_48\%\,_rgba\(0\,0\,0\,0\.01\)_49\%\,_rgba\(0\,0\,0\,0\.01\)_51\%\,_transparent_52\%\)\] {
   background-image: linear-gradient(45deg, transparent 48%, rgba(0, 0, 0, .01) 49%, rgba(0, 0, 0, .01) 51%, transparent 52%);
@@ -2027,6 +2038,14 @@ video {
 .text-emerald-600 {
   --tw-text-opacity: 1;
   color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-emerald-300 {
+  --tw-text-opacity: 1;
+  color: rgb(110 231 183 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
 }
 .opacity-0 {
   opacity: 0;
@@ -3345,4 +3364,4 @@ video {
     --tw-gradient-to: transparent var(--tw-gradient-to-position);
   }
 }
-/*# sourceMappingURL=/build/_assets/tailwind-3EX4XKBQ.css.map */
+/*# sourceMappingURL=/build/_assets/tailwind-P2JR6YU4.css.map */
