@@ -81,31 +81,39 @@ export const UTILS = {
             const player = updatedPlayers.find(p => p.id === result.playerId);
             if (!player) return;
             
-            // Increment total rounds played
-            player.totalRounds = (player.totalRounds || 0) + 1;
+            // Calculate total rounds from history length (including current round)
+            const totalRounds = (player.history || []).length;
             
             // Update round-level championship/runner-up/third place counts
             if (result.placement === 1) {
-                player.roundChampionships = (player.roundChampionships || 0) + 1;
+                player.single_round_firsts = (player.single_round_firsts || 0) + 1;
             } else if (result.placement === 2) {
-                player.roundRunnerUp = (player.roundRunnerUp || 0) + 1;
+                player.single_round_seconds = (player.single_round_seconds || 0) + 1;
             } else if (result.placement === 3) {
-                player.roundThirdPlace = (player.roundThirdPlace || 0) + 1;
+                player.single_round_thirds = (player.single_round_thirds || 0) + 1;
             }
             
-            // Calculate round average placement
-            const currentAvg = player.roundAveragePlacement || 0;
-            const totalRounds = player.totalRounds;
-            const totalPlacementSum = currentAvg * (totalRounds - 1) + result.placement;
-            player.roundAveragePlacement = parseFloat((totalPlacementSum / totalRounds).toFixed(2));
+            // Calculate round average placement from history
+            if (player.history && player.history.length > 0) {
+                const totalPlacementSum = player.history.reduce((sum, h) => sum + h.placement, 0);
+                player.average_placement = parseFloat((totalPlacementSum / player.history.length).toFixed(2));
+            } else {
+                player.average_placement = result.placement;
+            }
             
             // Calculate round win rate (top 3 finishes count as wins)
-            const roundWins = (player.roundChampionships || 0) + (player.roundRunnerUp || 0) + (player.roundThirdPlace || 0);
-            player.roundWinRate = parseFloat((roundWins / totalRounds * 100).toFixed(1));
+            const roundWins = (player.single_round_firsts || 0) + (player.single_round_seconds || 0) + (player.single_round_thirds || 0);
+            player.win_rate = totalRounds > 0 ? parseFloat((roundWins / totalRounds * 100).toFixed(1)) : 0;
             
             // Update compatibility fields
-            player.averagePlacement = player.roundAveragePlacement;
-            player.winRate = player.roundWinRate;
+            player.roundChampionships = player.single_round_firsts;
+            player.roundRunnerUp = player.single_round_seconds;
+            player.roundThirdPlace = player.single_round_thirds;
+            player.totalRounds = totalRounds;
+            player.roundAveragePlacement = player.average_placement;
+            player.roundWinRate = player.win_rate;
+            player.averagePlacement = player.average_placement;
+            player.winRate = player.win_rate;
         });
         
         return updatedPlayers;

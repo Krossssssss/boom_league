@@ -130,7 +130,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-V5S4WAM5.css?url";
+var tailwind_default = "/build/_assets/tailwind-2VLFS4EC.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -329,11 +329,14 @@ var UTILS = {
       let player = updatedPlayers.find((p) => p.id === result.playerId);
       if (!player)
         return;
-      player.totalRounds = (player.totalRounds || 0) + 1, result.placement === 1 ? player.roundChampionships = (player.roundChampionships || 0) + 1 : result.placement === 2 ? player.roundRunnerUp = (player.roundRunnerUp || 0) + 1 : result.placement === 3 && (player.roundThirdPlace = (player.roundThirdPlace || 0) + 1);
-      let currentAvg = player.roundAveragePlacement || 0, totalRounds = player.totalRounds, totalPlacementSum = currentAvg * (totalRounds - 1) + result.placement;
-      player.roundAveragePlacement = parseFloat((totalPlacementSum / totalRounds).toFixed(2));
-      let roundWins = (player.roundChampionships || 0) + (player.roundRunnerUp || 0) + (player.roundThirdPlace || 0);
-      player.roundWinRate = parseFloat((roundWins / totalRounds * 100).toFixed(1)), player.averagePlacement = player.roundAveragePlacement, player.winRate = player.roundWinRate;
+      let totalRounds = (player.history || []).length;
+      if (result.placement === 1 ? player.single_round_firsts = (player.single_round_firsts || 0) + 1 : result.placement === 2 ? player.single_round_seconds = (player.single_round_seconds || 0) + 1 : result.placement === 3 && (player.single_round_thirds = (player.single_round_thirds || 0) + 1), player.history && player.history.length > 0) {
+        let totalPlacementSum = player.history.reduce((sum, h) => sum + h.placement, 0);
+        player.average_placement = parseFloat((totalPlacementSum / player.history.length).toFixed(2));
+      } else
+        player.average_placement = result.placement;
+      let roundWins = (player.single_round_firsts || 0) + (player.single_round_seconds || 0) + (player.single_round_thirds || 0);
+      player.win_rate = totalRounds > 0 ? parseFloat((roundWins / totalRounds * 100).toFixed(1)) : 0, player.roundChampionships = player.single_round_firsts, player.roundRunnerUp = player.single_round_seconds, player.roundThirdPlace = player.single_round_thirds, player.totalRounds = totalRounds, player.roundAveragePlacement = player.average_placement, player.roundWinRate = player.win_rate, player.averagePlacement = player.average_placement, player.winRate = player.win_rate;
     }), updatedPlayers;
   }
 };
@@ -6324,7 +6327,7 @@ function Index() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-XZRUNYCF.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-5ZF6PAZJ.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-XVHGACUF.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-PVMSCPUR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-L2DXMMP7.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "3cf19e3a", hmr: { runtime: "/build/_shared\\chunk-XVHGACUF.js", timestamp: 1754725221031 }, url: "/build/manifest-3CF19E3A.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-N66DQM74.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-FWFLRLK7.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-VSGKKZXB.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-O5RTVIX3.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "cd638e4d", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754725242490 }, url: "/build/manifest-CD638E4D.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {

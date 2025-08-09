@@ -8373,7 +8373,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\utils\\gameUtils.ts"
   );
-  import.meta.hot.lastModified = "1754725219706.8235";
+  import.meta.hot.lastModified = "1754725240349.6626";
 }
 var UTILS = {
   getRandomElement: (arr) => arr[Math.floor(Math.random() * arr.length)],
@@ -8435,22 +8435,30 @@ var UTILS = {
       const player = updatedPlayers.find((p) => p.id === result.playerId);
       if (!player)
         return;
-      player.totalRounds = (player.totalRounds || 0) + 1;
+      const totalRounds = (player.history || []).length;
       if (result.placement === 1) {
-        player.roundChampionships = (player.roundChampionships || 0) + 1;
+        player.single_round_firsts = (player.single_round_firsts || 0) + 1;
       } else if (result.placement === 2) {
-        player.roundRunnerUp = (player.roundRunnerUp || 0) + 1;
+        player.single_round_seconds = (player.single_round_seconds || 0) + 1;
       } else if (result.placement === 3) {
-        player.roundThirdPlace = (player.roundThirdPlace || 0) + 1;
+        player.single_round_thirds = (player.single_round_thirds || 0) + 1;
       }
-      const currentAvg = player.roundAveragePlacement || 0;
-      const totalRounds = player.totalRounds;
-      const totalPlacementSum = currentAvg * (totalRounds - 1) + result.placement;
-      player.roundAveragePlacement = parseFloat((totalPlacementSum / totalRounds).toFixed(2));
-      const roundWins = (player.roundChampionships || 0) + (player.roundRunnerUp || 0) + (player.roundThirdPlace || 0);
-      player.roundWinRate = parseFloat((roundWins / totalRounds * 100).toFixed(1));
-      player.averagePlacement = player.roundAveragePlacement;
-      player.winRate = player.roundWinRate;
+      if (player.history && player.history.length > 0) {
+        const totalPlacementSum = player.history.reduce((sum, h) => sum + h.placement, 0);
+        player.average_placement = parseFloat((totalPlacementSum / player.history.length).toFixed(2));
+      } else {
+        player.average_placement = result.placement;
+      }
+      const roundWins = (player.single_round_firsts || 0) + (player.single_round_seconds || 0) + (player.single_round_thirds || 0);
+      player.win_rate = totalRounds > 0 ? parseFloat((roundWins / totalRounds * 100).toFixed(1)) : 0;
+      player.roundChampionships = player.single_round_firsts;
+      player.roundRunnerUp = player.single_round_seconds;
+      player.roundThirdPlace = player.single_round_thirds;
+      player.totalRounds = totalRounds;
+      player.roundAveragePlacement = player.average_placement;
+      player.roundWinRate = player.win_rate;
+      player.averagePlacement = player.average_placement;
+      player.winRate = player.win_rate;
     });
     return updatedPlayers;
   }
@@ -15121,4 +15129,4 @@ lucide-react/dist/esm/lucide-react.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=/build/routes/_index-L2DXMMP7.js.map
+//# sourceMappingURL=/build/routes/_index-XOAHFNV3.js.map
