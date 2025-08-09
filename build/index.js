@@ -130,7 +130,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-ISSVY5RK.css?url";
+var tailwind_default = "/build/_assets/tailwind-FK6QRGDM.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -1417,35 +1417,109 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
     dragElement.style.opacity = "1";
   }, getPlayerById = (id) => players.find((p) => p.id === id);
   return /* @__PURE__ */ jsxDEV9(Modal_default, { onClose, title: `\u8F93\u5165\u7B2C ${round} \u8F6E\u6BD4\u8D5B\u7ED3\u679C`, children: /* @__PURE__ */ jsxDEV9("div", { children: [
-    /* @__PURE__ */ jsxDEV9("p", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-600"} mb-4 text-sm sm:text-base`, children: "\u8BF7\u62D6\u52A8\u73A9\u5BB6\u5361\u7247\u4EE5\u786E\u5B9A\u672C\u8F6E\u540D\u6B21\uFF08\u4ECE\u4E0A\u5230\u4E0B\u4E3A 1-N \u540D\uFF09\u3002" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV9("div", { className: `mb-4 p-3 rounded-lg ${theme === "dark" ? "bg-gray-800/50" : "bg-gray-100/50"}`, children: [
+      /* @__PURE__ */ jsxDEV9("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-700"} text-sm sm:text-base font-medium`, children: "\u{1F3C6} \u786E\u5B9A\u672C\u8F6E\u540D\u6B21\u6392\u5E8F" }, void 0, !1, {
+        fileName: "app/components/ui/ResultsModal.tsx",
+        lineNumber: 81,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV9("p", { className: `${theme === "dark" ? "text-gray-400" : "text-gray-600"} text-xs sm:text-sm mt-1`, children: [
+        "\u62D6\u62FD\u73A9\u5BB6\u5361\u7247\u91CD\u65B0\u6392\u5E8F\uFF0C\u4ECE\u4E0A\u5230\u4E0B\u4E3A\u7B2C 1 \u540D\u5230\u7B2C ",
+        players.length,
+        " \u540D"
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/ResultsModal.tsx",
+        lineNumber: 84,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
       fileName: "app/components/ui/ResultsModal.tsx",
       lineNumber: 80,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV9("div", { className: "space-y-2 sm:space-y-3 max-h-60 sm:max-h-72 overflow-y-auto", children: rankedPlayers.map((playerId, index) => {
       let player = getPlayerById(playerId);
-      return player ? /* @__PURE__ */ jsxDEV9(
+      if (!player)
+        return null;
+      let isDragging = draggedIndex === index, isDragOver = dragOverIndex === index, isAboveDragOver = dragOverIndex !== null && index < dragOverIndex && draggedIndex !== null && draggedIndex > dragOverIndex, isBelowDragOver = dragOverIndex !== null && index > dragOverIndex && draggedIndex !== null && draggedIndex < dragOverIndex;
+      return /* @__PURE__ */ jsxDEV9(
         "div",
         {
           draggable: !0,
           onDragStart: (e) => handleDragStart(e, index),
-          onDragOver: (e) => e.preventDefault(),
+          onDragOver: (e) => handleDragOver(e, index),
+          onDragEnter: (e) => handleDragEnter(e, index),
+          onDragLeave: handleDragLeave,
           onDrop: (e) => handleDrop(e, index),
-          className: `flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-grab active:cursor-grabbing transition-all duration-200 active:scale-[0.98] ${theme === "dark" ? "bg-gray-700 hover:bg-gray-600 active:bg-gray-600" : "bg-gray-200 hover:bg-gray-300 active:bg-gray-300"}`,
+          onDragEnd: handleDragEnd,
+          className: `
+                                    flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-grab active:cursor-grabbing 
+                                    transition-all duration-300 ease-in-out transform-gpu
+                                    ${isDragging ? "scale-105 rotate-2 shadow-2xl z-50" : "scale-100 rotate-0"}
+                                    ${isDragOver && !isDragging ? "scale-[1.02] shadow-lg ring-2 ring-orange-400/50" : ""}
+                                    ${isAboveDragOver ? "translate-y-2" : ""}
+                                    ${isBelowDragOver ? "-translate-y-2" : ""}
+                                    ${theme === "dark" ? `bg-gray-700 hover:bg-gray-600 active:bg-gray-600 
+                                           ${isDragging ? "bg-gray-600 border-2 border-orange-400/50" : ""} 
+                                           ${isDragOver && !isDragging ? "bg-gray-600 border-2 border-orange-400" : ""}` : `bg-gray-200 hover:bg-gray-300 active:bg-gray-300 
+                                           ${isDragging ? "bg-gray-300 border-2 border-orange-400/50" : ""} 
+                                           ${isDragOver && !isDragging ? "bg-gray-300 border-2 border-orange-400" : ""}`}
+                                    ${isDragging ? "opacity-80" : "opacity-100"}
+                                `,
+          style: {
+            transformOrigin: "center",
+            willChange: "transform, opacity, box-shadow"
+          },
           children: [
-            /* @__PURE__ */ jsxDEV9("span", { className: "font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center", children: index + 1 }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV9("span", { className: `font-bold text-base sm:text-lg text-orange-400 w-5 sm:w-6 flex-shrink-0 text-center transition-all duration-300 ${isDragging ? "scale-110 text-orange-300" : ""}`, children: index + 1 }, void 0, !1, {
               fileName: "app/components/ui/ResultsModal.tsx",
-              lineNumber: 100,
+              lineNumber: 130,
               columnNumber: 33
             }, this),
-            /* @__PURE__ */ jsxDEV9("span", { className: "text-xl sm:text-2xl flex-shrink-0", children: player.avatar }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV9("span", { className: `text-xl sm:text-2xl flex-shrink-0 transition-all duration-300 ${isDragging ? "scale-110" : ""}`, children: player.avatar }, void 0, !1, {
               fileName: "app/components/ui/ResultsModal.tsx",
-              lineNumber: 101,
+              lineNumber: 135,
               columnNumber: 33
             }, this),
-            /* @__PURE__ */ jsxDEV9("span", { className: `font-semibold text-sm sm:text-base truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV9("span", { className: `font-semibold text-sm sm:text-base truncate transition-all duration-300 ${theme === "dark" ? "text-white" : "text-gray-900"} ${isDragging ? "text-orange-300" : ""}`, children: player.name }, void 0, !1, {
               fileName: "app/components/ui/ResultsModal.tsx",
-              lineNumber: 102,
+              lineNumber: 140,
+              columnNumber: 33
+            }, this),
+            /* @__PURE__ */ jsxDEV9("div", { className: `ml-auto flex flex-col gap-0.5 opacity-40 transition-opacity duration-300 ${isDragging ? "opacity-70" : "group-hover:opacity-70"}`, children: [
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 150,
+                columnNumber: 37
+              }, this),
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 151,
+                columnNumber: 37
+              }, this),
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 152,
+                columnNumber: 37
+              }, this),
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 153,
+                columnNumber: 37
+              }, this),
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 154,
+                columnNumber: 37
+              }, this),
+              /* @__PURE__ */ jsxDEV9("div", { className: "w-1 h-1 bg-current rounded-full" }, void 0, !1, {
+                fileName: "app/components/ui/ResultsModal.tsx",
+                lineNumber: 155,
+                columnNumber: 37
+              }, this)
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/ResultsModal.tsx",
+              lineNumber: 147,
               columnNumber: 33
             }, this)
           ]
@@ -1454,14 +1528,14 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
         !0,
         {
           fileName: "app/components/ui/ResultsModal.tsx",
-          lineNumber: 88,
+          lineNumber: 99,
           columnNumber: 29
         },
         this
-      ) : null;
+      );
     }) }, void 0, !1, {
       fileName: "app/components/ui/ResultsModal.tsx",
-      lineNumber: 83,
+      lineNumber: 88,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV9(
@@ -1475,7 +1549,7 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
       !1,
       {
         fileName: "app/components/ui/ResultsModal.tsx",
-        lineNumber: 107,
+        lineNumber: 161,
         columnNumber: 17
       },
       this
@@ -5287,7 +5361,7 @@ function Index() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-7SHNY2QW.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-KXIMKQNA.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-H6FDZEWC.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-HBPORELV.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "4c834975", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754714694562 }, url: "/build/manifest-4C834975.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-C7BLLHZN.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-VZTAP6R2.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-J6I6HYAR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-NMXZ3XRR.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "492d4d0f", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754714729665 }, url: "/build/manifest-492D4D0F.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {

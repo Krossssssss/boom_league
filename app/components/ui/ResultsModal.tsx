@@ -77,9 +77,14 @@ const ResultsModal: React.FC<ResultsModalProps> = ({ players, onClose, onSubmit,
     return (
         <Modal onClose={onClose} title={`输入第 ${round} 轮比赛结果`}>
             <div>
-                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-4 text-sm sm:text-base`}>
-                    请拖动玩家卡片以确定本轮名次（从上到下为 1-N 名）。
-                </p>
+                <div className={`mb-4 p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-100/50'}`}>
+                    <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} text-sm sm:text-base font-medium`}>
+                        🏆 确定本轮名次排序
+                    </p>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-xs sm:text-sm mt-1`}>
+                        拖拽玩家卡片重新排序，从上到下为第 1 名到第 {players.length} 名
+                    </p>
+                </div>
                 <div className="space-y-2 sm:space-y-3 max-h-60 sm:max-h-72 overflow-y-auto">
                     {rankedPlayers.map((playerId, index) => {
                         const player = getPlayerById(playerId);
