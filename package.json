@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "npx remix build",
+    "build": "node node_modules/@remix-run/dev/dist/cli.js build",
     "dev": "npx remix dev",
     "start": "npx remix-serve build/index.js",
     "typecheck": "tsc"
