@@ -1,7 +1,13 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm ci --legacy-peer-deps"
+  "devCommand": "npm run dev", 
+  "installCommand": "npm ci --legacy-peer-deps",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.js"
+    }
+  ]
 }
 
 
