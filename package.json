@@ -13,6 +13,7 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@remix-run/vercel": "^1.19.3",
     "@supabase/supabase-js": "^2.43.5",
     "isbot": "^5.1.9",
     "lucide-react": "^0.395.0",
@@ -30,4 +31,3 @@
     "node": ">=18.0.0"
   }
 }
-
