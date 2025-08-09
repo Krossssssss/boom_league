@@ -75,6 +75,7 @@ export default function Index() {
     const [leagueHistory, setLeagueHistory] = useState<LeagueHistory[]>([]);
     const [currentLeagueName, setCurrentLeagueName] = useState<string>('');
     const [nextSeasonNumber, setNextSeasonNumber] = useState<number>(1);
+    const [isHydrated, setIsHydrated] = useState<boolean>(false);
 
     // Helper function to update players with rankings
     const updatePlayersWithRankings = (newPlayers: Player[]) => {
@@ -82,76 +83,75 @@ export default function Index() {
         setPlayers(playersWithRankings);
     };
 
-    // Load sidebar collapsed state from localStorage
+    // Hydration effect - runs only on client after hydration
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedCollapsed = localStorage.getItem('sidebarCollapsed');
-            if (savedCollapsed !== null) {
-                setSidebarCollapsed(JSON.parse(savedCollapsed));
-            }
+        setIsHydrated(true);
+        
+        // Load sidebar collapsed state from localStorage
+        const savedCollapsed = localStorage.getItem('sidebarCollapsed');
+        if (savedCollapsed !== null) {
+            setSidebarCollapsed(JSON.parse(savedCollapsed));
         }
+        
+        // Load music muted state from localStorage
+        const savedMuted = localStorage.getItem('musicMuted');
+        if (savedMuted !== null) {
+            setMusicMuted(JSON.parse(savedMuted));
+        }
+        
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('boom-league-theme') as 'light' | 'dark' | null;
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+        
+        // Initialize app ID from URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const canvasAppId = urlParams.get('app_id') || 'default';
+        setAppId(canvasAppId);
     }, []);
 
-    // Save sidebar collapsed state to localStorage
+    // Save sidebar collapsed state to localStorage (only after hydration)
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (isHydrated) {
             localStorage.setItem('sidebarCollapsed', JSON.stringify(sidebarCollapsed));
         }
-    }, [sidebarCollapsed]);
+    }, [sidebarCollapsed, isHydrated]);
 
-    // Load music muted state from localStorage
+    // Save music muted state to localStorage (only after hydration)
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedMuted = localStorage.getItem('musicMuted');
-            if (savedMuted !== null) {
-                setMusicMuted(JSON.parse(savedMuted));
-            }
-        }
-    }, []);
-
-    // Save music muted state to localStorage
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (isHydrated) {
             localStorage.setItem('musicMuted', JSON.stringify(musicMuted));
         }
-    }, [musicMuted]);
+    }, [musicMuted, isHydrated]);
     const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
+    // Supabase initialization effect (only after hydration)
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const urlParams = new URLSearchParams(window.location.search);
-            const canvasAppId = urlParams.get('app_id') || 'default';
-            setAppId(canvasAppId);
-
-            // Initialize theme from localStorage
-            const savedTheme = localStorage.getItem('boom-league-theme') as 'light' | 'dark' | null;
-            if (savedTheme) {
-                setTheme(savedTheme);
-            }
-
-            // Only initialize Supabase on client side
-            if (!supabase) {
-                supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-            }
-
-            supabase.auth.getSession().then(({ data: { session } }: any) => {
-                setSession(session)
-                if(!session){
-                    supabase.auth.signInAnonymously();
-                }
-                setIsAuthReady(true);
-            })
-
-            const {
-                data: { subscription },
-            } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-                setSession(session)
-                setIsAuthReady(true);
-            })
-
-            return () => subscription.unsubscribe()
+        if (!isHydrated) return;
+        
+        // Only initialize Supabase on client side
+        if (!supabase) {
+            supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
         }
-    }, [])
+
+        supabase.auth.getSession().then(({ data: { session } }: any) => {
+            setSession(session)
+            if(!session){
+                supabase.auth.signInAnonymously();
+            }
+            setIsAuthReady(true);
+        })
+
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+            setSession(session)
+            setIsAuthReady(true);
+        })
+
+        return () => subscription.unsubscribe()
+    }, [isHydrated])
 
     // Load league history function
     const loadLeagueHistory = async () => {
@@ -183,7 +183,7 @@ export default function Index() {
     };
 
     useEffect(() => {
-        if (!isAuthReady || !supabase || typeof window === 'undefined') return;
+        if (!isAuthReady || !supabase || !isHydrated) return;
 
         const fetchInitialData = async () => {
             const { data: leagueData, error: leagueError } = await supabase
@@ -261,7 +261,7 @@ export default function Index() {
             supabase.removeChannel(leagueChannel);
             supabase.removeChannel(playersChannel);
         };
-    }, [isAuthReady, appId]);
+    }, [isAuthReady, appId, isHydrated]);
 
     const handleAddPlayer = async () => {
         console.log('handleAddPlayer called with:', { newPlayerName, selectedAvatar, playersLength: players.length });
@@ -601,7 +601,7 @@ export default function Index() {
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
-        if (typeof window !== 'undefined') {
+        if (isHydrated) {
             localStorage.setItem('boom-league-theme', newTheme);
         }
     };
@@ -992,12 +992,8 @@ export default function Index() {
     };
 
     const renderCurrentPage = () => {
-        if (typeof window === 'undefined') {
+        if (!isHydrated || !isAuthReady) {
             return <div className="text-center text-2xl p-8">正在加载...</div>;
-        }
-        
-        if (!isAuthReady) {
-            return <div className="text-center text-2xl p-8">正在连接服务器...</div>;
         }
 
         // If league is pending confirmation, show schedule confirmation page regardless of current page
