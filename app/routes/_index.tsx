@@ -334,7 +334,7 @@ export default function Index() {
                 bombCards: UTILS.getRandomElement(bombCardOptions),
                 handLimit: UTILS.getRandomElement(handLimits),
                 vpMode: UTILS.getRandomElement(GAME_RULES.VP_MODES),
-                specialRule: UTILS.getRandomElement(selectedSpecialRules),
+                specialRules: UTILS.selectSpecialRules(selectedSpecialRules),
             });
         }
         return schedule;
@@ -869,7 +869,7 @@ export default function Index() {
                             <InfoCard icon={<LucideBomb className="text-red-400" />} title="炸弹牌数量" value={currentRoundConfig.bombCards} />
                             <InfoCard icon={<LucideSwords className="text-yellow-400" />} title="出战手牌上限" value={currentRoundConfig.handLimit === Infinity ? "无限制" : currentRoundConfig.handLimit} />
                             <InfoCard icon={<LucideTrophy className="text-green-400" />} title="VP 奖励模式" value={currentRoundConfig.vpMode.name} />
-                            <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRule} />
+                            <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRules.join(" + ")} />
                         </div>
                     </div>
                     

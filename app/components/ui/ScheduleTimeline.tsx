@@ -73,7 +73,7 @@ const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule, currentRo
                                         🏆 {roundInfo.vpMode.name}
                                     </p>
                                     <p className={`text-xs font-medium ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
-                                        🎯 {roundInfo.specialRule}
+                                        🎯 {roundInfo.specialRules.join(" + ")}
                                     </p>
                                 </div>
                             </div>

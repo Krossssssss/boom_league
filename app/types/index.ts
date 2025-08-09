@@ -57,7 +57,7 @@ export interface RoundConfig {
     bombCards: number;
     handLimit: number;
     vpMode: VPMode;
-    specialRule: string;
+    specialRules: string[];  // 改为数组以支持多个特殊规则
 }
 
 export interface VPMode {
