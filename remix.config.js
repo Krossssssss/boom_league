@@ -1,8 +1,9 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 export default {
   ignoredRouteFiles: ["**/.*"],
-  server: "vercel",
+  server: "@vercel/remix",
   serverBuildPath: "api/index.js",
+  serverDependenciesToBundle: ["@vercel/remix"],
   tailwind: true,
   future: {
     v3_fetcherPersist: true,
