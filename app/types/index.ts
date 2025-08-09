@@ -18,10 +18,30 @@ export interface GameHistory {
 
 export interface LeagueState {
     app_id: string;
-    status: 'setup' | 'in_progress' | 'finished';
+    status: 'setup' | 'pending_confirmation' | 'in_progress' | 'finished';
     current_round: number;
     schedule: RoundConfig[];
     winner: Winner | null;
+    league_name?: string;
+    season_number?: number;
+    start_date?: string;
+    end_date?: string;
+    created_at?: string;
+    selected_special_rules?: string[];
+}
+
+export interface LeagueHistory {
+    id: string;
+    app_id: string;
+    league_name: string;
+    season_number: number;
+    start_date: string;
+    end_date: string;
+    winner: Winner;
+    final_standings: Player[];
+    total_rounds: number;
+    total_players: number;
+    created_at: string;
 }
 
 export interface Winner {
@@ -70,8 +90,6 @@ export interface SidebarProps {
     setMusicPlaying: (playing: boolean) => void;
     musicMuted: boolean;
     setMusicMuted: (muted: boolean) => void;
-    players: Player[];
-    onPlayerClick: (player: Player) => void;
 }
 
 export interface LeaderboardProps {
@@ -101,6 +119,7 @@ export interface HomePageProps {
     handleStartLeague: () => void;
     handleResetLeague: () => void;
     handlePlayerClick: (player: Player) => void;
+    setCurrentPage: (page: string) => void;
 }
 
 export interface PlayerRegistrationPageProps {
@@ -119,10 +138,13 @@ export interface PlayerRegistrationPageProps {
 export interface LeagueManagementPageProps {
     leagueState: LeagueState | null;
     players: Player[];
-    handleStartLeague: () => void;
+    handleStartLeague: (selectedSpecialRules: string[]) => void;
     handleResetLeague: () => void;
-    renderInProgress: () => React.ReactNode;
-    setShowResultsModal: (show: boolean) => void;
+    currentLeagueName: string;
+    setCurrentLeagueName: (name: string) => void;
+    nextSeasonNumber: number;
+    leagueHistory: LeagueHistory[];
+    setCurrentPage: (page: string) => void;
 }
 
 export interface PlayerRankingsPageProps {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { LucideCat, LucideShield, LucideBomb, LucideSwords, LucideTrophy, LucideDices, LucideClipboardList, LucideMenu, LucidePlus } from 'lucide-react';
+import { LucideCat, LucideShield, LucideBomb, LucideSwords, LucideTrophy, LucideDices, LucideClipboardList, LucideMenu, LucidePlus, LucideGamepad2, LucideChevronLeft, LucideX, LucideCrown } from 'lucide-react';
 
 // Import types
-import type { Player, LeagueState, Winner, RoundConfig } from '../types';
+import type { Player, LeagueState, Winner, RoundConfig, LeagueHistory } from '../types';
 
 // Import constants
 import { GAME_RULES } from '../constants/gameRules';
@@ -24,12 +24,15 @@ import ScheduleTimeline from '../components/ui/ScheduleTimeline';
 import Modal from '../components/ui/Modal';
 import PlayerProfileModal from '../components/ui/PlayerProfileModal';
 import ResultsModal from '../components/ui/ResultsModal';
+import SoundEffectsBox from '../components/ui/SoundEffectsBox';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
 import PlayerRegistrationPage from '../components/pages/PlayerRegistrationPage';
 import LeagueManagementPage from '../components/pages/LeagueManagementPage';
 import PlayerRankingsPage from '../components/pages/PlayerRankingsPage';
+import LeagueHistoryPage from '../components/pages/LeagueHistoryPage';
+import ScheduleConfirmationPage from '../components/pages/ScheduleConfirmationPage';
 
 let supabase: any;
 
@@ -51,6 +54,9 @@ export default function Index() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
     const [musicPlaying, setMusicPlaying] = useState<boolean>(false);
     const [musicMuted, setMusicMuted] = useState<boolean>(true);
+    const [leagueHistory, setLeagueHistory] = useState<LeagueHistory[]>([]);
+    const [currentLeagueName, setCurrentLeagueName] = useState<string>('');
+    const [nextSeasonNumber, setNextSeasonNumber] = useState<number>(1);
 
     // Load sidebar collapsed state from localStorage
     useEffect(() => {
@@ -123,6 +129,34 @@ export default function Index() {
     useEffect(() => {
         if (!isAuthReady || !supabase) return;
 
+        // Load league history and set next season number
+        const loadLeagueHistory = async () => {
+            if (!supabase || !appId) return;
+            
+            try {
+                const { data: historyData, error } = await supabase
+                    .from('league_history')
+                    .select('*')
+                    .eq('app_id', appId)
+                    .order('season_number', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading league history:', error);
+                    return;
+                }
+
+                if (historyData) {
+                    setLeagueHistory(historyData);
+                    // Set next season number based on latest season
+                    const latestSeason = historyData.length > 0 ? historyData[0].season_number : 0;
+                    setNextSeasonNumber(latestSeason + 1);
+                    setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
+                }
+            } catch (error) {
+                console.error('Error in loadLeagueHistory:', error);
+            }
+        };
+
         const fetchInitialData = async () => {
             const { data: leagueData, error: leagueError } = await supabase
                 .from('league_state')
@@ -150,6 +184,7 @@ export default function Index() {
         };
 
         fetchInitialData();
+        loadLeagueHistory();
 
         const leagueChannel = supabase.channel(`league-state:${appId}`)
             .on('postgres_changes', { event: '*', schema: 'public', table: 'league_state', filter: `app_id=eq.${appId}` }, (payload: any) => {
@@ -186,7 +221,12 @@ export default function Index() {
     }, [isAuthReady, appId]);
 
     const handleAddPlayer = async () => {
-        if (newPlayerName.trim() === "" || players.length >= 6) return;
+        console.log('handleAddPlayer called with:', { newPlayerName, selectedAvatar, playersLength: players.length });
+        
+        if (newPlayerName.trim() === "" || players.length >= 6) {
+            console.log('handleAddPlayer early return:', { nameEmpty: newPlayerName.trim() === "", tooManyPlayers: players.length >= 6 });
+            return;
+        }
 
         const tempPlayer = {
             id: `temp_${Date.now()}`,
@@ -200,8 +240,10 @@ export default function Index() {
             thirdPlace: 0,
         } as any;
 
+        console.log('Adding temp player:', tempPlayer);
         setPlayers((curr) => [...curr, tempPlayer].sort((a, b) => b.score - a.score));
 
+        console.log('Inserting into Supabase...');
         const { data, error } = await supabase
             .from('players')
             .insert({
@@ -217,10 +259,13 @@ export default function Index() {
             .select()
             .single();
 
+        console.log('Supabase insert result:', { data, error });
+
         if (error) {
             setPlayers((curr) => curr.filter((p) => p.id !== tempPlayer.id));
             console.error('Add player failed:', error);
         } else if (data) {
+            console.log('Successfully added player, updating temp player with real data:', data);
             setPlayers((curr) =>
                 curr
                     .map((p) => (p.id === tempPlayer.id ? data : p))
@@ -248,50 +293,99 @@ export default function Index() {
         }
     };
 
-    const generateSchedule = (playerCount: number): RoundConfig[] => {
+    const generateSchedule = (playerCount: number, selectedSpecialRules: string[] = GAME_RULES.SPECIAL_RULES): RoundConfig[] => {
         let schedule: RoundConfig[] = [];
         for (let i = 0; i < GAME_RULES.MAX_ROUNDS; i++) {
             const safeCardMultipliers = [1, 2, 3, 4];
-            const bombCardAdditions = [1, playerCount + 1];
+            // 炸弹牌数量只有两种可能：玩家数 × 1 或 玩家数 + 1
+            const bombCardOptions = [playerCount, playerCount + 1];
             const handLimits = [4, 5, 6, Infinity];
 
             schedule.push({
                 round: i + 1,
                 safeCards: playerCount * UTILS.getRandomElement(safeCardMultipliers),
-                bombCards: UTILS.getRandomElement(bombCardAdditions),
+                bombCards: UTILS.getRandomElement(bombCardOptions),
                 handLimit: UTILS.getRandomElement(handLimits),
                 vpMode: UTILS.getRandomElement(GAME_RULES.VP_MODES),
-                specialRule: UTILS.getRandomElement(GAME_RULES.SPECIAL_RULES),
+                specialRule: UTILS.getRandomElement(selectedSpecialRules),
             });
         }
         return schedule;
     };
 
-    const handleStartLeague = async () => {
-        if (players.length < 2) return;
+    const handleConfirmSchedule = async () => {
+        if (!leagueState) return;
 
-        const schedule = generateSchedule(players.length);
-
-        setLeagueState({
-            app_id: appId,
+        const confirmedLeagueState = {
+            ...leagueState,
             status: 'in_progress',
             current_round: 1,
-            schedule,
-            winner: null,
-        } as any);
+        };
+
+        setLeagueState(confirmedLeagueState as any);
 
         const { error } = await supabase
             .from('league_state')
-            .upsert(
-                {
-                    app_id: appId,
-                    status: 'in_progress',
-                    current_round: 1,
-                    schedule: schedule,
-                    winner: null,
-                },
-                { onConflict: 'app_id' }
-            );
+            .update({
+                status: 'in_progress',
+                current_round: 1,
+            })
+            .eq('app_id', appId);
+
+        if (error) {
+            console.error('Confirm schedule failed:', error);
+        }
+    };
+
+    const handleRerollSchedule = async () => {
+        if (!leagueState) return;
+
+        const selectedRules = leagueState.selected_special_rules || GAME_RULES.SPECIAL_RULES;
+        const newSchedule = generateSchedule(players.length, selectedRules);
+        const rerolledLeagueState = {
+            ...leagueState,
+            schedule: newSchedule,
+        };
+
+        setLeagueState(rerolledLeagueState as any);
+
+        const { error } = await supabase
+            .from('league_state')
+            .update({
+                schedule: newSchedule,
+            })
+            .eq('app_id', appId);
+
+        if (error) {
+            console.error('Reroll schedule failed:', error);
+        }
+    };
+
+    const handleStartLeague = async (selectedSpecialRules: string[]) => {
+        if (players.length < 2) return;
+
+        const schedule = generateSchedule(players.length, selectedSpecialRules);
+        const currentDate = new Date().toISOString();
+        const leagueName = currentLeagueName || `Boom League S${nextSeasonNumber}`;
+
+        const newLeagueState = {
+            app_id: appId,
+            status: 'pending_confirmation',
+            current_round: 0,
+            schedule,
+            winner: null,
+            league_name: leagueName,
+            season_number: nextSeasonNumber,
+            start_date: currentDate,
+            created_at: currentDate,
+            selected_special_rules: selectedSpecialRules,
+        };
+
+        setLeagueState(newLeagueState as any);
+
+        const { error } = await supabase
+            .from('league_state')
+            .upsert(newLeagueState, { onConflict: 'app_id' });
 
         if (error) {
             console.error('Start league failed:', error);
@@ -330,6 +424,49 @@ export default function Index() {
         }
     };
 
+    const handleAbortLeague = async () => {
+        // Save current league to history before aborting (if it has made progress)
+        if (leagueState && leagueState.current_round > 1) {
+            await saveLeagueToHistory();
+        }
+
+        // Reset player scores and go back to setup
+        setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
+        setLeagueState({
+            app_id: appId,
+            status: 'setup',
+            current_round: 0,
+            schedule: [],
+            winner: null,
+        } as any);
+        setWinner(null);
+        setCurrentPage('league'); // Go back to league management
+
+        const [{ error: pErr }, { error: lErr }] = await Promise.all([
+            supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
+            supabase
+                .from('league_state')
+                .upsert(
+                    {
+                        app_id: appId,
+                        status: 'setup',
+                        current_round: 0,
+                        schedule: [],
+                        winner: null,
+                    },
+                    { onConflict: 'app_id' }
+                ),
+        ]);
+
+        if (pErr || lErr) {
+            console.error('Abort league errors:', pErr, lErr);
+        }
+    };
+
+    const handleBackToLeagueManagement = () => {
+        setCurrentPage('league');
+    };
+
     const handlePlayerClick = (player: Player) => {
         setSelectedPlayerForProfile(player);
         setShowPlayerProfileModal(true);
@@ -340,6 +477,35 @@ export default function Index() {
         setTheme(newTheme);
         if (typeof window !== 'undefined') {
             localStorage.setItem('boom-league-theme', newTheme);
+        }
+    };
+
+    // Save completed league to history
+    const saveLeagueToHistory = async (finalLeagueState: LeagueState, finalPlayers: Player[]) => {
+        if (!finalLeagueState.winner || !finalLeagueState.league_name) return;
+
+        const historyEntry: Omit<LeagueHistory, 'id'> = {
+            app_id: appId,
+            league_name: finalLeagueState.league_name,
+            season_number: finalLeagueState.season_number || nextSeasonNumber,
+            start_date: finalLeagueState.start_date || new Date().toISOString(),
+            end_date: new Date().toISOString(),
+            winner: finalLeagueState.winner,
+            final_standings: [...finalPlayers].sort((a, b) => b.score - a.score),
+            total_rounds: finalLeagueState.current_round,
+            total_players: finalPlayers.length,
+            created_at: finalLeagueState.created_at || finalLeagueState.start_date || new Date().toISOString(),
+        };
+
+        const { error } = await supabase
+            .from('league_history')
+            .insert(historyEntry);
+
+        if (error) {
+            console.error('Error saving league to history:', error);
+        } else {
+            // Reload history and increment season number
+            await loadLeagueHistory();
         }
     };
 
@@ -454,24 +620,124 @@ export default function Index() {
             })
             .eq('app_id', appId);
 
+        // Save to history if league is finished
+        if (newStatus === 'finished' && finalWinner) {
+            const finalLeagueState = {
+                ...leagueState,
+                current_round: nextRound,
+                status: newStatus,
+                winner: finalWinner,
+                end_date: new Date().toISOString(),
+            } as LeagueState;
+            await saveLeagueToHistory(finalLeagueState, updatedPlayersData);
+        }
+
         setShowResultsModal(false);
     };
 
     const renderInProgress = () => {
-        if (!leagueState || !leagueState.schedule || leagueState.schedule.length === 0) return <div className="text-white">加载中...</div>;
+        if (!leagueState) return <div className="text-white">加载中...</div>;
+        
+        // If league is not in progress or pending confirmation, redirect to league management
+        if (leagueState.status === 'setup') {
+            setCurrentPage('league');
+            return <div className="text-white">重定向到联赛管理...</div>;
+        }
+        
+        if (leagueState.status === 'finished') {
+            return (
+                <div className="space-y-4 sm:space-y-6">
+                    <div className={`text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === 'dark' ? 'bg-gray-800/70' : 'bg-white/80'}`}>
+                        <LucideCrown className="text-yellow-400" size={60} />
+                        <div className="text-center">
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300">
+                                {leagueState.league_name || '联赛结束！'}
+                            </h2>
+                            {leagueState.season_number && (
+                                <p className={`text-lg sm:text-xl mt-2 ${theme === 'dark' ? 'text-yellow-400/80' : 'text-yellow-600'}`}>
+                                    Season {leagueState.season_number} 完成
+                                </p>
+                            )}
+                        </div>
+                        {leagueState.winner && (
+                            <>
+                                <div className="text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4">{leagueState.winner.avatar}</div>
+                                <p className={`text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{leagueState.winner.name}</p>
+                                <p className={`text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{leagueState.winner.reason}</p>
+                            </>
+                        )}
+                        <button 
+                            onClick={handleResetLeague} 
+                            className="mt-6 sm:mt-8 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg shadow-lg transition-all duration-200 active:scale-95 text-sm sm:text-base"
+                        >
+                            开启新联赛
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        
+        if (!leagueState.schedule || leagueState.schedule.length === 0) return <div className="text-white">加载中...</div>;
         const currentRoundConfig = leagueState.schedule[leagueState.current_round - 1];
         if (!currentRoundConfig) return <div className="text-white">比赛结束！</div>;
         
         return (
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-                {/* Mobile: Stack everything vertically, Desktop: Sidebar layout */}
-                <div className="xl:col-span-1 flex flex-col gap-4 sm:gap-6 order-2 xl:order-1">
-                    <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
-                    <div className="hidden md:block">
-                        <PlayerProfiles players={players} onPlayerClick={handlePlayerClick} />
+            <div className="space-y-4 sm:space-y-6">
+                {/* League Navigation Header */}
+                <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
+                                <LucideGamepad2 className="text-orange-400" size={20} />
+                            </div>
+                            <div>
+                                <h1 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
+                                    联赛进行中
+                                </h1>
+                                <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+                                    第 {leagueState.current_round} 轮 / 共 {GAME_RULES.MAX_ROUNDS} 轮
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <button
+                                onClick={handleBackToLeagueManagement}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${
+                                    theme === 'dark'
+                                        ? 'bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white border border-slate-600/50'
+                                        : 'bg-gray-200/50 hover:bg-gray-300/50 text-gray-700 hover:text-gray-900 border border-gray-300/50'
+                                }`}
+                            >
+                                <LucideChevronLeft size={16} />
+                                <span className="hidden xs:inline">返回管理</span>
+                                <span className="xs:hidden">返回</span>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (window.confirm('确定要中止当前联赛吗？进度将会保存到历史记录中。')) {
+                                        handleAbortLeague();
+                                    }
+                                }}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${
+                                    theme === 'dark'
+                                        ? 'bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50'
+                                        : 'bg-red-100/50 hover:bg-red-200/50 text-red-700 hover:text-red-800 border border-red-300/50'
+                                }`}
+                            >
+                                <LucideX size={16} />
+                                <span className="hidden xs:inline">中止联赛</span>
+                                <span className="xs:hidden">中止</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div className="xl:col-span-2 flex flex-col gap-4 sm:gap-6 order-1 xl:order-2">
+
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
+                    {/* Mobile: Stack everything vertically, Desktop: Sidebar layout */}
+                    <div className="xl:col-span-1 flex flex-col gap-4 sm:gap-6 order-2 xl:order-1">
+                        <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
+                    </div>
+                    <div className="xl:col-span-2 flex flex-col gap-4 sm:gap-6 order-1 xl:order-2">
                     {/* Round Info Card */}
                     <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -493,11 +759,47 @@ export default function Index() {
                             <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRule} />
                         </div>
                     </div>
+                    
+                    {/* League Info Card */}
+                    {leagueState.league_name && (
+                        <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
+                                    <LucideTrophy className="text-orange-400" size={20} />
+                                </div>
+                                <div>
+                                    <h3 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
+                                        {leagueState.league_name}
+                                    </h3>
+                                    {leagueState.season_number && (
+                                        <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+                                            Season {leagueState.season_number}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            {leagueState.created_at && (
+                                <div className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-100/50'}`}>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span className={`${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>创建时间：</span>
+                                        <span className={`${theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>
+                                            {new Date(leagueState.created_at).toLocaleDateString('zh-CN', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
                      <ScheduleTimeline schedule={leagueState.schedule} currentRound={leagueState.current_round} />
-                </div>
-                {/* Mobile Player Profiles at bottom */}
-                <div className="md:hidden xl:hidden order-3">
-                    <PlayerProfiles players={players} onPlayerClick={handlePlayerClick} />
+                     <SoundEffectsBox />
+                    </div>
                 </div>
             </div>
         );
@@ -508,6 +810,16 @@ export default function Index() {
             return <div className="text-center text-2xl p-8">正在连接服务器...</div>;
         }
 
+        // If league is pending confirmation, show schedule confirmation page regardless of current page
+        if (leagueState && leagueState.status === 'pending_confirmation') {
+            return <ScheduleConfirmationPage 
+                leagueState={leagueState}
+                players={players}
+                onConfirmSchedule={handleConfirmSchedule}
+                onRerollSchedule={handleRerollSchedule}
+            />;
+        }
+
         switch (currentPage) {
             case 'home':
                 return <HomePage 
@@ -516,6 +828,7 @@ export default function Index() {
                     handleStartLeague={handleStartLeague}
                     handleResetLeague={handleResetLeague}
                     handlePlayerClick={handlePlayerClick}
+                    setCurrentPage={setCurrentPage}
                 />;
             case 'registration':
                 return <PlayerRegistrationPage 
@@ -536,13 +849,22 @@ export default function Index() {
                     players={players}
                     handleStartLeague={handleStartLeague}
                     handleResetLeague={handleResetLeague}
-                    renderInProgress={renderInProgress}
-                    setShowResultsModal={setShowResultsModal}
+                    currentLeagueName={currentLeagueName}
+                    setCurrentLeagueName={setCurrentLeagueName}
+                    nextSeasonNumber={nextSeasonNumber}
+                    leagueHistory={leagueHistory}
+                    setCurrentPage={setCurrentPage}
                 />;
+            case 'in_progress':
+                return renderInProgress();
             case 'rankings':
                 return <PlayerRankingsPage 
                     players={players} 
                     onPlayerClick={handlePlayerClick}
+                />;
+            case 'history':
+                return <LeagueHistoryPage 
+                    leagueHistory={leagueHistory}
                 />;
             default:
                 return <HomePage 
@@ -592,8 +914,6 @@ export default function Index() {
                     setMusicPlaying={setMusicPlaying}
                     musicMuted={musicMuted}
                     setMusicMuted={setMusicMuted}
-                    players={players}
-                    onPlayerClick={handlePlayerClick}
                 />
 
                 <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-0'} relative`}>

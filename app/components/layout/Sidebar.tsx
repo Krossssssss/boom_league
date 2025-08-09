@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause, LucideBook, LucideExternalLink } from 'lucide-react';
+import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause, LucideBook, LucideExternalLink, LucideHistory, LucideChevronLeft, LucideChevronRight } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { SidebarProps } from '../../types';
 
@@ -13,9 +13,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     musicPlaying,
     setMusicPlaying,
     musicMuted,
-    setMusicMuted,
-    players, 
-    onPlayerClick 
+    setMusicMuted
 }) => {
     const { theme, toggleTheme } = useTheme();
     
@@ -62,62 +60,48 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <div className="flex flex-col h-full">
                     {/* Header */}
                     <div className={`relative p-4 sm:p-6 border-b ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
-                        <div className="flex items-center justify-between relative z-10">
-                            <div className="flex items-center gap-2 sm:gap-3">
-                                <div className="relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]">
-                                    <LucideCat className="text-orange-400" size={18} />
-                                </div>
-                                {!sidebarCollapsed && (
+                        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}`}>
+                            {/* Logo and Title - Only show when not collapsed */}
+                            {!sidebarCollapsed && (
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    <div className="relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]">
+                                        <LucideCat className="text-orange-400" size={18} />
+                                    </div>
                                     <div>
                                         <h2 className={`text-sm sm:text-base font-semibold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'} tracking-tight`}>Boom League</h2>
                                         <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} font-medium hidden sm:block`}>Tournament Tracker</p>
                                     </div>
-                                )}
-                            </div>
-                            <div className={`flex items-center ${sidebarCollapsed ? 'flex-col gap-1' : 'gap-2'}`}>
+                                </div>
+                            )}
+                            
+                            {/* Right side buttons */}
+                            <div className="flex items-center gap-2">
                                 {/* Desktop collapse button */}
                                 <button 
                                     onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                                    className={`hidden lg:flex p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                    className={`hidden lg:flex w-8 h-8 items-center justify-center rounded-md transition-all duration-200 ${
+                                        theme === 'dark' 
+                                            ? 'text-white/60 hover:text-white hover:bg-white/10' 
+                                            : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                                    }`}
                                     title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                                 >
-                                    {sidebarCollapsed ? <LucidePanelLeftOpen size={16} /> : <LucidePanelLeftClose size={16} />}
+                                    {sidebarCollapsed ? <LucideChevronRight size={16} /> : <LucideChevronLeft size={16} />}
                                 </button>
-                                {/* Music button */}
-                                <button 
-                                    onClick={handleMusicToggle}
-                                    className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${
-                                        musicPlaying && !musicMuted
-                                            ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
-                                            : theme === 'dark' 
-                                                ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' 
-                                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'
-                                    }`}
-                                    title={musicMuted ? 'Unmute music' : musicPlaying ? 'Pause music' : 'Play music'}
-                                >
-                                    {musicMuted ? <LucideVolumeX size={16} /> : musicPlaying ? <LucidePause size={16} /> : <LucidePlay size={16} />}
-                                </button>
-                                {/* Rulebook button */}
-                                <button 
-                                    onClick={handleRulebookClick}
-                                    className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
-                                    title="Open rulebook (external link)"
-                                >
-                                    <LucideBook size={16} />
-                                </button>
-                                <button 
-                                    onClick={toggleTheme}
-                                    className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
-                                    title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-                                >
-                                    {theme === 'dark' ? <LucideSun size={16} /> : <LucideMoon size={16} />}
-                                </button>
-                                <button 
-                                    onClick={() => setSidebarOpen(false)}
-                                    className={`lg:hidden ${theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}
-                                >
-                                    <LucideX size={20} />
-                                </button>
+                                
+                                {/* Mobile close button */}
+                                {!sidebarCollapsed && (
+                                    <button 
+                                        onClick={() => setSidebarOpen(false)}
+                                        className={`lg:hidden w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
+                                            theme === 'dark' 
+                                                ? 'text-white/60 hover:text-white hover:bg-white/10' 
+                                                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        <LucideX size={16} />
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -158,28 +142,82 @@ const Sidebar: React.FC<SidebarProps> = ({
                         </ul>
                     </nav>
 
-                    {/* Quick Player List */}
-                    {!sidebarCollapsed && currentPage !== 'rankings' && players.length > 0 && (
-                        <div className={`relative p-3 sm:p-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
-                            <h3 className={`text-xs font-semibold ${theme === 'dark' ? 'text-white/60' : 'text-gray-500'} mb-2 sm:mb-3 uppercase tracking-wider`}>Quick Access</h3>
-                            <div className="space-y-1 max-h-28 sm:max-h-32 overflow-y-auto">
-                                {players.slice(0, 3).map((player) => (
-                                    <button
-                                        key={player.id}
-                                        onClick={() => onPlayerClick(player)}
-                                        className={`relative w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm transition-all duration-200 border border-transparent ${
-                                            theme === 'dark' 
-                                                ? 'text-white/70 hover:bg-white/5 hover:text-white hover:border-white/10'
-                                                : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 hover:border-gray-200'
-                                        }`}
-                                    >
-                                        <span className="text-sm sm:text-base flex-shrink-0">{player.avatar}</span>
-                                        <span className="truncate font-medium">{player.name}</span>
-                                    </button>
-                                ))}
+                    {/* Bottom Controls */}
+                    <div className={`relative p-3 sm:p-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} mt-auto`}>
+                        {sidebarCollapsed ? (
+                            <div className="flex flex-col items-center gap-2">
+                                {/* Music button - collapsed */}
+                                <button 
+                                    onClick={handleMusicToggle}
+                                    className={`w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${
+                                        musicPlaying && !musicMuted
+                                            ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
+                                            : theme === 'dark' 
+                                                ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' 
+                                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'
+                                    }`}
+                                    title={musicMuted ? 'Unmute music' : musicPlaying ? 'Pause music' : 'Play music'}
+                                >
+                                    {musicMuted ? <LucideVolumeX size={14} /> : musicPlaying ? <LucidePause size={14} /> : <LucidePlay size={14} />}
+                                </button>
+                                {/* Theme button - collapsed */}
+                                <button 
+                                    onClick={toggleTheme}
+                                    className={`w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                    title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                                >
+                                    {theme === 'dark' ? <LucideSun size={14} /> : <LucideMoon size={14} />}
+                                </button>
+                                {/* Rulebook button - collapsed */}
+                                <button 
+                                    onClick={handleRulebookClick}
+                                    className={`w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                    title="Open rulebook (external link)"
+                                >
+                                    <LucideBook size={14} />
+                                </button>
                             </div>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    {/* Music button - expanded */}
+                                    <button 
+                                        onClick={handleMusicToggle}
+                                        className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${
+                                            musicPlaying && !musicMuted
+                                                ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
+                                                : theme === 'dark' 
+                                                    ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' 
+                                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'
+                                        }`}
+                                        title={musicMuted ? 'Unmute music' : musicPlaying ? 'Pause music' : 'Play music'}
+                                    >
+                                        {musicMuted ? <LucideVolumeX size={16} /> : musicPlaying ? <LucidePause size={16} /> : <LucidePlay size={16} />}
+                                    </button>
+                                    {/* Theme button - expanded */}
+                                    <button 
+                                        onClick={toggleTheme}
+                                        className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                                    >
+                                        {theme === 'dark' ? <LucideSun size={16} /> : <LucideMoon size={16} />}
+                                    </button>
+                                    {/* Rulebook button - expanded */}
+                                    <button 
+                                        onClick={handleRulebookClick}
+                                        className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                                        title="Open rulebook (external link)"
+                                    >
+                                        <LucideBook size={16} />
+                                    </button>
+                                </div>
+                                <div className={`text-xs ${theme === 'dark' ? 'text-white/40' : 'text-gray-400'} font-medium`}>
+                                    Controls
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                 </div>
             </div>
         </>

@@ -11,7 +11,8 @@ const HomePage: React.FC<HomePageProps> = ({
     players, 
     handleStartLeague, 
     handleResetLeague, 
-    handlePlayerClick 
+    handlePlayerClick,
+    setCurrentPage
 }) => {
     const { theme } = useTheme();
     
@@ -48,7 +49,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 <span className="text-orange-400 font-semibold">{players.length}</span> players registered and ready to compete
                             </p>
                             <button 
-                                onClick={handleStartLeague} 
+                                onClick={() => setCurrentPage('league')} 
                                 disabled={players.length < 2}
                                 className={`relative group bg-gradient-to-r from-orange-500/20 to-orange-600/20 hover:from-orange-500/30 hover:to-orange-600/30 active:from-orange-500/40 active:to-orange-600/40 text-orange-400 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg border border-orange-500/30 shadow-[0_0_30px_rgba(251,146,60,0.2)] transition-all duration-200 hover:shadow-[0_0_40px_rgba(251,146,60,0.3)] active:scale-[0.98] text-sm sm:text-base ${
                                     players.length < 2 
@@ -70,8 +71,15 @@ const HomePage: React.FC<HomePageProps> = ({
         return (
             <div className="space-y-4 sm:space-y-6">
                 <div className="text-center">
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-400 mb-2">联赛进行中</h2>
-                    <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮</p>
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-400 mb-2">
+                        {leagueState.league_name || '联赛进行中'}
+                    </h2>
+                    <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                        第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮
+                        {leagueState.season_number && (
+                            <span className="ml-2">• Season {leagueState.season_number}</span>
+                        )}
+                    </p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
@@ -86,7 +94,16 @@ const HomePage: React.FC<HomePageProps> = ({
             <div className="space-y-4 sm:space-y-6">
                 <div className={`text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === 'dark' ? 'bg-gray-800/70' : 'bg-white/80'}`}>
                     <LucideCrown className="text-yellow-400" size={60} />
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300">联赛结束！</h2>
+                    <div className="text-center">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300">
+                            {leagueState.league_name || '联赛结束！'}
+                        </h2>
+                        {leagueState.season_number && (
+                            <p className={`text-lg sm:text-xl mt-2 ${theme === 'dark' ? 'text-yellow-400/80' : 'text-yellow-600'}`}>
+                                Season {leagueState.season_number} 完成
+                            </p>
+                        )}
+                    </div>
                     {leagueState.winner && (
                         <>
                             <div className="text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4">{leagueState.winner.avatar}</div>

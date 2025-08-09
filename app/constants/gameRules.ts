@@ -14,8 +14,13 @@ export const GAME_RULES = {
     SPECIAL_RULES: [
         "无特殊规则",
         "手牌明牌",
-        "禁止使用 Skip",
+        "禁止携带 Skip",
         "猫牌视为 Skip",
+        "至多携带1张Skip",
+        "至多携带1张Defuse",
+        "禁止携带Attack",
+        "至多携带1张Attack",
+        "1次免费See the Future",
     ],
     AVATARS: [
         '😼', '😻', '🙀', '😿', '😾', '😸', '😹', '😺', '😽',
