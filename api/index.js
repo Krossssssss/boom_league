@@ -302,4 +302,3 @@ export default require_dist();
    * @license MIT
    *)
 */
-//# sourceMappingURL=index.js.map
