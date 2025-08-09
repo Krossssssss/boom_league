@@ -50,25 +50,62 @@ export const UTILS = {
             const player = updatedPlayers.find(p => p.id === result.playerId);
             if (!player) return;
             
-            // Increment total leagues played
-            player.totalGames = (player.totalGames || 0) + 1;
+            // Increment total games played (leagues)
+            player.total_games = (player.total_games || 0) + 1;
             
-            // Update championship/runner-up/third place counts based on FINAL league placement
+            // Update league-level championship/runner-up/third place counts based on FINAL league placement
             if (result.finalPlacement === 1) {
                 player.championships = (player.championships || 0) + 1;
             } else if (result.finalPlacement === 2) {
-                player.runnerUp = (player.runnerUp || 0) + 1;
+                player.runner_up = (player.runner_up || 0) + 1;
             } else if (result.finalPlacement === 3) {
-                player.thirdPlace = (player.thirdPlace || 0) + 1;
+                player.third_place = (player.third_place || 0) + 1;
             }
             
-            // Calculate average placement across all leagues
-            // We need to track cumulative placement to calculate this properly
-            const totalPlacementSum = (player.averagePlacement || 0) * ((player.totalGames || 1) - 1) + result.finalPlacement;
-            player.averagePlacement = parseFloat((totalPlacementSum / player.totalGames).toFixed(2));
+            // Update compatibility fields
+            player.leagueChampionships = player.championships;
+            player.leagueRunnerUp = player.runner_up;
+            player.leagueThirdPlace = player.third_place;
+            player.totalLeagues = player.total_games;
+            player.totalGames = player.total_games;
+        });
+        
+        return updatedPlayers;
+    },
+
+    // Calculate and update round-level statistics when a round finishes
+    updateRoundStatistics: (players: Player[], roundResults: { playerId: string, placement: number }[]): Player[] => {
+        const updatedPlayers = [...players];
+        
+        roundResults.forEach(result => {
+            const player = updatedPlayers.find(p => p.id === result.playerId);
+            if (!player) return;
             
-            // Calculate win rate (percentage of leagues won)
-            player.winRate = parseFloat(((player.championships || 0) / player.totalGames * 100).toFixed(1));
+            // Increment total rounds played
+            player.totalRounds = (player.totalRounds || 0) + 1;
+            
+            // Update round-level championship/runner-up/third place counts
+            if (result.placement === 1) {
+                player.roundChampionships = (player.roundChampionships || 0) + 1;
+            } else if (result.placement === 2) {
+                player.roundRunnerUp = (player.roundRunnerUp || 0) + 1;
+            } else if (result.placement === 3) {
+                player.roundThirdPlace = (player.roundThirdPlace || 0) + 1;
+            }
+            
+            // Calculate round average placement
+            const currentAvg = player.roundAveragePlacement || 0;
+            const totalRounds = player.totalRounds;
+            const totalPlacementSum = currentAvg * (totalRounds - 1) + result.placement;
+            player.roundAveragePlacement = parseFloat((totalPlacementSum / totalRounds).toFixed(2));
+            
+            // Calculate round win rate (top 3 finishes count as wins)
+            const roundWins = (player.roundChampionships || 0) + (player.roundRunnerUp || 0) + (player.roundThirdPlace || 0);
+            player.roundWinRate = parseFloat((roundWins / totalRounds * 100).toFixed(1));
+            
+            // Update compatibility fields
+            player.averagePlacement = player.roundAveragePlacement;
+            player.winRate = player.roundWinRate;
         });
         
         return updatedPlayers;

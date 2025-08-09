@@ -11,6 +11,7 @@ import { SUPABASE_CONFIG } from '../constants/supabase';
 
 // Import utils
 import { UTILS } from '../utils/gameUtils';
+import { calculatePlayerRankings } from '../utils/rankingUtils';
 import { 
     playerToSupabase, 
     playerFromSupabase, 
@@ -74,6 +75,12 @@ export default function Index() {
     const [leagueHistory, setLeagueHistory] = useState<LeagueHistory[]>([]);
     const [currentLeagueName, setCurrentLeagueName] = useState<string>('');
     const [nextSeasonNumber, setNextSeasonNumber] = useState<number>(1);
+
+    // Helper function to update players with rankings
+    const updatePlayersWithRankings = (newPlayers: Player[]) => {
+        const playersWithRankings = calculatePlayerRankings(newPlayers);
+        setPlayers(playersWithRankings);
+    };
 
     // Load sidebar collapsed state from localStorage
     useEffect(() => {
@@ -198,46 +205,19 @@ export default function Index() {
                 .select('*')
                 .eq('app_id', appId);
             
-            // Load rankings data from player_rankings table
-            const { data: rankingsData, error: rankingsError } = await supabase
-                .from('player_rankings')
-                .select('*')
-                .eq('app_id', appId)
-                .order('score', { ascending: false });
-            
             if (playersError) console.error("Error fetching players:", playersError);
-            if (rankingsError) console.error("Error fetching player rankings:", rankingsError);
             
             if (playersData) {
-                // Merge data from both tables
+                // Map data from players table only
                 const mappedPlayers = playersData.map((playerData: any) => {
-                    const basePlayer = playerFromSupabase(playerData);
-                    
-                    // Find corresponding rankings data
-                    const rankingData = rankingsData?.find((r: any) => r.id === playerData.id);
-                    
-                    if (rankingData) {
-                        // Merge rankings data into player object
-                        return {
-                            ...basePlayer,
-                            totalGames: rankingData.total_games || 0,
-                            averagePlacement: rankingData.average_placement || 0,
-                            winRate: rankingData.win_rate || 0,
-                            // Use rankings data for current score and stats if available
-                            score: rankingData.score || basePlayer.score,
-                            championships: rankingData.championships || basePlayer.championships,
-                            runnerUp: rankingData.runner_up || basePlayer.runnerUp,
-                            thirdPlace: rankingData.third_place || basePlayer.thirdPlace,
-                            totalVP: rankingData.total_vp || basePlayer.totalVP,
-                        };
-                    }
-                    
-                    return basePlayer;
+                    return playerFromSupabase(playerData);
                 });
                 
                 // Sort by score (descending)
                 mappedPlayers.sort((a: Player, b: Player) => b.score - a.score);
-                setPlayers(mappedPlayers);
+                
+                // Calculate rankings for all players
+                updatePlayersWithRankings(mappedPlayers);
             }
         };
 
@@ -295,10 +275,35 @@ export default function Index() {
             avatar: selectedAvatar,
             score: 0,
             history: [],
+            
+            // League-level statistics
+            leagueChampionships: 0,
+            leagueRunnerUp: 0,
+            leagueThirdPlace: 0,
+            
+            // Round-level statistics
+            roundChampionships: 0,
+            roundRunnerUp: 0,
+            roundThirdPlace: 0,
+            
+            // Score statistics
+            totalVP: 0,
+            
+            // Game statistics
+            totalLeagues: 0,
+            totalRounds: 0,
+            
+            // Average and win rate statistics
+            roundAveragePlacement: 0,
+            roundWinRate: 0,
+            
+            // Compatibility fields
             championships: 0,
             runnerUp: 0,
             thirdPlace: 0,
-            totalVP: 0,
+            totalGames: 0,
+            averagePlacement: 0,
+            winRate: 0,
         } as any;
 
         console.log('Adding temp player:', tempPlayer);
@@ -324,25 +329,7 @@ export default function Index() {
             .select()
             .single();
 
-        // Also insert into player_rankings table with initial stats
-        if (data && !error) {
-            await supabase
-                .from('player_rankings')
-                .insert({
-                    id: data.id,
-                    app_id: appId,
-                    name: newPlayerName.trim(),
-                    avatar: selectedAvatar,
-                    score: 0,
-                    championships: 0,
-                    runner_up: 0,
-                    third_place: 0,
-                    total_vp: 0,
-                    total_games: 0,
-                    average_placement: 0.00,
-                    win_rate: 0.00
-                });
-        }
+
 
         console.log('Supabase insert result:', { data, error });
 
@@ -368,13 +355,11 @@ export default function Index() {
         const previous = players;
         setPlayers((curr) => curr.filter((p) => p.id !== playerId));
 
-        // Delete from both tables
-        const [{ error: playersError }, { error: rankingsError }] = await Promise.all([
-            supabase.from('players').delete().match({ id: playerId, app_id: appId }),
-            supabase.from('player_rankings').delete().match({ id: playerId, app_id: appId })
-        ]);
-
-        const error = playersError || rankingsError;
+        // Delete from players table
+        const { error } = await supabase
+            .from('players')
+            .delete()
+            .match({ id: playerId, app_id: appId });
 
         if (error) {
             console.error('Delete player failed:', error);
@@ -683,9 +668,37 @@ export default function Index() {
             );
         }
         
-        setPlayers(updatedPlayersData.sort((a, b) => b.score - a.score));
+        // Update round-level statistics for all players
+        const roundResults = results.map((playerId, index) => ({
+            playerId,
+            placement: index + 1
+        }));
         
-        const potentialWinners = updatedPlayersData
+        const playersWithRoundStats = UTILS.updateRoundStatistics(updatedPlayersData, roundResults);
+        
+        // Update database with round statistics
+        const roundStatUpdates = playersWithRoundStats.map(player => {
+            const roundStatsData = playerToSupabase({
+                roundChampionships: player.roundChampionships,
+                roundRunnerUp: player.roundRunnerUp,
+                roundThirdPlace: player.roundThirdPlace,
+                totalRounds: player.totalRounds,
+                roundAveragePlacement: player.roundAveragePlacement,
+                roundWinRate: player.roundWinRate
+            });
+            
+            return supabase
+                .from('players')
+                .update(roundStatsData)
+                .match({ id: player.id, app_id: appId });
+        });
+        
+        // Add round stats updates to the player updates array
+        playerUpdates.push(...roundStatUpdates);
+        
+        updatePlayersWithRankings(playersWithRoundStats.sort((a, b) => b.score - a.score));
+        
+        const potentialWinners = playersWithRoundStats
             .filter(p => p.score >= GAME_RULES.WIN_SCORE)
             .sort((a, b) => b.score - a.score);
         
@@ -699,7 +712,7 @@ export default function Index() {
             newStatus = 'finished';
         } else if (nextRound > GAME_RULES.MAX_ROUNDS) {
             newStatus = 'finished';
-            const sortedPlayers = updatedPlayersData.sort((a, b) => b.score - a.score);
+            const sortedPlayers = playersWithRoundStats.sort((a, b) => b.score - a.score);
             const topScore = sortedPlayers[0].score;
             const winners = sortedPlayers.filter(p => p.score === topScore);
             if (winners.length > 1) {
@@ -732,20 +745,39 @@ export default function Index() {
 
         // Update player statistics and save to history if league is finished
         if (newStatus === 'finished' && finalWinner) {
-            // Calculate final league placements
-            const finalStandings = updatedPlayersData.sort((a, b) => b.score - a.score);
+            // Calculate final league placements using the updated players with round stats
+            const finalStandings = playersWithRoundStats.sort((a, b) => b.score - a.score);
             const leagueResults = finalStandings.map((player, index) => ({
                 playerId: player.id,
                 finalPlacement: index + 1
             }));
             
             // Update league-level statistics for all players
-            const playersWithUpdatedStats = UTILS.updateLeagueStatistics(updatedPlayersData, leagueResults);
-            setPlayers(playersWithUpdatedStats);
+            const playersWithUpdatedStats = UTILS.updateLeagueStatistics(playersWithRoundStats, leagueResults);
+            updatePlayersWithRankings(playersWithUpdatedStats);
             
             // Update database with new statistics
             const statisticsUpdates = playersWithUpdatedStats.map(player => {
                 const playerUpdateData = playerToSupabase({
+                    // League-level statistics
+                    leagueChampionships: player.leagueChampionships,
+                    leagueRunnerUp: player.leagueRunnerUp,
+                    leagueThirdPlace: player.leagueThirdPlace,
+                    
+                    // Round-level statistics
+                    roundChampionships: player.roundChampionships,
+                    roundRunnerUp: player.roundRunnerUp,
+                    roundThirdPlace: player.roundThirdPlace,
+                    
+                    // Game statistics
+                    totalLeagues: player.totalLeagues,
+                    totalRounds: player.totalRounds,
+                    
+                    // Average and win rate statistics
+                    roundAveragePlacement: player.roundAveragePlacement,
+                    roundWinRate: player.roundWinRate,
+                    
+                    // Compatibility fields
                     championships: player.championships,
                     runnerUp: player.runnerUp,
                     thirdPlace: player.thirdPlace,
@@ -759,19 +791,7 @@ export default function Index() {
                     supabase
                         .from('players')
                         .update(playerUpdateData)
-                        .match({ id: player.id, app_id: appId }),
-                    
-                    // Update player_rankings table
-                    supabase
-                        .from('player_rankings')
-                        .upsert({
-                            id: player.id,
-                            app_id: appId,
-                            name: player.name,
-                            avatar: player.avatar,
-                            score: player.score,
-                            ...playerUpdateData
-                        })
+                        .match({ id: player.id, app_id: appId })
                 ];
             }).flat();
             

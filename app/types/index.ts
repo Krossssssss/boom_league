@@ -7,34 +7,51 @@ export interface Player {
     score: number;
     history: GameHistory[];
     
-    // 联赛级别统计 (League-level statistics)
-    leagueChampionships: number;     // 联赛冠军次数
-    leagueRunnerUp: number;          // 联赛亚军次数
-    leagueThirdPlace: number;        // 联赛季军次数
+    // 数据库字段 (Direct database fields)
+    championships: number;           // 联赛冠军次数 (league-level championships)
+    runner_up: number;               // 联赛亚军次数 (league-level runner-up)
+    third_place: number;             // 联赛季军次数 (league-level third place)
+    total_vp: number;                // 总VP获得数
+    total_games: number;             // 总游戏数 (total leagues participated)
+    average_placement: number;       // 平均排名
+    win_rate: number;                // 胜率
+    single_round_firsts: number;     // 单轮冠军次数
+    single_round_seconds: number;    // 单轮亚军次数
+    single_round_thirds: number;     // 单轮季军次数
     
-    // 单轮级别统计 (Round-level statistics)
-    roundChampionships: number;      // 单轮冠军次数
-    roundRunnerUp: number;           // 单轮亚军次数
-    roundThirdPlace: number;         // 单轮季军次数
+    // 时间戳字段 (Timestamp fields)
+    created_at?: string;
+    updated_at?: string;
     
-    // 分数统计 (Score statistics)
-    totalVP: number;                 // 总VP获得数
+    // 排名信息 (Rankings among all players)
+    rankings?: {
+        championships: number;           // 联赛冠军次数排名
+        runner_up: number;               // 联赛亚军次数排名
+        third_place: number;             // 联赛季军次数排名
+        single_round_firsts: number;     // 单轮冠军次数排名
+        single_round_seconds: number;    // 单轮亚军次数排名
+        single_round_thirds: number;     // 单轮季军次数排名
+        total_vp: number;                // 总VP排名
+        total_games: number;             // 总游戏数排名
+        average_placement: number;       // 平均排名的排名 (越小越好)
+        win_rate: number;                // 胜率排名
+    };
     
-    // 游戏统计 (Game statistics)
-    totalLeagues: number;            // 总联赛数
-    totalRounds: number;             // 总轮次数
-    
-    // 平均和胜率统计 (Average and win rate statistics)
-    roundAveragePlacement: number;   // 单轮平均排名
-    roundWinRate: number;            // 单轮胜率（冠亚季军都算获胜）
-    
-    // 兼容性字段 (Compatibility fields for existing code)
-    championships?: number;          // 兼容旧代码，映射到leagueChampionships
-    runnerUp?: number;              // 兼容旧代码，映射到leagueRunnerUp
-    thirdPlace?: number;            // 兼容旧代码，映射到leagueThirdPlace
-    totalGames?: number;            // 兼容旧代码，映射到totalLeagues
-    averagePlacement?: number;      // 兼容旧代码，映射到roundAveragePlacement
-    winRate?: number;               // 兼容旧代码，映射到roundWinRate
+    // 兼容性字段 (Compatibility fields for legacy code)
+    leagueChampionships?: number;    // 映射到championships
+    leagueRunnerUp?: number;         // 映射到runner_up
+    leagueThirdPlace?: number;       // 映射到third_place
+    roundChampionships?: number;     // 映射到single_round_firsts
+    roundRunnerUp?: number;          // 映射到single_round_seconds
+    roundThirdPlace?: number;        // 映射到single_round_thirds
+    totalVP?: number;                // 映射到total_vp
+    totalLeagues?: number;           // 映射到total_games
+    totalRounds?: number;            // 计算得出（从history或其他方式）
+    roundAveragePlacement?: number;  // 映射到average_placement
+    roundWinRate?: number;           // 映射到win_rate
+    totalGames?: number;             // 映射到total_games
+    averagePlacement?: number;       // 映射到average_placement
+    winRate?: number;                // 映射到win_rate
 }
 
 export interface GameHistory {

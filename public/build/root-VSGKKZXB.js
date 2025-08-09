@@ -4,7 +4,7 @@ import {
   Meta,
   Outlet,
   Scripts
-} from "/build/_shared/chunk-VUD4ATTL.js";
+} from "/build/_shared/chunk-FWFLRLK7.js";
 import {
   require_jsx_dev_runtime
 } from "/build/_shared/chunk-F4KNNEUR.js";
@@ -19,7 +19,7 @@ import {
 } from "/build/_shared/chunk-PZDJHGND.js";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-NZ7GZXIT.css?url";
+var tailwind_default = "/build/_assets/tailwind-2VLFS4EC.css?url";
 
 // app/root.tsx
 var import_jsx_dev_runtime = __toESM(require_jsx_dev_runtime(), 1);
@@ -112,4 +112,4 @@ export {
   App as default,
   links
 };
-//# sourceMappingURL=/build/root-LDCP27XA.js.map
+//# sourceMappingURL=/build/root-VSGKKZXB.js.map

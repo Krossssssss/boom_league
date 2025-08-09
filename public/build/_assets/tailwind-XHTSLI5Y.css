@@ -473,8 +473,14 @@ video {
 .ml-auto {
   margin-left: auto;
 }
+.ml-0\.5 {
+  margin-left: .125rem;
+}
 .block {
   display: block;
+}
+.inline {
+  display: inline;
 }
 .flex {
   display: flex;
@@ -490,6 +496,9 @@ video {
 }
 .hidden {
   display: none;
+}
+.h-10 {
+  height: 2.5rem;
 }
 .h-2 {
   height: .5rem;
@@ -509,9 +518,6 @@ video {
 .h-full {
   height: 100%;
 }
-.h-10 {
-  height: 2.5rem;
-}
 .h-\[160px\] {
   height: 160px;
 }
@@ -523,6 +529,9 @@ video {
 }
 .h-1\.5 {
   height: .375rem;
+}
+.h-5 {
+  height: 1.25rem;
 }
 .max-h-28 {
   max-height: 7rem;
@@ -545,6 +554,12 @@ video {
 .w-1 {
   width: .25rem;
 }
+.w-10 {
+  width: 2.5rem;
+}
+.w-16 {
+  width: 4rem;
+}
 .w-2 {
   width: .5rem;
 }
@@ -565,12 +580,6 @@ video {
 }
 .w-full {
   width: 100%;
-}
-.w-16 {
-  width: 4rem;
-}
-.w-10 {
-  width: 2.5rem;
 }
 .w-6 {
   width: 1.5rem;
@@ -968,6 +977,41 @@ video {
 .border-white\/15 {
   border-color: #ffffff26;
 }
+.border-cyan-500\/20 {
+  border-color: #06b6d433;
+}
+.border-indigo-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(199 210 254 / var(--tw-border-opacity, 1));
+}
+.border-indigo-500\/20 {
+  border-color: #6366f133;
+}
+.border-pink-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(251 207 232 / var(--tw-border-opacity, 1));
+}
+.border-pink-500\/20 {
+  border-color: #ec489933;
+}
+.border-purple-500\/20 {
+  border-color: #a855f733;
+}
+.border-gray-500\/20 {
+  border-color: #6b728033;
+}
+.border-current {
+  border-color: currentColor;
+}
+.border-gray-600\/50 {
+  border-color: #4b556380;
+}
+.border-rose-500\/20 {
+  border-color: #f43f5e33;
+}
+.border-teal-500\/20 {
+  border-color: #14b8a633;
+}
 .bg-\[\#0a0a0a\] {
   --tw-bg-opacity: 1;
   background-color: rgb(10 10 10 / var(--tw-bg-opacity, 1));
@@ -1188,6 +1232,33 @@ video {
 }
 .bg-white\/20 {
   background-color: #fff3;
+}
+.bg-cyan-500\/10 {
+  background-color: #06b6d41a;
+}
+.bg-indigo-100\/50 {
+  background-color: #e0e7ff80;
+}
+.bg-indigo-500\/10 {
+  background-color: #6366f11a;
+}
+.bg-pink-100\/50 {
+  background-color: #fce7f380;
+}
+.bg-pink-500\/10 {
+  background-color: #ec48991a;
+}
+.bg-purple-500\/10 {
+  background-color: #a855f71a;
+}
+.bg-gray-500\/10 {
+  background-color: #6b72801a;
+}
+.bg-rose-500\/10 {
+  background-color: #f43f5e1a;
+}
+.bg-teal-500\/10 {
+  background-color: #14b8a61a;
 }
 .bg-\[linear-gradient\(45deg\,_transparent_48\%\,_rgba\(0\,0\,0\,0\.01\)_49\%\,_rgba\(0\,0\,0\,0\.01\)_51\%\,_transparent_52\%\)\] {
   background-image: linear-gradient(45deg, transparent 48%, rgba(0, 0, 0, .01) 49%, rgba(0, 0, 0, .01) 51%, transparent 52%);
@@ -1920,6 +1991,30 @@ video {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity, 1));
 }
+.text-cyan-400 {
+  --tw-text-opacity: 1;
+  color: rgb(34 211 238 / var(--tw-text-opacity, 1));
+}
+.text-indigo-600 {
+  --tw-text-opacity: 1;
+  color: rgb(79 70 229 / var(--tw-text-opacity, 1));
+}
+.text-pink-400 {
+  --tw-text-opacity: 1;
+  color: rgb(244 114 182 / var(--tw-text-opacity, 1));
+}
+.text-pink-600 {
+  --tw-text-opacity: 1;
+  color: rgb(219 39 119 / var(--tw-text-opacity, 1));
+}
+.text-rose-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 113 133 / var(--tw-text-opacity, 1));
+}
+.text-teal-400 {
+  --tw-text-opacity: 1;
+  color: rgb(45 212 191 / var(--tw-text-opacity, 1));
+}
 .opacity-0 {
   opacity: 0;
 }
@@ -2462,6 +2557,9 @@ video {
 .hover\:bg-green-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-gray-600\/50:hover {
+  background-color: #4b556380;
 }
 .hover\:bg-gradient-to-r:hover {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
@@ -3039,14 +3137,14 @@ video {
   .lg\:h-6 {
     height: 1.5rem;
   }
+  .lg\:w-16 {
+    width: 4rem;
+  }
   .lg\:w-6 {
     width: 1.5rem;
   }
   .lg\:w-64 {
     width: 16rem;
-  }
-  .lg\:w-16 {
-    width: 4rem;
   }
   .lg\:max-w-lg {
     max-width: 32rem;
@@ -3066,6 +3164,9 @@ video {
   }
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .lg\:gap-4 {
     gap: 1rem;
@@ -3125,6 +3226,9 @@ video {
   }
   .xl\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .xl\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 @media (min-width: 475px) {
@@ -3228,4 +3332,4 @@ video {
     --tw-gradient-to: transparent var(--tw-gradient-to-position);
   }
 }
-/*# sourceMappingURL=/build/_assets/tailwind-GE4CVRIL.css.map */
+/*# sourceMappingURL=/build/_assets/tailwind-DCOXF6OW.css.map */

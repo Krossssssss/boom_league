@@ -130,7 +130,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-CZEYFKDV.css?url";
+var tailwind_default = "/build/_assets/tailwind-V5S4WAM5.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -199,9 +199,9 @@ var index_exports = {};
 __export(index_exports, {
   default: () => Index
 });
-import { useState as useState4, useEffect } from "react";
+import { useState as useState5, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { LucideCat as LucideCat3, LucideShield as LucideShield3, LucideBomb as LucideBomb4, LucideSwords as LucideSwords3, LucideTrophy as LucideTrophy6, LucideDices as LucideDices2, LucideClipboardList, LucideMenu as LucideMenu2, LucidePlus as LucidePlus2, LucideGamepad2 as LucideGamepad22, LucideChevronLeft as LucideChevronLeft2, LucideX as LucideX3, LucideCrown as LucideCrown4 } from "lucide-react";
+import { LucideCat as LucideCat3, LucideShield as LucideShield3, LucideBomb as LucideBomb4, LucideSwords as LucideSwords3, LucideTrophy as LucideTrophy6, LucideDices as LucideDices3, LucideClipboardList, LucideMenu as LucideMenu2, LucidePlus as LucidePlus2, LucideGamepad2 as LucideGamepad22, LucideChevronLeft as LucideChevronLeft2, LucideX as LucideX3, LucideCrown as LucideCrown5 } from "lucide-react";
 
 // app/constants/gameRules.ts
 var GAME_RULES = {
@@ -319,35 +319,100 @@ var UTILS = {
     let updatedPlayers = [...players];
     return leagueResults.forEach((result) => {
       let player = updatedPlayers.find((p) => p.id === result.playerId);
+      player && (player.total_games = (player.total_games || 0) + 1, result.finalPlacement === 1 ? player.championships = (player.championships || 0) + 1 : result.finalPlacement === 2 ? player.runner_up = (player.runner_up || 0) + 1 : result.finalPlacement === 3 && (player.third_place = (player.third_place || 0) + 1), player.leagueChampionships = player.championships, player.leagueRunnerUp = player.runner_up, player.leagueThirdPlace = player.third_place, player.totalLeagues = player.total_games, player.totalGames = player.total_games);
+    }), updatedPlayers;
+  },
+  // Calculate and update round-level statistics when a round finishes
+  updateRoundStatistics: (players, roundResults) => {
+    let updatedPlayers = [...players];
+    return roundResults.forEach((result) => {
+      let player = updatedPlayers.find((p) => p.id === result.playerId);
       if (!player)
         return;
-      player.totalGames = (player.totalGames || 0) + 1, result.finalPlacement === 1 ? player.championships = (player.championships || 0) + 1 : result.finalPlacement === 2 ? player.runnerUp = (player.runnerUp || 0) + 1 : result.finalPlacement === 3 && (player.thirdPlace = (player.thirdPlace || 0) + 1);
-      let totalPlacementSum = (player.averagePlacement || 0) * ((player.totalGames || 1) - 1) + result.finalPlacement;
-      player.averagePlacement = parseFloat((totalPlacementSum / player.totalGames).toFixed(2)), player.winRate = parseFloat(((player.championships || 0) / player.totalGames * 100).toFixed(1));
+      player.totalRounds = (player.totalRounds || 0) + 1, result.placement === 1 ? player.roundChampionships = (player.roundChampionships || 0) + 1 : result.placement === 2 ? player.roundRunnerUp = (player.roundRunnerUp || 0) + 1 : result.placement === 3 && (player.roundThirdPlace = (player.roundThirdPlace || 0) + 1);
+      let currentAvg = player.roundAveragePlacement || 0, totalRounds = player.totalRounds, totalPlacementSum = currentAvg * (totalRounds - 1) + result.placement;
+      player.roundAveragePlacement = parseFloat((totalPlacementSum / totalRounds).toFixed(2));
+      let roundWins = (player.roundChampionships || 0) + (player.roundRunnerUp || 0) + (player.roundThirdPlace || 0);
+      player.roundWinRate = parseFloat((roundWins / totalRounds * 100).toFixed(1)), player.averagePlacement = player.roundAveragePlacement, player.winRate = player.roundWinRate;
     }), updatedPlayers;
   }
 };
 
+// app/utils/rankingUtils.ts
+var calculatePlayerRankings = (players) => {
+  if (!players || players.length === 0)
+    return [];
+  let playersWithRankings = [...players], calculateRanking = (statGetter, descending = !0) => {
+    let values = players.map(statGetter), sortedUniqueValues = [...new Set(values)].sort(
+      (a, b) => descending ? b - a : a - b
+    );
+    return values.map((value) => sortedUniqueValues.indexOf(value) + 1);
+  }, championshipsRanks = calculateRanking((p) => p.championships || 0), runnerUpRanks = calculateRanking((p) => p.runner_up || 0), thirdPlaceRanks = calculateRanking((p) => p.third_place || 0), singleRoundFirstsRanks = calculateRanking((p) => p.single_round_firsts || 0), singleRoundSecondsRanks = calculateRanking((p) => p.single_round_seconds || 0), singleRoundThirdsRanks = calculateRanking((p) => p.single_round_thirds || 0), totalVPRanks = calculateRanking((p) => p.total_vp || 0), totalGamesRanks = calculateRanking((p) => p.total_games || 0), averagePlacementRanks = calculateRanking(
+    (p) => p.average_placement || 999,
+    // Use 999 as default for players with no games
+    !1
+    // ascending order (lower average placement is better)
+  ), winRateRanks = calculateRanking((p) => p.win_rate || 0);
+  return playersWithRankings.forEach((player, index) => {
+    player.rankings = {
+      championships: championshipsRanks[index],
+      runner_up: runnerUpRanks[index],
+      third_place: thirdPlaceRanks[index],
+      single_round_firsts: singleRoundFirstsRanks[index],
+      single_round_seconds: singleRoundSecondsRanks[index],
+      single_round_thirds: singleRoundThirdsRanks[index],
+      total_vp: totalVPRanks[index],
+      total_games: totalGamesRanks[index],
+      average_placement: averagePlacementRanks[index],
+      win_rate: winRateRanks[index]
+    };
+  }), playersWithRankings;
+}, getRankingSuffix = (rank) => rank === 1 ? "1st" : rank === 2 ? "2nd" : rank === 3 ? "3rd" : `${rank}th`, getRankingColorClass = (rank) => rank === 1 ? "text-yellow-400" : rank === 2 ? "text-gray-300" : rank === 3 ? "text-orange-400" : rank <= 5 ? "text-blue-400" : rank <= 10 ? "text-green-400" : "text-gray-500";
+
 // app/utils/supabaseMapping.ts
 var playerToSupabase = (player) => {
   let supabasePlayer = {};
-  return player.id !== void 0 && (supabasePlayer.id = player.id), player.app_id !== void 0 && (supabasePlayer.app_id = player.app_id), player.name !== void 0 && (supabasePlayer.name = player.name), player.avatar !== void 0 && (supabasePlayer.avatar = player.avatar), player.score !== void 0 && (supabasePlayer.score = player.score), player.history !== void 0 && (supabasePlayer.history = player.history), player.championships !== void 0 && (supabasePlayer.championships = player.championships), player.runnerUp !== void 0 && (supabasePlayer.runner_up = player.runnerUp), player.thirdPlace !== void 0 && (supabasePlayer.third_place = player.thirdPlace), player.totalVP !== void 0 && (supabasePlayer.total_vp = player.totalVP), player.totalGames !== void 0 && (supabasePlayer.total_games = player.totalGames), player.averagePlacement !== void 0 && (supabasePlayer.average_placement = player.averagePlacement), player.winRate !== void 0 && (supabasePlayer.win_rate = player.winRate), supabasePlayer;
-}, playerFromSupabase = (supabasePlayer) => ({
-  id: supabasePlayer.id,
-  app_id: supabasePlayer.app_id,
-  name: supabasePlayer.name,
-  avatar: supabasePlayer.avatar,
-  score: supabasePlayer.score || 0,
-  history: supabasePlayer.history || [],
-  championships: supabasePlayer.championships || 0,
-  // snake_case to camelCase mapping
-  runnerUp: supabasePlayer.runner_up || 0,
-  thirdPlace: supabasePlayer.third_place || 0,
-  totalVP: supabasePlayer.total_vp || 0,
-  totalGames: supabasePlayer.total_games || 0,
-  averagePlacement: supabasePlayer.average_placement || 0,
-  winRate: supabasePlayer.win_rate || 0
-}), leagueStateToSupabase = (leagueState) => {
+  return player.id !== void 0 && (supabasePlayer.id = player.id), player.app_id !== void 0 && (supabasePlayer.app_id = player.app_id), player.name !== void 0 && (supabasePlayer.name = player.name), player.avatar !== void 0 && (supabasePlayer.avatar = player.avatar), player.score !== void 0 && (supabasePlayer.score = player.score), player.history !== void 0 && (supabasePlayer.history = player.history), player.championships !== void 0 && (supabasePlayer.championships = player.championships), player.runner_up !== void 0 && (supabasePlayer.runner_up = player.runner_up), player.third_place !== void 0 && (supabasePlayer.third_place = player.third_place), player.total_vp !== void 0 && (supabasePlayer.total_vp = player.total_vp), player.total_games !== void 0 && (supabasePlayer.total_games = player.total_games), player.average_placement !== void 0 && (supabasePlayer.average_placement = player.average_placement), player.win_rate !== void 0 && (supabasePlayer.win_rate = player.win_rate), player.single_round_firsts !== void 0 && (supabasePlayer.single_round_firsts = player.single_round_firsts), player.single_round_seconds !== void 0 && (supabasePlayer.single_round_seconds = player.single_round_seconds), player.single_round_thirds !== void 0 && (supabasePlayer.single_round_thirds = player.single_round_thirds), player.created_at !== void 0 && (supabasePlayer.created_at = player.created_at), player.updated_at !== void 0 && (supabasePlayer.updated_at = player.updated_at), player.leagueChampionships !== void 0 && (supabasePlayer.championships = player.leagueChampionships), player.leagueRunnerUp !== void 0 && (supabasePlayer.runner_up = player.leagueRunnerUp), player.leagueThirdPlace !== void 0 && (supabasePlayer.third_place = player.leagueThirdPlace), player.roundChampionships !== void 0 && (supabasePlayer.single_round_firsts = player.roundChampionships), player.roundRunnerUp !== void 0 && (supabasePlayer.single_round_seconds = player.roundRunnerUp), player.roundThirdPlace !== void 0 && (supabasePlayer.single_round_thirds = player.roundThirdPlace), player.totalVP !== void 0 && (supabasePlayer.total_vp = player.totalVP), player.totalLeagues !== void 0 && (supabasePlayer.total_games = player.totalLeagues), player.roundAveragePlacement !== void 0 && (supabasePlayer.average_placement = player.roundAveragePlacement), player.roundWinRate !== void 0 && (supabasePlayer.win_rate = player.roundWinRate), player.totalGames !== void 0 && (supabasePlayer.total_games = player.totalGames), player.averagePlacement !== void 0 && (supabasePlayer.average_placement = player.averagePlacement), player.winRate !== void 0 && (supabasePlayer.win_rate = player.winRate), supabasePlayer;
+}, playerFromSupabase = (supabasePlayer) => {
+  let totalRounds = supabasePlayer.history ? supabasePlayer.history.length : 0;
+  return {
+    id: supabasePlayer.id,
+    app_id: supabasePlayer.app_id,
+    name: supabasePlayer.name,
+    avatar: supabasePlayer.avatar,
+    score: supabasePlayer.score || 0,
+    history: supabasePlayer.history || [],
+    // Direct database fields
+    championships: supabasePlayer.championships || 0,
+    runner_up: supabasePlayer.runner_up || 0,
+    third_place: supabasePlayer.third_place || 0,
+    total_vp: supabasePlayer.total_vp || 0,
+    total_games: supabasePlayer.total_games || 0,
+    average_placement: supabasePlayer.average_placement || 0,
+    win_rate: supabasePlayer.win_rate || 0,
+    single_round_firsts: supabasePlayer.single_round_firsts || 0,
+    single_round_seconds: supabasePlayer.single_round_seconds || 0,
+    single_round_thirds: supabasePlayer.single_round_thirds || 0,
+    // Timestamp fields
+    created_at: supabasePlayer.created_at,
+    updated_at: supabasePlayer.updated_at,
+    // Legacy compatibility fields (mapped from database fields)
+    leagueChampionships: supabasePlayer.championships || 0,
+    leagueRunnerUp: supabasePlayer.runner_up || 0,
+    leagueThirdPlace: supabasePlayer.third_place || 0,
+    roundChampionships: supabasePlayer.single_round_firsts || 0,
+    roundRunnerUp: supabasePlayer.single_round_seconds || 0,
+    roundThirdPlace: supabasePlayer.single_round_thirds || 0,
+    totalVP: supabasePlayer.total_vp || 0,
+    totalLeagues: supabasePlayer.total_games || 0,
+    totalRounds,
+    roundAveragePlacement: supabasePlayer.average_placement || 0,
+    roundWinRate: supabasePlayer.win_rate || 0,
+    totalGames: supabasePlayer.total_games || 0,
+    averagePlacement: supabasePlayer.average_placement || 0,
+    winRate: supabasePlayer.win_rate || 0
+  };
+}, leagueStateToSupabase = (leagueState) => {
   let supabaseLeagueState = {};
   return leagueState.app_id !== void 0 && (supabaseLeagueState.app_id = leagueState.app_id), leagueState.status !== void 0 && (supabaseLeagueState.status = leagueState.status), leagueState.current_round !== void 0 && (supabaseLeagueState.current_round = leagueState.current_round), leagueState.schedule !== void 0 && (supabaseLeagueState.schedule = leagueState.schedule), leagueState.winner !== void 0 && (supabaseLeagueState.winner = leagueState.winner), leagueState.league_name !== void 0 && (supabaseLeagueState.league_name = leagueState.league_name), leagueState.season_number !== void 0 && (supabaseLeagueState.season_number = leagueState.season_number), leagueState.start_date !== void 0 && (supabaseLeagueState.start_date = leagueState.start_date), leagueState.end_date !== void 0 && (supabaseLeagueState.end_date = leagueState.end_date), leagueState.created_at !== void 0 && (supabaseLeagueState.created_at = leagueState.created_at), leagueState.selected_special_rules !== void 0 && (supabaseLeagueState.selected_special_rules = leagueState.selected_special_rules), supabaseLeagueState;
 }, leagueStateFromSupabase = (supabaseLeagueState) => ({
@@ -2216,32 +2281,74 @@ import { LucideCat as LucideCat2, LucideCrown } from "lucide-react";
 import { LucideUsers } from "lucide-react";
 import { jsxDEV as jsxDEV11 } from "react/jsx-dev-runtime";
 var PlayerProfiles = ({ players, onPlayerClick }) => {
-  let { theme } = useTheme();
+  let { theme } = useTheme(), StatWithRanking = ({ icon, value, label, shortLabel, ranking, bgClass }) => /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${bgClass || (theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600")}`, children: [
+    /* @__PURE__ */ jsxDEV11("span", { children: icon }, void 0, !1, {
+      fileName: "app/components/ui/PlayerProfiles.tsx",
+      lineNumber: 22,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
+      value,
+      " ",
+      label,
+      ranking && /* @__PURE__ */ jsxDEV11("span", { className: `ml-1 font-bold ${getRankingColorClass(ranking)}`, children: [
+        "#",
+        getRankingSuffix(ranking)
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfiles.tsx",
+        lineNumber: 26,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfiles.tsx",
+      lineNumber: 23,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: [
+      value,
+      ranking && /* @__PURE__ */ jsxDEV11("span", { className: `ml-0.5 font-bold ${getRankingColorClass(ranking)}`, children: [
+        "#",
+        ranking
+      ] }, void 0, !0, {
+        fileName: "app/components/ui/PlayerProfiles.tsx",
+        lineNumber: 34,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/ui/PlayerProfiles.tsx",
+      lineNumber: 31,
+      columnNumber: 13
+    }, this)
+  ] }, void 0, !0, {
+    fileName: "app/components/ui/PlayerProfiles.tsx",
+    lineNumber: 19,
+    columnNumber: 9
+  }, this);
   return /* @__PURE__ */ jsxDEV11("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
     /* @__PURE__ */ jsxDEV11("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }, void 0, !1, {
       fileName: "app/components/ui/PlayerProfiles.tsx",
-      lineNumber: 11,
+      lineNumber: 44,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV11("div", { className: "relative z-10 p-4 sm:p-6", children: [
       /* @__PURE__ */ jsxDEV11("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
         /* @__PURE__ */ jsxDEV11("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.2)]", children: /* @__PURE__ */ jsxDEV11(LucideUsers, { size: 14, className: "text-blue-400 sm:w-4 sm:h-4" }, void 0, !1, {
           fileName: "app/components/ui/PlayerProfiles.tsx",
-          lineNumber: 15,
+          lineNumber: 48,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/components/ui/PlayerProfiles.tsx",
-          lineNumber: 14,
+          lineNumber: 47,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV11("h3", { className: `text-base sm:text-lg font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Player Profiles" }, void 0, !1, {
           fileName: "app/components/ui/PlayerProfiles.tsx",
-          lineNumber: 17,
+          lineNumber: 50,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/PlayerProfiles.tsx",
-        lineNumber: 13,
+        lineNumber: 46,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV11("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p) => /* @__PURE__ */ jsxDEV11(
@@ -2253,135 +2360,302 @@ var PlayerProfiles = ({ players, onPlayerClick }) => {
             /* @__PURE__ */ jsxDEV11("div", { className: "flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3", children: [
               /* @__PURE__ */ jsxDEV11("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }, void 0, !1, {
                 fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 31,
+                lineNumber: 64,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV11("span", { className: `font-medium text-sm sm:text-base truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"}`, children: p.name }, void 0, !1, {
                 fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 32,
+                lineNumber: 65,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/ui/PlayerProfiles.tsx",
-              lineNumber: 30,
+              lineNumber: 63,
               columnNumber: 29
             }, this),
-            /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
-              /* @__PURE__ */ jsxDEV11("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs font-medium text-yellow-400", children: [
-                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F3C6}" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 36,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
-                  p.championships || 0,
-                  " \u51A0\u519B"
-                ] }, void 0, !0, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 37,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.championships || 0 }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 38,
-                  columnNumber: 37
-                }, this)
+            /* @__PURE__ */ jsxDEV11("div", { className: "space-y-2", children: [
+              /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F3C6}",
+                    value: p.championships || 0,
+                    label: "\u8054\u8D5B\u51A0\u519B",
+                    shortLabel: "\u51A0\u519B",
+                    ranking: p.rankings?.championships,
+                    bgClass: "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 70,
+                    columnNumber: 37
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F948}",
+                    value: p.runner_up || 0,
+                    label: "\u8054\u8D5B\u4E9A\u519B",
+                    shortLabel: "\u4E9A\u519B",
+                    ranking: p.rankings?.runner_up,
+                    bgClass: `bg-gray-400/10 border-gray-400/20 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 78,
+                    columnNumber: 37
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F949}",
+                    value: p.third_place || 0,
+                    label: "\u8054\u8D5B\u5B63\u519B",
+                    shortLabel: "\u5B63\u519B",
+                    ranking: p.rankings?.third_place,
+                    bgClass: "bg-orange-500/10 border-orange-500/20 text-orange-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 86,
+                    columnNumber: 37
+                  },
+                  this
+                )
               ] }, void 0, !0, {
                 fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 35,
+                lineNumber: 69,
                 columnNumber: 33
               }, this),
-              /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 bg-gray-400/10 border border-gray-400/20 rounded text-xs font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: [
-                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F948}" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 41,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
-                  p.runnerUp || 0,
-                  " \u4E9A\u519B"
-                ] }, void 0, !0, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 42,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.runnerUp || 0 }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 43,
-                  columnNumber: 37
-                }, this)
+              /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F3AF}",
+                    value: p.single_round_firsts || 0,
+                    label: "\u5355\u8F6E\u51A0\u519B",
+                    shortLabel: "\u5355\u51A0",
+                    ranking: p.rankings?.single_round_firsts,
+                    bgClass: "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 98,
+                    columnNumber: 37
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F3B2}",
+                    value: p.single_round_seconds || 0,
+                    label: "\u5355\u8F6E\u4E9A\u519B",
+                    shortLabel: "\u5355\u4E9A",
+                    ranking: p.rankings?.single_round_seconds,
+                    bgClass: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 106,
+                    columnNumber: 37
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u26A1",
+                    value: p.single_round_thirds || 0,
+                    label: "\u5355\u8F6E\u5B63\u519B",
+                    shortLabel: "\u5355\u5B63",
+                    ranking: p.rankings?.single_round_thirds,
+                    bgClass: "bg-purple-500/10 border-purple-500/20 text-purple-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 114,
+                    columnNumber: 37
+                  },
+                  this
+                )
               ] }, void 0, !0, {
                 fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 40,
+                lineNumber: 97,
                 columnNumber: 33
               }, this),
-              /* @__PURE__ */ jsxDEV11("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-orange-500/10 border border-orange-500/20 rounded text-xs font-medium text-orange-400", children: [
-                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F949}" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 46,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
-                  p.thirdPlace || 0,
-                  " \u5B63\u519B"
+              /* @__PURE__ */ jsxDEV11("div", { className: "flex flex-wrap gap-1.5 sm:gap-2", children: [
+                /* @__PURE__ */ jsxDEV11(
+                  StatWithRanking,
+                  {
+                    icon: "\u{1F48E}",
+                    value: p.total_vp || 0,
+                    label: "\u603BVP",
+                    shortLabel: "VP",
+                    ranking: p.rankings?.total_vp,
+                    bgClass: "bg-green-500/10 border-green-500/20 text-green-400"
+                  },
+                  void 0,
+                  !1,
+                  {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 126,
+                    columnNumber: 37
+                  },
+                  this
+                ),
+                /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: [
+                  /* @__PURE__ */ jsxDEV11("span", { className: "hidden sm:inline", children: [
+                    p.total_games || 0,
+                    " \u8054\u8D5B / ",
+                    p.totalRounds || 0,
+                    " \u8F6E\u6B21",
+                    p.rankings?.total_games && /* @__PURE__ */ jsxDEV11("span", { className: `ml-1 font-bold ${getRankingColorClass(p.rankings.total_games)}`, children: [
+                      "#",
+                      getRankingSuffix(p.rankings.total_games)
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 142,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 139,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV11("span", { className: "sm:hidden", children: [
+                    p.total_games || 0,
+                    "L/",
+                    p.totalRounds || 0,
+                    "R",
+                    p.rankings?.total_games && /* @__PURE__ */ jsxDEV11("span", { className: `ml-0.5 font-bold ${getRankingColorClass(p.rankings.total_games)}`, children: [
+                      "#",
+                      p.rankings.total_games
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 150,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 147,
+                    columnNumber: 41
+                  }, this)
                 ] }, void 0, !0, {
                   fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 47,
+                  lineNumber: 134,
                   columnNumber: 37
                 }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.thirdPlace || 0 }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 48,
-                  columnNumber: 37
-                }, this)
-              ] }, void 0, !0, {
-                fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 45,
-                columnNumber: 33
-              }, this),
-              /* @__PURE__ */ jsxDEV11("div", { className: "inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded text-xs font-medium text-green-400", children: [
-                /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F48E}" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 51,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "hidden xs:inline", children: [
-                  p.totalVP || 0,
-                  " \u603BVP"
+                /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${theme === "dark" ? "bg-indigo-500/10 border-indigo-500/20 text-indigo-400" : "bg-indigo-100/50 border-indigo-200 text-indigo-600"}`, children: [
+                  /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F4CA}" }, void 0, !1, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 161,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV11("span", { className: "hidden sm:inline", children: [
+                    "\u5E73\u5747: ",
+                    p.average_placement?.toFixed(1) || "0.0",
+                    p.rankings?.average_placement && /* @__PURE__ */ jsxDEV11("span", { className: `ml-1 font-bold ${getRankingColorClass(p.rankings.average_placement)}`, children: [
+                      "#",
+                      getRankingSuffix(p.rankings.average_placement)
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 165,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 162,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV11("span", { className: "sm:hidden", children: [
+                    p.average_placement?.toFixed(1) || "0.0",
+                    p.rankings?.average_placement && /* @__PURE__ */ jsxDEV11("span", { className: `ml-0.5 font-bold ${getRankingColorClass(p.rankings.average_placement)}`, children: [
+                      "#",
+                      p.rankings.average_placement
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 173,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 170,
+                    columnNumber: 41
+                  }, this)
                 ] }, void 0, !0, {
                   fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 52,
+                  lineNumber: 156,
                   columnNumber: 37
                 }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "xs:hidden", children: p.totalVP || 0 }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${theme === "dark" ? "bg-pink-500/10 border-pink-500/20 text-pink-400" : "bg-pink-100/50 border-pink-200 text-pink-600"}`, children: [
+                  /* @__PURE__ */ jsxDEV11("span", { children: "\u{1F3AA}" }, void 0, !1, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 184,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV11("span", { className: "hidden sm:inline", children: [
+                    "\u80DC\u7387: ",
+                    p.win_rate?.toFixed(0) || "0",
+                    "%",
+                    p.rankings?.win_rate && /* @__PURE__ */ jsxDEV11("span", { className: `ml-1 font-bold ${getRankingColorClass(p.rankings.win_rate)}`, children: [
+                      "#",
+                      getRankingSuffix(p.rankings.win_rate)
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 188,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 185,
+                    columnNumber: 41
+                  }, this),
+                  /* @__PURE__ */ jsxDEV11("span", { className: "sm:hidden", children: [
+                    p.win_rate?.toFixed(0) || "0",
+                    "%",
+                    p.rankings?.win_rate && /* @__PURE__ */ jsxDEV11("span", { className: `ml-0.5 font-bold ${getRankingColorClass(p.rankings.win_rate)}`, children: [
+                      "#",
+                      p.rankings.win_rate
+                    ] }, void 0, !0, {
+                      fileName: "app/components/ui/PlayerProfiles.tsx",
+                      lineNumber: 196,
+                      columnNumber: 49
+                    }, this)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/ui/PlayerProfiles.tsx",
+                    lineNumber: 193,
+                    columnNumber: 41
+                  }, this)
+                ] }, void 0, !0, {
                   fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 53,
+                  lineNumber: 179,
                   columnNumber: 37
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 50,
-                columnNumber: 33
-              }, this),
-              /* @__PURE__ */ jsxDEV11("div", { className: `inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"} border`, children: [
-                /* @__PURE__ */ jsxDEV11("span", { className: "hidden sm:inline", children: p.history.length > 0 ? `${p.history.length} Games` : "New Player" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 60,
-                  columnNumber: 37
-                }, this),
-                /* @__PURE__ */ jsxDEV11("span", { className: "sm:hidden", children: p.history.length > 0 ? `${p.history.length}G` : "New" }, void 0, !1, {
-                  fileName: "app/components/ui/PlayerProfiles.tsx",
-                  lineNumber: 61,
-                  columnNumber: 37
-                }, this)
-              ] }, void 0, !0, {
-                fileName: "app/components/ui/PlayerProfiles.tsx",
-                lineNumber: 55,
+                lineNumber: 125,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/ui/PlayerProfiles.tsx",
-              lineNumber: 34,
+              lineNumber: 67,
               columnNumber: 29
             }, this)
           ]
@@ -2390,23 +2664,23 @@ var PlayerProfiles = ({ players, onPlayerClick }) => {
         !0,
         {
           fileName: "app/components/ui/PlayerProfiles.tsx",
-          lineNumber: 21,
+          lineNumber: 54,
           columnNumber: 25
         },
         this
       )) }, void 0, !1, {
         fileName: "app/components/ui/PlayerProfiles.tsx",
-        lineNumber: 19,
+        lineNumber: 52,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/PlayerProfiles.tsx",
-      lineNumber: 12,
+      lineNumber: 45,
       columnNumber: 13
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/ui/PlayerProfiles.tsx",
-    lineNumber: 10,
+    lineNumber: 43,
     columnNumber: 9
   }, this);
 }, PlayerProfiles_default = PlayerProfiles;
@@ -3494,130 +3768,319 @@ var LeagueManagementPage = ({
 }, LeagueManagementPage_default = LeagueManagementPage;
 
 // app/components/pages/PlayerRankingsPage.tsx
-import { LucideTrophy as LucideTrophy3, LucideUsers as LucideUsers3 } from "lucide-react";
+import { useState as useState4 } from "react";
+import { LucideTrophy as LucideTrophy3, LucideUsers as LucideUsers3, LucideCrown as LucideCrown3, LucideMedal, LucideAward, LucideTarget, LucideDices, LucideZap, LucideGem, LucideBarChart3 as LucideBarChart32, LucidePercent } from "lucide-react";
 import { jsxDEV as jsxDEV15 } from "react/jsx-dev-runtime";
 var PlayerRankingsPage = ({ players, onPlayerClick }) => {
-  let { theme } = useTheme(), sortedPlayers = [...players].sort((a, b) => b.championships !== a.championships ? (b.championships || 0) - (a.championships || 0) : b.score - a.score);
+  let { theme } = useTheme(), [selectedCategory, setSelectedCategory] = useState4("championships"), categories = [
+    {
+      key: "championships",
+      name: "\u8054\u8D5B\u51A0\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideCrown3, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 28,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.championships || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-yellow-500/10 border-yellow-500/20",
+      textColor: "text-yellow-400"
+    },
+    {
+      key: "runner_up",
+      name: "\u8054\u8D5B\u4E9A\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideMedal, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 38,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.runner_up || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-gray-400/10 border-gray-400/20",
+      textColor: "text-gray-300"
+    },
+    {
+      key: "third_place",
+      name: "\u8054\u8D5B\u5B63\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideAward, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 48,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.third_place || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-orange-500/10 border-orange-500/20",
+      textColor: "text-orange-400"
+    },
+    {
+      key: "single_round_firsts",
+      name: "\u5355\u8F6E\u51A0\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideTarget, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 58,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.single_round_firsts || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-blue-500/10 border-blue-500/20",
+      textColor: "text-blue-400"
+    },
+    {
+      key: "single_round_seconds",
+      name: "\u5355\u8F6E\u4E9A\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideDices, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 68,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.single_round_seconds || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-cyan-500/10 border-cyan-500/20",
+      textColor: "text-cyan-400"
+    },
+    {
+      key: "single_round_thirds",
+      name: "\u5355\u8F6E\u5B63\u519B",
+      icon: /* @__PURE__ */ jsxDEV15(LucideZap, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 78,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.single_round_thirds || 0,
+      isDescending: !0,
+      unit: "\u6B21",
+      bgColor: "bg-purple-500/10 border-purple-500/20",
+      textColor: "text-purple-400"
+    },
+    {
+      key: "total_vp",
+      name: "\u603BVP",
+      icon: /* @__PURE__ */ jsxDEV15(LucideGem, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 88,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.total_vp || 0,
+      isDescending: !0,
+      unit: "VP",
+      bgColor: "bg-green-500/10 border-green-500/20",
+      textColor: "text-green-400"
+    },
+    {
+      key: "total_games",
+      name: "\u603B\u6E38\u620F\u6570",
+      icon: /* @__PURE__ */ jsxDEV15(LucideTrophy3, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 98,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.total_games || 0,
+      isDescending: !0,
+      unit: "\u573A",
+      bgColor: "bg-indigo-500/10 border-indigo-500/20",
+      textColor: "text-indigo-400"
+    },
+    {
+      key: "average_placement",
+      name: "\u5E73\u5747\u6392\u540D",
+      icon: /* @__PURE__ */ jsxDEV15(LucideBarChart32, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 108,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.average_placement || 999,
+      isDescending: !1,
+      // Lower is better for average placement
+      unit: "",
+      bgColor: "bg-teal-500/10 border-teal-500/20",
+      textColor: "text-teal-400"
+    },
+    {
+      key: "win_rate",
+      name: "\u80DC\u7387",
+      icon: /* @__PURE__ */ jsxDEV15(LucidePercent, { className: "w-5 h-5" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 118,
+        columnNumber: 19
+      }, this),
+      getValue: (p) => p.win_rate || 0,
+      isDescending: !0,
+      unit: "%",
+      bgColor: "bg-rose-500/10 border-rose-500/20",
+      textColor: "text-rose-400"
+    }
+  ], currentCategory = categories.find((cat) => cat.key === selectedCategory) || categories[0], sortedPlayers = [...players].filter((player) => currentCategory.getValue(player) > 0 || currentCategory.key === "roundAveragePlacement").sort((a, b) => {
+    let valueA = currentCategory.getValue(a), valueB = currentCategory.getValue(b);
+    return currentCategory.isDescending ? valueB - valueA : valueA - valueB;
+  }), getRankingForCategory = (player, categoryKey) => player.rankings && player.rankings[categoryKey] || 0;
   return /* @__PURE__ */ jsxDEV15("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsxDEV15("div", { className: "text-center", children: [
       /* @__PURE__ */ jsxDEV15("h2", { className: "text-4xl font-bold text-orange-400 mb-2", children: "\u73A9\u5BB6\u6392\u884C\u699C" }, void 0, !1, {
         fileName: "app/components/pages/PlayerRankingsPage.tsx",
-        lineNumber: 21,
+        lineNumber: 147,
         columnNumber: 17
       }, this),
-      /* @__PURE__ */ jsxDEV15("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u67E5\u770B\u6240\u6709\u73A9\u5BB6\u7684\u8BE6\u7EC6\u7EDF\u8BA1\u548C\u6392\u540D" }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV15("p", { className: `${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: "\u6309\u4E0D\u540C\u7EDF\u8BA1\u9879\u76EE\u67E5\u770B\u73A9\u5BB6\u6392\u540D" }, void 0, !1, {
         fileName: "app/components/pages/PlayerRankingsPage.tsx",
-        lineNumber: 22,
+        lineNumber: 148,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/pages/PlayerRankingsPage.tsx",
-      lineNumber: 20,
+      lineNumber: 146,
+      columnNumber: 13
+    }, this),
+    /* @__PURE__ */ jsxDEV15("div", { className: `rounded-2xl p-4 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"}`, children: [
+      /* @__PURE__ */ jsxDEV15("h3", { className: `text-lg font-semibold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: "\u9009\u62E9\u6392\u540D\u7C7B\u522B" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 153,
+        columnNumber: 17
+      }, this),
+      /* @__PURE__ */ jsxDEV15("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2", children: categories.map((category) => /* @__PURE__ */ jsxDEV15(
+        "button",
+        {
+          onClick: () => setSelectedCategory(category.key),
+          className: `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all border ${selectedCategory === category.key ? `${category.bgColor} ${category.textColor} border-current` : theme === "dark" ? "bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-gray-600/50" : "bg-gray-100/50 text-gray-600 border-gray-200/50 hover:bg-gray-200/50"}`,
+          children: [
+            category.icon,
+            /* @__PURE__ */ jsxDEV15("span", { className: "hidden sm:inline", children: category.name }, void 0, !1, {
+              fileName: "app/components/pages/PlayerRankingsPage.tsx",
+              lineNumber: 170,
+              columnNumber: 29
+            }, this)
+          ]
+        },
+        category.key,
+        !0,
+        {
+          fileName: "app/components/pages/PlayerRankingsPage.tsx",
+          lineNumber: 158,
+          columnNumber: 25
+        },
+        this
+      )) }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 156,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+      lineNumber: 152,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV15("div", { className: `rounded-2xl p-6 ${theme === "dark" ? "bg-gray-800/50" : "bg-white/60 border border-gray-200/50"}`, children: [
-      /* @__PURE__ */ jsxDEV15("h3", { className: `text-2xl font-bold mb-6 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
-        /* @__PURE__ */ jsxDEV15(LucideTrophy3, { className: "text-yellow-400" }, void 0, !1, {
-          fileName: "app/components/pages/PlayerRankingsPage.tsx",
-          lineNumber: 27,
-          columnNumber: 21
-        }, this),
-        "\u603B\u6392\u884C\u699C"
+      /* @__PURE__ */ jsxDEV15("h3", { className: `text-2xl font-bold mb-6 flex items-center gap-3 ${currentCategory.textColor}`, children: [
+        currentCategory.icon,
+        currentCategory.name,
+        "\u6392\u884C\u699C"
       ] }, void 0, !0, {
         fileName: "app/components/pages/PlayerRankingsPage.tsx",
-        lineNumber: 26,
+        lineNumber: 178,
         columnNumber: 17
       }, this),
-      /* @__PURE__ */ jsxDEV15("div", { className: "space-y-4", children: sortedPlayers.map((player, index) => {
-        let stats = UTILS.calculatePlayerStats(player);
+      /* @__PURE__ */ jsxDEV15("div", { className: "space-y-3", children: sortedPlayers.map((player, index) => {
+        let value = currentCategory.getValue(player), ranking = getRankingForCategory(player, currentCategory.key), displayValue = currentCategory.key === "average_placement" ? value === 999 ? "0.0" : value.toFixed(1) : currentCategory.key === "win_rate" ? value.toFixed(0) : value.toString();
         return /* @__PURE__ */ jsxDEV15(
           "div",
           {
-            className: `flex items-center justify-between p-4 rounded-lg shadow-md cursor-pointer transition-colors ${theme === "dark" ? "bg-gray-700/70 hover:bg-gray-600/70" : "bg-white/70 hover:bg-gray-100/70"}`,
+            className: `flex items-center justify-between p-4 rounded-lg cursor-pointer transition-all border ${index === 0 ? `${currentCategory.bgColor} border-current shadow-lg` : theme === "dark" ? "bg-gray-700/50 border-gray-600/30 hover:bg-gray-600/50" : "bg-white/70 border-gray-200/30 hover:bg-gray-100/70"}`,
             onClick: () => onPlayerClick(player),
             children: [
               /* @__PURE__ */ jsxDEV15("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxDEV15("span", { className: `font-bold text-2xl w-8 text-center ${index === 0 ? "text-yellow-400" : index === 1 ? "text-gray-300" : index === 2 ? "text-orange-400" : "text-gray-500"}`, children: index + 1 }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col items-center", children: [
+                  /* @__PURE__ */ jsxDEV15("span", { className: `font-bold text-xl w-8 text-center ${index === 0 ? "text-yellow-400" : index === 1 ? "text-gray-300" : index === 2 ? "text-orange-400" : theme === "dark" ? "text-gray-500" : "text-gray-400"}`, children: index + 1 }, void 0, !1, {
+                    fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                    lineNumber: 208,
+                    columnNumber: 41
+                  }, this),
+                  ranking > 0 && /* @__PURE__ */ jsxDEV15("span", { className: `text-xs font-medium ${getRankingColorClass(ranking)}`, children: [
+                    "#",
+                    getRankingSuffix(ranking)
+                  ] }, void 0, !0, {
+                    fileName: "app/components/pages/PlayerRankingsPage.tsx",
+                    lineNumber: 217,
+                    columnNumber: 45
+                  }, this)
+                ] }, void 0, !0, {
                   fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                  lineNumber: 45,
+                  lineNumber: 207,
                   columnNumber: 37
                 }, this),
-                /* @__PURE__ */ jsxDEV15("span", { className: "text-3xl", children: player.avatar }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV15("span", { className: "text-2xl", children: player.avatar }, void 0, !1, {
                   fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                  lineNumber: 53,
+                  lineNumber: 224,
                   columnNumber: 37
                 }, this),
                 /* @__PURE__ */ jsxDEV15("div", { className: "flex flex-col", children: [
-                  /* @__PURE__ */ jsxDEV15("span", { className: `font-semibold text-xl ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
+                  /* @__PURE__ */ jsxDEV15("span", { className: `font-semibold text-lg ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
                     fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                    lineNumber: 55,
+                    lineNumber: 226,
                     columnNumber: 41
                   }, this),
                   /* @__PURE__ */ jsxDEV15("div", { className: `flex gap-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
                     /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F3C6} ",
-                      stats.championships,
-                      "\u51A0"
+                      player.championships || 0
                     ] }, void 0, !0, {
                       fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                      lineNumber: 57,
+                      lineNumber: 230,
                       columnNumber: 45
                     }, this),
                     /* @__PURE__ */ jsxDEV15("span", { children: [
                       "\u{1F3AE} ",
-                      stats.totalGames,
+                      player.total_games || 0,
                       "\u573A"
                     ] }, void 0, !0, {
                       fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                      lineNumber: 58,
+                      lineNumber: 231,
                       columnNumber: 45
                     }, this),
                     /* @__PURE__ */ jsxDEV15("span", { children: [
-                      "\u{1F4CA} \u80DC\u7387",
-                      stats.winRate,
-                      "%"
+                      "\u26A1 ",
+                      player.single_round_firsts || 0,
+                      "\u5355\u51A0"
                     ] }, void 0, !0, {
                       fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                      lineNumber: 59,
-                      columnNumber: 45
-                    }, this),
-                    /* @__PURE__ */ jsxDEV15("span", { children: [
-                      "\u{1F4C8} \u5E73\u5747\u6392\u540D",
-                      stats.averagePlacement
-                    ] }, void 0, !0, {
-                      fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                      lineNumber: 60,
+                      lineNumber: 232,
                       columnNumber: 45
                     }, this)
                   ] }, void 0, !0, {
                     fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                    lineNumber: 56,
+                    lineNumber: 229,
                     columnNumber: 41
                   }, this)
                 ] }, void 0, !0, {
                   fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                  lineNumber: 54,
+                  lineNumber: 225,
                   columnNumber: 37
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                lineNumber: 44,
+                lineNumber: 205,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV15("div", { className: "text-right", children: [
-                /* @__PURE__ */ jsxDEV15("div", { className: "text-2xl font-bold text-green-400", children: player.score }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV15("div", { className: `text-2xl font-bold ${index === 0 ? currentCategory.textColor : theme === "dark" ? "text-white" : "text-gray-900"}`, children: [
+                  displayValue,
+                  currentCategory.unit
+                ] }, void 0, !0, {
                   fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                  lineNumber: 65,
+                  lineNumber: 239,
                   columnNumber: 37
                 }, this),
-                /* @__PURE__ */ jsxDEV15("div", { className: `text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: "\u5F53\u524D\u5206\u6570" }, void 0, !1, {
+                /* @__PURE__ */ jsxDEV15("div", { className: `text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: currentCategory.name }, void 0, !1, {
                   fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                  lineNumber: 66,
+                  lineNumber: 245,
                   columnNumber: 37
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/components/pages/PlayerRankingsPage.tsx",
-                lineNumber: 64,
+                lineNumber: 238,
                 columnNumber: 33
               }, this)
             ]
@@ -3626,51 +4089,72 @@ var PlayerRankingsPage = ({ players, onPlayerClick }) => {
           !0,
           {
             fileName: "app/components/pages/PlayerRankingsPage.tsx",
-            lineNumber: 35,
+            lineNumber: 194,
             columnNumber: 29
           },
           this
         );
       }) }, void 0, !1, {
         fileName: "app/components/pages/PlayerRankingsPage.tsx",
-        lineNumber: 31,
+        lineNumber: 183,
         columnNumber: 17
       }, this),
-      players.length === 0 && /* @__PURE__ */ jsxDEV15("div", { className: `text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
+      sortedPlayers.length === 0 && /* @__PURE__ */ jsxDEV15("div", { className: `text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
         /* @__PURE__ */ jsxDEV15(LucideUsers3, { size: 48, className: "mx-auto mb-4 opacity-50" }, void 0, !1, {
           fileName: "app/components/pages/PlayerRankingsPage.tsx",
-          lineNumber: 75,
+          lineNumber: 256,
           columnNumber: 25
         }, this),
-        /* @__PURE__ */ jsxDEV15("p", { children: "\u8FD8\u6CA1\u6709\u6CE8\u518C\u7684\u73A9\u5BB6" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV15("p", { children: "\u8BE5\u7C7B\u522B\u6682\u65E0\u6570\u636E" }, void 0, !1, {
           fileName: "app/components/pages/PlayerRankingsPage.tsx",
-          lineNumber: 76,
+          lineNumber: 257,
           columnNumber: 25
         }, this),
-        /* @__PURE__ */ jsxDEV15("p", { className: "text-sm", children: "\u524D\u5F80\u73A9\u5BB6\u6CE8\u518C\u9875\u9762\u6DFB\u52A0\u73A9\u5BB6" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV15("p", { className: "text-sm", children: "\u73A9\u5BB6\u9700\u8981\u53C2\u4E0E\u6E38\u620F\u540E\u624D\u4F1A\u6709\u7EDF\u8BA1\u6570\u636E" }, void 0, !1, {
           fileName: "app/components/pages/PlayerRankingsPage.tsx",
-          lineNumber: 77,
+          lineNumber: 258,
           columnNumber: 25
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/pages/PlayerRankingsPage.tsx",
-        lineNumber: 74,
+        lineNumber: 255,
         columnNumber: 21
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/pages/PlayerRankingsPage.tsx",
-      lineNumber: 25,
+      lineNumber: 177,
       columnNumber: 13
+    }, this),
+    players.length === 0 && /* @__PURE__ */ jsxDEV15("div", { className: `text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
+      /* @__PURE__ */ jsxDEV15(LucideUsers3, { size: 48, className: "mx-auto mb-4 opacity-50" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 265,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV15("p", { children: "\u8FD8\u6CA1\u6709\u6CE8\u518C\u7684\u73A9\u5BB6" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 266,
+        columnNumber: 21
+      }, this),
+      /* @__PURE__ */ jsxDEV15("p", { className: "text-sm", children: "\u524D\u5F80\u73A9\u5BB6\u6CE8\u518C\u9875\u9762\u6DFB\u52A0\u73A9\u5BB6" }, void 0, !1, {
+        fileName: "app/components/pages/PlayerRankingsPage.tsx",
+        lineNumber: 267,
+        columnNumber: 21
+      }, this)
+    ] }, void 0, !0, {
+      fileName: "app/components/pages/PlayerRankingsPage.tsx",
+      lineNumber: 264,
+      columnNumber: 17
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/pages/PlayerRankingsPage.tsx",
-    lineNumber: 19,
+    lineNumber: 145,
     columnNumber: 9
   }, this);
 }, PlayerRankingsPage_default = PlayerRankingsPage;
 
 // app/components/pages/LeagueHistoryPage.tsx
-import { LucideHistory as LucideHistory3, LucideTrophy as LucideTrophy4, LucideCrown as LucideCrown3, LucideCalendar as LucideCalendar2, LucideUsers as LucideUsers4, LucideTarget } from "lucide-react";
+import { LucideHistory as LucideHistory3, LucideTrophy as LucideTrophy4, LucideCrown as LucideCrown4, LucideCalendar as LucideCalendar2, LucideUsers as LucideUsers4, LucideTarget as LucideTarget2 } from "lucide-react";
 import { jsxDEV as jsxDEV16 } from "react/jsx-dev-runtime";
 var LeagueHistoryPage = ({ leagueHistory }) => {
   let { theme } = useTheme(), formatDate = (dateString) => new Date(dateString).toLocaleDateString("zh-CN", {
@@ -3834,7 +4318,7 @@ var LeagueHistoryPage = ({ leagueHistory }) => {
           columnNumber: 29
         }, this),
         /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg mb-4 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxDEV16(LucideCrown3, { className: "text-yellow-400", size: 20 }, void 0, !1, {
+          /* @__PURE__ */ jsxDEV16(LucideCrown4, { className: "text-yellow-400", size: 20 }, void 0, !1, {
             fileName: "app/components/pages/LeagueHistoryPage.tsx",
             lineNumber: 112,
             columnNumber: 37
@@ -3905,7 +4389,7 @@ var LeagueHistoryPage = ({ leagueHistory }) => {
           }, this),
           /* @__PURE__ */ jsxDEV16("div", { className: `p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: [
             /* @__PURE__ */ jsxDEV16("div", { className: "flex items-center gap-2 mb-1", children: [
-              /* @__PURE__ */ jsxDEV16(LucideTarget, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }, void 0, !1, {
+              /* @__PURE__ */ jsxDEV16(LucideTarget2, { size: 14, className: theme === "dark" ? "text-white/60" : "text-gray-500" }, void 0, !1, {
                 fileName: "app/components/pages/LeagueHistoryPage.tsx",
                 lineNumber: 138,
                 columnNumber: 41
@@ -4029,7 +4513,7 @@ var LeagueHistoryPage = ({ leagueHistory }) => {
 }, LeagueHistoryPage_default = LeagueHistoryPage;
 
 // app/components/pages/ScheduleConfirmationPage.tsx
-import { LucideCheck as LucideCheck2, LucideDice6, LucideCalendar as LucideCalendar3, LucideShield as LucideShield2, LucideBomb as LucideBomb3, LucideSwords as LucideSwords2, LucideTrophy as LucideTrophy5, LucideDices, LucideAlertTriangle, LucideSettings as LucideSettings2 } from "lucide-react";
+import { LucideCheck as LucideCheck2, LucideDice6, LucideCalendar as LucideCalendar3, LucideShield as LucideShield2, LucideBomb as LucideBomb3, LucideSwords as LucideSwords2, LucideTrophy as LucideTrophy5, LucideDices as LucideDices2, LucideAlertTriangle, LucideSettings as LucideSettings2 } from "lucide-react";
 import { jsxDEV as jsxDEV17 } from "react/jsx-dev-runtime";
 var ScheduleConfirmationPage = ({
   leagueState,
@@ -4427,7 +4911,7 @@ var ScheduleConfirmationPage = ({
           /* @__PURE__ */ jsxDEV17("div", { className: "sm:col-span-1 col-span-2", children: /* @__PURE__ */ jsxDEV17(
             InfoCard_default,
             {
-              icon: /* @__PURE__ */ jsxDEV17(LucideDices, { className: "text-purple-400" }, void 0, !1, {
+              icon: /* @__PURE__ */ jsxDEV17(LucideDices2, { className: "text-purple-400" }, void 0, !1, {
                 fileName: "app/components/pages/ScheduleConfirmationPage.tsx",
                 lineNumber: 210,
                 columnNumber: 47
@@ -4530,7 +5014,10 @@ var ScheduleConfirmationPage = ({
 import { Fragment as Fragment3, jsxDEV as jsxDEV18 } from "react/jsx-dev-runtime";
 var supabase;
 function Index() {
-  let [leagueState, setLeagueState] = useState4(null), [players, setPlayers] = useState4([]), [session, setSession] = useState4(null), [isAuthReady, setIsAuthReady] = useState4(!1), [showPlayerModal, setShowPlayerModal] = useState4(!1), [showResultsModal, setShowResultsModal] = useState4(!1), [newPlayerName, setNewPlayerName] = useState4(""), [selectedAvatar, setSelectedAvatar] = useState4(GAME_RULES.AVATARS[0]), [showPlayerProfileModal, setShowPlayerProfileModal] = useState4(!1), [selectedPlayerForProfile, setSelectedPlayerForProfile] = useState4(null), [winner, setWinner] = useState4(null), [showCardDrawReminder, setShowCardDrawReminder] = useState4(!1), [cardDrawRound, setCardDrawRound] = useState4(1), [appId, setAppId] = useState4("default"), [currentPage, setCurrentPage] = useState4("home"), [sidebarOpen, setSidebarOpen] = useState4(!1), [sidebarCollapsed, setSidebarCollapsed] = useState4(!1), [musicPlaying, setMusicPlaying] = useState4(!1), [musicMuted, setMusicMuted] = useState4(!0), [leagueHistory, setLeagueHistory] = useState4([]), [currentLeagueName, setCurrentLeagueName] = useState4(""), [nextSeasonNumber, setNextSeasonNumber] = useState4(1);
+  let [leagueState, setLeagueState] = useState5(null), [players, setPlayers] = useState5([]), [session, setSession] = useState5(null), [isAuthReady, setIsAuthReady] = useState5(!1), [showPlayerModal, setShowPlayerModal] = useState5(!1), [showResultsModal, setShowResultsModal] = useState5(!1), [newPlayerName, setNewPlayerName] = useState5(""), [selectedAvatar, setSelectedAvatar] = useState5(GAME_RULES.AVATARS[0]), [showPlayerProfileModal, setShowPlayerProfileModal] = useState5(!1), [selectedPlayerForProfile, setSelectedPlayerForProfile] = useState5(null), [winner, setWinner] = useState5(null), [showCardDrawReminder, setShowCardDrawReminder] = useState5(!1), [cardDrawRound, setCardDrawRound] = useState5(1), [appId, setAppId] = useState5("default"), [currentPage, setCurrentPage] = useState5("home"), [sidebarOpen, setSidebarOpen] = useState5(!1), [sidebarCollapsed, setSidebarCollapsed] = useState5(!1), [musicPlaying, setMusicPlaying] = useState5(!1), [musicMuted, setMusicMuted] = useState5(!0), [leagueHistory, setLeagueHistory] = useState5([]), [currentLeagueName, setCurrentLeagueName] = useState5(""), [nextSeasonNumber, setNextSeasonNumber] = useState5(1), updatePlayersWithRankings = (newPlayers) => {
+    let playersWithRankings = calculatePlayerRankings(newPlayers);
+    setPlayers(playersWithRankings);
+  };
   useEffect(() => {
     if (typeof window < "u") {
       let savedCollapsed = localStorage.getItem("sidebarCollapsed");
@@ -4546,7 +5033,7 @@ function Index() {
   }, []), useEffect(() => {
     typeof window < "u" && localStorage.setItem("musicMuted", JSON.stringify(musicMuted));
   }, [musicMuted]);
-  let [theme, setTheme] = useState4("dark");
+  let [theme, setTheme] = useState5("dark");
   useEffect(() => {
     if (typeof window < "u") {
       let canvasAppId = new URLSearchParams(window.location.search).get("app_id") || "default";
@@ -4592,24 +5079,10 @@ function Index() {
       } else
         setLeagueState(null);
       leagueError && leagueError.code !== "PGRST116" && console.error("Error fetching league state:", leagueError);
-      let { data: playersData, error: playersError } = await supabase.from("players").select("*").eq("app_id", appId), { data: rankingsData, error: rankingsError } = await supabase.from("player_rankings").select("*").eq("app_id", appId).order("score", { ascending: !1 });
-      if (playersError && console.error("Error fetching players:", playersError), rankingsError && console.error("Error fetching player rankings:", rankingsError), playersData) {
-        let mappedPlayers = playersData.map((playerData) => {
-          let basePlayer = playerFromSupabase(playerData), rankingData = rankingsData?.find((r) => r.id === playerData.id);
-          return rankingData ? {
-            ...basePlayer,
-            totalGames: rankingData.total_games || 0,
-            averagePlacement: rankingData.average_placement || 0,
-            winRate: rankingData.win_rate || 0,
-            // Use rankings data for current score and stats if available
-            score: rankingData.score || basePlayer.score,
-            championships: rankingData.championships || basePlayer.championships,
-            runnerUp: rankingData.runner_up || basePlayer.runnerUp,
-            thirdPlace: rankingData.third_place || basePlayer.thirdPlace,
-            totalVP: rankingData.total_vp || basePlayer.totalVP
-          } : basePlayer;
-        });
-        mappedPlayers.sort((a, b) => b.score - a.score), setPlayers(mappedPlayers);
+      let { data: playersData, error: playersError } = await supabase.from("players").select("*").eq("app_id", appId);
+      if (playersError && console.error("Error fetching players:", playersError), playersData) {
+        let mappedPlayers = playersData.map((playerData) => playerFromSupabase(playerData));
+        mappedPlayers.sort((a, b) => b.score - a.score), updatePlayersWithRankings(mappedPlayers);
       }
     })();
     let leagueChannel = supabase.channel(`league-state:${appId}`).on("postgres_changes", { event: "*", schema: "public", table: "league_state", filter: `app_id=eq.${appId}` }, (payload) => {
@@ -4646,10 +5119,29 @@ function Index() {
       avatar: selectedAvatar,
       score: 0,
       history: [],
+      // League-level statistics
+      leagueChampionships: 0,
+      leagueRunnerUp: 0,
+      leagueThirdPlace: 0,
+      // Round-level statistics
+      roundChampionships: 0,
+      roundRunnerUp: 0,
+      roundThirdPlace: 0,
+      // Score statistics
+      totalVP: 0,
+      // Game statistics
+      totalLeagues: 0,
+      totalRounds: 0,
+      // Average and win rate statistics
+      roundAveragePlacement: 0,
+      roundWinRate: 0,
+      // Compatibility fields
       championships: 0,
       runnerUp: 0,
       thirdPlace: 0,
-      totalVP: 0
+      totalGames: 0,
+      averagePlacement: 0,
+      winRate: 0
     };
     console.log("Adding temp player:", tempPlayer), setPlayers((curr) => [...curr, tempPlayer].sort((a, b) => b.score - a.score)), console.log("Inserting into Supabase...");
     let playerData = {
@@ -4663,20 +5155,7 @@ function Index() {
       thirdPlace: 0,
       totalVP: 0
     }, { data, error } = await supabase.from("players").insert(playerToSupabase(playerData)).select().single();
-    if (data && !error && await supabase.from("player_rankings").insert({
-      id: data.id,
-      app_id: appId,
-      name: newPlayerName.trim(),
-      avatar: selectedAvatar,
-      score: 0,
-      championships: 0,
-      runner_up: 0,
-      third_place: 0,
-      total_vp: 0,
-      total_games: 0,
-      average_placement: 0,
-      win_rate: 0
-    }), console.log("Supabase insert result:", { data, error }), error)
+    if (console.log("Supabase insert result:", { data, error }), error)
       setPlayers((curr) => curr.filter((p) => p.id !== tempPlayer.id)), console.error("Add player failed:", error);
     else if (data) {
       console.log("Successfully added player, updating temp player with real data:", data);
@@ -4689,10 +5168,7 @@ function Index() {
   }, handleDeletePlayer = async (playerId) => {
     let previous = players;
     setPlayers((curr) => curr.filter((p) => p.id !== playerId));
-    let [{ error: playersError }, { error: rankingsError }] = await Promise.all([
-      supabase.from("players").delete().match({ id: playerId, app_id: appId }),
-      supabase.from("player_rankings").delete().match({ id: playerId, app_id: appId })
-    ]), error = playersError || rankingsError;
+    let { error } = await supabase.from("players").delete().match({ id: playerId, app_id: appId });
     error && (console.error("Delete player failed:", error), setPlayers(previous));
   }, generateSchedule = (playerCount, selectedSpecialRules = GAME_RULES.SPECIAL_RULES) => {
     let schedule = [];
@@ -4866,13 +5342,27 @@ function Index() {
         }).match({ id: playerId, app_id: appId })
       );
     }
-    setPlayers(updatedPlayersData.sort((a, b) => b.score - a.score));
-    let potentialWinners = updatedPlayersData.filter((p) => p.score >= GAME_RULES.WIN_SCORE).sort((a, b) => b.score - a.score), potentialWinner = potentialWinners.length > 0 ? potentialWinners[0] : null, nextRound = leagueState.current_round + 1, newStatus = leagueState.status, finalWinner = null;
+    let roundResults = results.map((playerId, index) => ({
+      playerId,
+      placement: index + 1
+    })), playersWithRoundStats = UTILS.updateRoundStatistics(updatedPlayersData, roundResults), roundStatUpdates = playersWithRoundStats.map((player) => {
+      let roundStatsData = playerToSupabase({
+        roundChampionships: player.roundChampionships,
+        roundRunnerUp: player.roundRunnerUp,
+        roundThirdPlace: player.roundThirdPlace,
+        totalRounds: player.totalRounds,
+        roundAveragePlacement: player.roundAveragePlacement,
+        roundWinRate: player.roundWinRate
+      });
+      return supabase.from("players").update(roundStatsData).match({ id: player.id, app_id: appId });
+    });
+    playerUpdates.push(...roundStatUpdates), updatePlayersWithRankings(playersWithRoundStats.sort((a, b) => b.score - a.score));
+    let potentialWinners = playersWithRoundStats.filter((p) => p.score >= GAME_RULES.WIN_SCORE).sort((a, b) => b.score - a.score), potentialWinner = potentialWinners.length > 0 ? potentialWinners[0] : null, nextRound = leagueState.current_round + 1, newStatus = leagueState.status, finalWinner = null;
     if (potentialWinner)
       finalWinner = { name: potentialWinner.name, avatar: potentialWinner.avatar, reason: `\u5728\u7B2C ${leagueState.current_round} \u8F6E\u7387\u5148\u8FBE\u5230 ${potentialWinner.score} \u5206\uFF01` }, newStatus = "finished";
     else if (nextRound > GAME_RULES.MAX_ROUNDS) {
       newStatus = "finished";
-      let sortedPlayers = updatedPlayersData.sort((a, b) => b.score - a.score), topScore = sortedPlayers[0].score, winners = sortedPlayers.filter((p) => p.score === topScore);
+      let sortedPlayers = playersWithRoundStats.sort((a, b) => b.score - a.score), topScore = sortedPlayers[0].score, winners = sortedPlayers.filter((p) => p.score === topScore);
       winners.length > 1 ? finalWinner = { name: winners.map((w) => w.name).join(" \u548C "), avatar: "\u2694\uFE0F", reason: `5\u8F6E\u540E\u5E73\u5206 (${topScore}\u5206)\uFF0C\u9700\u8981\u8FDB\u884C\u52A0\u8D5B\u5BF9\u51B3\uFF01` } : finalWinner = { name: sortedPlayers[0].name, avatar: sortedPlayers[0].avatar, reason: `5\u8F6E\u540E\u4EE5\u6700\u9AD8\u5206 (${topScore}\u5206) \u83B7\u80DC\uFF01` };
     }
     if (await Promise.all(playerUpdates), setLeagueState((curr) => ({
@@ -4887,13 +5377,28 @@ function Index() {
       status: newStatus,
       winner: finalWinner
     }).eq("app_id", appId), newStatus === "finished" && finalWinner) {
-      let leagueResults = updatedPlayersData.sort((a, b) => b.score - a.score).map((player, index) => ({
+      let leagueResults = playersWithRoundStats.sort((a, b) => b.score - a.score).map((player, index) => ({
         playerId: player.id,
         finalPlacement: index + 1
-      })), playersWithUpdatedStats = UTILS.updateLeagueStatistics(updatedPlayersData, leagueResults);
-      setPlayers(playersWithUpdatedStats);
+      })), playersWithUpdatedStats = UTILS.updateLeagueStatistics(playersWithRoundStats, leagueResults);
+      updatePlayersWithRankings(playersWithUpdatedStats);
       let statisticsUpdates = playersWithUpdatedStats.map((player) => {
         let playerUpdateData = playerToSupabase({
+          // League-level statistics
+          leagueChampionships: player.leagueChampionships,
+          leagueRunnerUp: player.leagueRunnerUp,
+          leagueThirdPlace: player.leagueThirdPlace,
+          // Round-level statistics
+          roundChampionships: player.roundChampionships,
+          roundRunnerUp: player.roundRunnerUp,
+          roundThirdPlace: player.roundThirdPlace,
+          // Game statistics
+          totalLeagues: player.totalLeagues,
+          totalRounds: player.totalRounds,
+          // Average and win rate statistics
+          roundAveragePlacement: player.roundAveragePlacement,
+          roundWinRate: player.roundWinRate,
+          // Compatibility fields
           championships: player.championships,
           runnerUp: player.runnerUp,
           thirdPlace: player.thirdPlace,
@@ -4903,16 +5408,7 @@ function Index() {
         });
         return [
           // Update players table
-          supabase.from("players").update(playerUpdateData).match({ id: player.id, app_id: appId }),
-          // Update player_rankings table
-          supabase.from("player_rankings").upsert({
-            id: player.id,
-            app_id: appId,
-            name: player.name,
-            avatar: player.avatar,
-            score: player.score,
-            ...playerUpdateData
-          })
+          supabase.from("players").update(playerUpdateData).match({ id: player.id, app_id: appId })
         ];
       }).flat();
       await Promise.all(statisticsUpdates);
@@ -4930,26 +5426,26 @@ function Index() {
     if (!leagueState)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 798,
+        lineNumber: 818,
         columnNumber: 34
       }, this);
     if (leagueState.status === "setup")
       return setCurrentPage("league"), /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u91CD\u5B9A\u5411\u5230\u8054\u8D5B\u7BA1\u7406..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 803,
+        lineNumber: 823,
         columnNumber: 20
       }, this);
     if (leagueState.status === "finished")
       return /* @__PURE__ */ jsxDEV18("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxDEV18("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
-        /* @__PURE__ */ jsxDEV18(LucideCrown4, { className: "text-yellow-400", size: 60 }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV18(LucideCrown5, { className: "text-yellow-400", size: 60 }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 810,
+          lineNumber: 830,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "text-center", children: [
           /* @__PURE__ */ jsxDEV18("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 812,
+            lineNumber: 832,
             columnNumber: 29
           }, this),
           leagueState.season_number && /* @__PURE__ */ jsxDEV18("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
@@ -4958,33 +5454,33 @@ function Index() {
             " \u5B8C\u6210"
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 816,
+            lineNumber: 836,
             columnNumber: 33
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 811,
+          lineNumber: 831,
           columnNumber: 25
         }, this),
         leagueState.winner && /* @__PURE__ */ jsxDEV18(Fragment3, { children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 823,
+            lineNumber: 843,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV18("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 824,
+            lineNumber: 844,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV18("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 825,
+            lineNumber: 845,
             columnNumber: 33
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 822,
+          lineNumber: 842,
           columnNumber: 29
         }, this),
         /* @__PURE__ */ jsxDEV18(
@@ -4998,24 +5494,24 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 828,
+            lineNumber: 848,
             columnNumber: 25
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 809,
+        lineNumber: 829,
         columnNumber: 21
       }, this) }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 808,
+        lineNumber: 828,
         columnNumber: 17
       }, this);
     if (!leagueState.schedule || leagueState.schedule.length === 0)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 839,
+        lineNumber: 859,
         columnNumber: 80
       }, this);
     let currentRoundConfig = leagueState.schedule[leagueState.current_round - 1];
@@ -5025,17 +5521,17 @@ function Index() {
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3 sm:gap-4", children: [
             /* @__PURE__ */ jsxDEV18("div", { className: `p-2.5 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-orange-400", size: 22 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 851,
+              lineNumber: 871,
               columnNumber: 33
             }, this) }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 850,
+              lineNumber: 870,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { className: "flex-1", children: [
               /* @__PURE__ */ jsxDEV18("h1", { className: `${TYPOGRAPHY.COMBINATIONS.pageTitle} ${theme === "dark" ? "text-white/95" : "text-gray-900"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`, children: leagueState.league_name || "Boom League" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 854,
+                lineNumber: 874,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-1", children: [
@@ -5044,12 +5540,12 @@ function Index() {
                   leagueState.season_number
                 ] }, void 0, !0, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 859,
+                  lineNumber: 879,
                   columnNumber: 41
                 }, this),
                 leagueState.season_number && leagueState.created_at && /* @__PURE__ */ jsxDEV18("span", { className: `hidden sm:inline ${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, children: "\u2022" }, void 0, !1, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 864,
+                  lineNumber: 884,
                   columnNumber: 41
                 }, this),
                 leagueState.created_at && /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === "dark" ? "text-white/60" : "text-gray-600"} ${LINE_HEIGHTS.normal}`, children: [
@@ -5062,22 +5558,22 @@ function Index() {
                   })
                 ] }, void 0, !0, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 867,
+                  lineNumber: 887,
                   columnNumber: 41
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 857,
+                lineNumber: 877,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 853,
+              lineNumber: 873,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 849,
+            lineNumber: 869,
             columnNumber: 25
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2 sm:gap-3", children: [
@@ -5089,17 +5585,17 @@ function Index() {
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideChevronLeft2, { size: 16 }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 888,
+                    lineNumber: 908,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8FD4\u56DE\u7BA1\u7406" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 889,
+                    lineNumber: 909,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u8FD4\u56DE" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 890,
+                    lineNumber: 910,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5108,7 +5604,7 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 880,
+                lineNumber: 900,
                 columnNumber: 29
               },
               this
@@ -5128,17 +5624,17 @@ function Index() {
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideX3, { size: 16 }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 904,
+                    lineNumber: 924,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u4E2D\u6B62\u8054\u8D5B" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 905,
+                    lineNumber: 925,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u4E2D\u6B62" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 906,
+                    lineNumber: 926,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5147,36 +5643,36 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 892,
+                lineNumber: 912,
                 columnNumber: 29
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 879,
+            lineNumber: 899,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 848,
+          lineNumber: 868,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: `flex items-center justify-between p-3 sm:p-4 rounded-lg ${theme === "dark" ? "bg-white/5 border border-white/10" : "bg-gray-100/50 border border-gray-200"}`, children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3", children: [
             /* @__PURE__ */ jsxDEV18("div", { className: `p-1.5 rounded-lg ${theme === "dark" ? "bg-green-500/20 border-green-500/30" : "bg-green-100 border-green-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideGamepad22, { className: "text-green-500", size: 18 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 915,
+              lineNumber: 935,
               columnNumber: 33
             }, this) }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 914,
+              lineNumber: 934,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { children: [
               /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.emphasized} ${theme === "dark" ? "text-white/90" : "text-gray-900"} ${LINE_HEIGHTS.tight}`, children: "\u8054\u8D5B\u8FDB\u884C\u4E2D" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 918,
+                lineNumber: 938,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.caption} ${theme === "dark" ? "text-white/60" : "text-gray-600"} ${LINE_HEIGHTS.normal}`, children: [
@@ -5187,17 +5683,17 @@ function Index() {
                 " \u8F6E"
               ] }, void 0, !0, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 921,
+                lineNumber: 941,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 917,
+              lineNumber: 937,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 913,
+            lineNumber: 933,
             columnNumber: 25
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: `px-3 py-1.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.badge} ${theme === "dark" ? "bg-green-500/20 text-green-400 border border-green-500/30" : "bg-green-100 text-green-700 border border-green-200"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.wide}`, children: [
@@ -5205,22 +5701,22 @@ function Index() {
             leagueState.current_round
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 926,
+            lineNumber: 946,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 912,
+          lineNumber: 932,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 846,
+        lineNumber: 866,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV18(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 937,
+        lineNumber: 957,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6", children: [
@@ -5234,7 +5730,7 @@ function Index() {
               " \u8F6E"
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 944,
+              lineNumber: 964,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(
@@ -5245,17 +5741,17 @@ function Index() {
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideClipboardList, { size: 18, className: "flex-shrink-0" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 949,
+                    lineNumber: 969,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8F93\u5165\u672C\u8F6E\u7ED3\u679C" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 950,
+                    lineNumber: 970,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u7ED3\u679C" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 951,
+                    lineNumber: 971,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5264,104 +5760,104 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 945,
+                lineNumber: 965,
                 columnNumber: 29
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 943,
+            lineNumber: 963,
             columnNumber: 26
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base lg:text-lg", children: [
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideShield3, { className: "text-blue-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 955,
+              lineNumber: 975,
               columnNumber: 45
             }, this), title: "\u5B89\u5168\u724C\u6570\u91CF", value: currentRoundConfig.safeCards }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 955,
+              lineNumber: 975,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideBomb4, { className: "text-red-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 956,
+              lineNumber: 976,
               columnNumber: 45
             }, this), title: "\u70B8\u5F39\u724C\u6570\u91CF", value: currentRoundConfig.bombCards }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 956,
+              lineNumber: 976,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideSwords3, { className: "text-yellow-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 957,
+              lineNumber: 977,
               columnNumber: 45
             }, this), title: "\u51FA\u6218\u624B\u724C\u4E0A\u9650", value: currentRoundConfig.handLimit === 1 / 0 ? "\u65E0\u9650\u5236" : currentRoundConfig.handLimit }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 957,
+              lineNumber: 977,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-green-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 958,
+              lineNumber: 978,
               columnNumber: 45
             }, this), title: "VP \u5956\u52B1\u6A21\u5F0F", value: currentRoundConfig.vpMode.name }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 958,
+              lineNumber: 978,
               columnNumber: 29
             }, this),
-            /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideDices2, { className: "text-purple-400" }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideDices3, { className: "text-purple-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 959,
+              lineNumber: 979,
               columnNumber: 45
             }, this), title: "\u7279\u6B8A\u89C4\u5219", value: currentRoundConfig.specialRule }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 959,
+              lineNumber: 979,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 954,
+            lineNumber: 974,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 942,
+          lineNumber: 962,
           columnNumber: 21
         }, this) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 940,
+          lineNumber: 960,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col gap-4 sm:gap-6", children: /* @__PURE__ */ jsxDEV18(ScheduleTimeline_default, { schedule: leagueState.schedule, currentRound: leagueState.current_round }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 965,
+          lineNumber: 985,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 964,
+          lineNumber: 984,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 939,
+        lineNumber: 959,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 844,
+      lineNumber: 864,
       columnNumber: 13
     }, this) : /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u6BD4\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 841,
+      lineNumber: 861,
       columnNumber: 41
     }, this);
   }, renderCurrentPage = () => {
     if (!isAuthReady)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-center text-2xl p-8", children: "\u6B63\u5728\u8FDE\u63A5\u670D\u52A1\u5668..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 974,
+        lineNumber: 994,
         columnNumber: 20
       }, this);
     if (leagueState && leagueState.status === "pending_confirmation")
@@ -5377,7 +5873,7 @@ function Index() {
         !1,
         {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 979,
+          lineNumber: 999,
           columnNumber: 20
         },
         this
@@ -5398,7 +5894,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 989,
+            lineNumber: 1009,
             columnNumber: 24
           },
           this
@@ -5422,7 +5918,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 998,
+            lineNumber: 1018,
             columnNumber: 24
           },
           this
@@ -5445,7 +5941,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1011,
+            lineNumber: 1031,
             columnNumber: 24
           },
           this
@@ -5463,7 +5959,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1025,
+            lineNumber: 1045,
             columnNumber: 24
           },
           this
@@ -5478,7 +5974,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1030,
+            lineNumber: 1050,
             columnNumber: 24
           },
           this
@@ -5498,7 +5994,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1034,
+            lineNumber: 1054,
             columnNumber: 24
           },
           this
@@ -5514,22 +6010,22 @@ function Index() {
   return /* @__PURE__ */ jsxDEV18(ThemeContext.Provider, { value: { theme, toggleTheme }, children: /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.container, children: [
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.background }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1066,
+      lineNumber: 1086,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow1 }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1067,
+      lineNumber: 1087,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow2 }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1068,
+      lineNumber: 1088,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.pattern }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1069,
+      lineNumber: 1089,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18(
@@ -5550,7 +6046,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1071,
+        lineNumber: 1091,
         columnNumber: 17
       },
       this
@@ -5564,7 +6060,7 @@ function Index() {
             className: `p-2 sm:p-2.5 rounded-lg transition-all duration-200 border border-transparent active:scale-95 ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
             children: /* @__PURE__ */ jsxDEV18(LucideMenu2, { size: 18 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1091,
+              lineNumber: 1111,
               columnNumber: 29
             }, this)
           },
@@ -5572,7 +6068,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1087,
+            lineNumber: 1107,
             columnNumber: 25
           },
           this
@@ -5580,49 +6076,49 @@ function Index() {
         /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2", children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "p-1.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg", children: /* @__PURE__ */ jsxDEV18(LucideCat3, { className: "text-orange-400", size: 16 }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1095,
+            lineNumber: 1115,
             columnNumber: 33
           }, this) }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1094,
+            lineNumber: 1114,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV18("h1", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"} tracking-tight`, children: "Boom League" }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1097,
+            lineNumber: 1117,
             columnNumber: 29
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1093,
+          lineNumber: 1113,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "w-8 sm:w-10" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1099,
+          lineNumber: 1119,
           columnNumber: 25
         }, this),
         " "
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1086,
+        lineNumber: 1106,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ jsxDEV18("main", { className: "p-3 sm:p-4 md:p-6 lg:p-8 relative z-10 min-h-screen", children: renderCurrentPage() }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1103,
+        lineNumber: 1123,
         columnNumber: 21
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1084,
+      lineNumber: 1104,
       columnNumber: 17
     }, this),
     showPlayerModal && /* @__PURE__ */ jsxDEV18(Modal_default, { onClose: () => setShowPlayerModal(!1), title: "Add New Player", children: /* @__PURE__ */ jsxDEV18("div", { children: [
       /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
         /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Player Name" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1112,
+          lineNumber: 1132,
           columnNumber: 33
         }, this),
         /* @__PURE__ */ jsxDEV18(
@@ -5638,20 +6134,20 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1113,
+            lineNumber: 1133,
             columnNumber: 33
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1111,
+        lineNumber: 1131,
         columnNumber: 29
       }, this),
       /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
         /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 sm:mb-3 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Choose Avatar" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1127,
+          lineNumber: 1147,
           columnNumber: 33
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: `grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-40 sm:max-h-48 overflow-y-auto p-3 sm:p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50/80 border-gray-200"}`, children: GAME_RULES.AVATARS.map((avatar, index) => /* @__PURE__ */ jsxDEV18(
@@ -5665,18 +6161,18 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1134,
+            lineNumber: 1154,
             columnNumber: 41
           },
           this
         )) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1128,
+          lineNumber: 1148,
           columnNumber: 33
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1126,
+        lineNumber: 1146,
         columnNumber: 29
       }, this),
       /* @__PURE__ */ jsxDEV18(
@@ -5688,18 +6184,18 @@ function Index() {
             /* @__PURE__ */ jsxDEV18("span", { className: "relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base", children: [
               /* @__PURE__ */ jsxDEV18(LucidePlus2, { size: 18 }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 1156,
+                lineNumber: 1176,
                 columnNumber: 37
               }, this),
               "Add Player"
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1155,
+              lineNumber: 1175,
               columnNumber: 33
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { className: "absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1159,
+              lineNumber: 1179,
               columnNumber: 33
             }, this)
           ]
@@ -5708,18 +6204,18 @@ function Index() {
         !0,
         {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1151,
+          lineNumber: 1171,
           columnNumber: 29
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1110,
+      lineNumber: 1130,
       columnNumber: 25
     }, this) }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1109,
+      lineNumber: 1129,
       columnNumber: 21
     }, this),
     showResultsModal && leagueState && /* @__PURE__ */ jsxDEV18(
@@ -5734,7 +6230,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1166,
+        lineNumber: 1186,
         columnNumber: 21
       },
       this
@@ -5751,7 +6247,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1175,
+        lineNumber: 1195,
         columnNumber: 21
       },
       this
@@ -5767,7 +6263,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1185,
+        lineNumber: 1205,
         columnNumber: 21
       },
       this
@@ -5788,7 +6284,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1194,
+        lineNumber: 1214,
         columnNumber: 21
       },
       this
@@ -5811,24 +6307,24 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1207,
+        lineNumber: 1227,
         columnNumber: 17
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/_index.tsx",
-    lineNumber: 1065,
+    lineNumber: 1085,
     columnNumber: 13
   }, this) }, void 0, !1, {
     fileName: "app/routes/_index.tsx",
-    lineNumber: 1064,
+    lineNumber: 1084,
     columnNumber: 9
   }, this);
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-N66DQM74.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-FWFLRLK7.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-N43JFRB6.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-XB3RGCS2.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "a1ecd7ef", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754723256483 }, url: "/build/manifest-A1ECD7EF.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-XZRUNYCF.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-5ZF6PAZJ.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-XVHGACUF.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-PVMSCPUR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-L2DXMMP7.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "3cf19e3a", hmr: { runtime: "/build/_shared\\chunk-XVHGACUF.js", timestamp: 1754725221031 }, url: "/build/manifest-3CF19E3A.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {

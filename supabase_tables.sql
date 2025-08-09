@@ -18,13 +18,36 @@ CREATE TABLE players (
     avatar TEXT NOT NULL DEFAULT '😼',
     score INTEGER NOT NULL DEFAULT 0,        -- Current league score
     history JSONB NOT NULL DEFAULT '[]'::jsonb,  -- Current league round history
-    championships INTEGER NOT NULL DEFAULT 0,     -- Total championships (league wins)
-    runner_up INTEGER NOT NULL DEFAULT 0,         -- Total runner-up finishes (league 2nd place)
-    third_place INTEGER NOT NULL DEFAULT 0,       -- Total third place finishes (league 3rd place)
-    total_vp INTEGER NOT NULL DEFAULT 0,          -- Total VP earned across all leagues
-    total_games INTEGER NOT NULL DEFAULT 0,       -- Total leagues participated in
-    average_placement NUMERIC(4,2) DEFAULT 0.00,  -- Average league placement
-    win_rate NUMERIC(5,2) DEFAULT 0.00,           -- Win rate percentage
+    
+    -- 联赛级别统计 (League-level statistics)
+    league_championships INTEGER NOT NULL DEFAULT 0,     -- 联赛冠军次数
+    league_runner_up INTEGER NOT NULL DEFAULT 0,         -- 联赛亚军次数
+    league_third_place INTEGER NOT NULL DEFAULT 0,       -- 联赛季军次数
+    
+    -- 单轮级别统计 (Round-level statistics)
+    round_championships INTEGER NOT NULL DEFAULT 0,      -- 单轮冠军次数
+    round_runner_up INTEGER NOT NULL DEFAULT 0,          -- 单轮亚军次数
+    round_third_place INTEGER NOT NULL DEFAULT 0,        -- 单轮季军次数
+    
+    -- 分数统计 (Score statistics)
+    total_vp INTEGER NOT NULL DEFAULT 0,                 -- 总VP获得数
+    
+    -- 游戏统计 (Game statistics)
+    total_leagues INTEGER NOT NULL DEFAULT 0,            -- 总联赛数
+    total_rounds INTEGER NOT NULL DEFAULT 0,             -- 总轮次数
+    
+    -- 平均和胜率统计 (Average and win rate statistics)
+    round_average_placement NUMERIC(4,2) DEFAULT 0.00,   -- 单轮平均排名
+    round_win_rate NUMERIC(5,2) DEFAULT 0.00,            -- 单轮胜率（冠亚季军都算获胜）
+    
+    -- 兼容性字段 (Compatibility fields)
+    championships INTEGER NOT NULL DEFAULT 0,            -- 兼容旧代码，映射到league_championships
+    runner_up INTEGER NOT NULL DEFAULT 0,                -- 兼容旧代码，映射到league_runner_up
+    third_place INTEGER NOT NULL DEFAULT 0,              -- 兼容旧代码，映射到league_third_place
+    total_games INTEGER NOT NULL DEFAULT 0,              -- 兼容旧代码，映射到total_leagues
+    average_placement NUMERIC(4,2) DEFAULT 0.00,         -- 兼容旧代码，映射到round_average_placement
+    win_rate NUMERIC(5,2) DEFAULT 0.00,                  -- 兼容旧代码，映射到round_win_rate
+    
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -37,13 +60,36 @@ CREATE TABLE player_rankings (
     name TEXT NOT NULL,
     avatar TEXT NOT NULL,
     score INTEGER NOT NULL DEFAULT 0,
-    championships INTEGER NOT NULL DEFAULT 0,
-    runner_up INTEGER NOT NULL DEFAULT 0,
-    third_place INTEGER NOT NULL DEFAULT 0,
-    total_vp INTEGER NOT NULL DEFAULT 0,
-    total_games INTEGER NOT NULL DEFAULT 0,
-    average_placement NUMERIC(4,2) DEFAULT 0.00,
-    win_rate NUMERIC(5,2) DEFAULT 0.00,
+    
+    -- 联赛级别统计 (League-level statistics)
+    league_championships INTEGER NOT NULL DEFAULT 0,     -- 联赛冠军次数
+    league_runner_up INTEGER NOT NULL DEFAULT 0,         -- 联赛亚军次数
+    league_third_place INTEGER NOT NULL DEFAULT 0,       -- 联赛季军次数
+    
+    -- 单轮级别统计 (Round-level statistics)
+    round_championships INTEGER NOT NULL DEFAULT 0,      -- 单轮冠军次数
+    round_runner_up INTEGER NOT NULL DEFAULT 0,          -- 单轮亚军次数
+    round_third_place INTEGER NOT NULL DEFAULT 0,        -- 单轮季军次数
+    
+    -- 分数统计 (Score statistics)
+    total_vp INTEGER NOT NULL DEFAULT 0,                 -- 总VP获得数
+    
+    -- 游戏统计 (Game statistics)
+    total_leagues INTEGER NOT NULL DEFAULT 0,            -- 总联赛数
+    total_rounds INTEGER NOT NULL DEFAULT 0,             -- 总轮次数
+    
+    -- 平均和胜率统计 (Average and win rate statistics)
+    round_average_placement NUMERIC(4,2) DEFAULT 0.00,   -- 单轮平均排名
+    round_win_rate NUMERIC(5,2) DEFAULT 0.00,            -- 单轮胜率（冠亚季军都算获胜）
+    
+    -- 兼容性字段 (Compatibility fields)
+    championships INTEGER NOT NULL DEFAULT 0,            -- 兼容旧代码，映射到league_championships
+    runner_up INTEGER NOT NULL DEFAULT 0,                -- 兼容旧代码，映射到league_runner_up
+    third_place INTEGER NOT NULL DEFAULT 0,              -- 兼容旧代码，映射到league_third_place
+    total_games INTEGER NOT NULL DEFAULT 0,              -- 兼容旧代码，映射到total_leagues
+    average_placement NUMERIC(4,2) DEFAULT 0.00,         -- 兼容旧代码，映射到round_average_placement
+    win_rate NUMERIC(5,2) DEFAULT 0.00,                  -- 兼容旧代码，映射到round_win_rate
+    
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     PRIMARY KEY (id, app_id)
 );
