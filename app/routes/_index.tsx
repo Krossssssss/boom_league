@@ -35,6 +35,7 @@ import Modal from '../components/ui/Modal';
 import PlayerProfileModal from '../components/ui/PlayerProfileModal';
 import ResultsModal from '../components/ui/ResultsModal';
 import CardDrawReminder from '../components/ui/CardDrawReminder';
+import PasswordModal from '../components/ui/PasswordModal';
 
 // Import constants
 import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../constants/typography';
@@ -79,6 +80,12 @@ export default function Index() {
     const [isHydrated, setIsHydrated] = useState<boolean>(false);
     const [audioManager] = useState(() => getAudioManager());
     const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
+    
+    // Password protection state
+    const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
+    const [pendingDeleteAction, setPendingDeleteAction] = useState<(() => void) | null>(null);
+    const [deleteModalTitle, setDeleteModalTitle] = useState<string>('');
+    const [deleteModalMessage, setDeleteModalMessage] = useState<string>('');
 
     // Helper function to update players with rankings
     const updatePlayersWithRankings = (newPlayers: Player[]) => {
@@ -361,19 +368,30 @@ export default function Index() {
     };
 
     const handleDeletePlayer = async (playerId: string) => {
-        const previous = players;
-        setPlayers((curr) => curr.filter((p) => p.id !== playerId));
+        const playerToDelete = players.find(p => p.id === playerId);
+        const playerName = playerToDelete ? playerToDelete.name : 'Unknown Player';
+        
+        const actualDeleteAction = async () => {
+            const previous = players;
+            setPlayers((curr) => curr.filter((p) => p.id !== playerId));
 
-        // Delete from players table
-        const { error } = await supabase
-            .from('players')
-            .delete()
-            .match({ id: playerId, app_id: appId });
+            // Delete from players table
+            const { error } = await supabase
+                .from('players')
+                .delete()
+                .match({ id: playerId, app_id: appId });
 
-        if (error) {
-            console.error('Delete player failed:', error);
-            setPlayers(previous);
-        }
+            if (error) {
+                console.error('Delete player failed:', error);
+                setPlayers(previous);
+            }
+        };
+
+        requestPasswordConfirmation(
+            actualDeleteAction,
+            'Delete Player',
+            `This will permanently delete "${playerName}" and all their statistics. This action cannot be undone.`
+        );
     };
 
     const generateSchedule = (playerCount: number, selectedSpecialRules: string[] = GAME_RULES.SPECIAL_RULES): RoundConfig[] => {
@@ -481,77 +499,94 @@ export default function Index() {
     };
 
     const handleResetLeague = async () => {
-        setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
-        setLeagueState({
-            app_id: appId,
-            status: 'setup',
-            current_round: 0,
-            schedule: [],
-            winner: null,
-        } as any);
-        setWinner(null);
+        const actualResetAction = async () => {
+            setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
+            setLeagueState({
+                app_id: appId,
+                status: 'setup',
+                current_round: 0,
+                schedule: [],
+                winner: null,
+            } as any);
+            setWinner(null);
 
-        const [{ error: pErr }, { error: lErr }] = await Promise.all([
-            supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
-            supabase
-                .from('league_state')
-                .upsert(
-                    {
-                        app_id: appId,
-                        status: 'setup',
-                        current_round: 0,
-                        schedule: [],
-                        winner: null,
-                    },
-                    { onConflict: 'app_id' }
-                ),
-        ]);
+            const [{ error: pErr }, { error: lErr }] = await Promise.all([
+                supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
+                supabase
+                    .from('league_state')
+                    .upsert(
+                        {
+                            app_id: appId,
+                            status: 'setup',
+                            current_round: 0,
+                            schedule: [],
+                            winner: null,
+                        },
+                        { onConflict: 'app_id' }
+                    ),
+            ]);
 
-        if (pErr || lErr) {
-            console.error('Reset league errors:', pErr, lErr);
-        }
+            if (pErr || lErr) {
+                console.error('Reset league errors:', pErr, lErr);
+            }
+        };
+
+        requestPasswordConfirmation(
+            actualResetAction,
+            'Reset League',
+            'This will permanently reset the current league, clearing all scores and progress. All player statistics will be reset to zero.'
+        );
     };
 
     const handleAbortLeague = async () => {
         if (!leagueState) return;
         
-        // Save current league to history before aborting (if it has made progress)
-        if (leagueState.current_round > 1) {
-            // Create an aborted league state for history
-            const abortedLeagueState = {
-                ...leagueState,
-                status: 'finished',
-                winner: {
-                    name: '联赛中止',
-                    avatar: '⚠️',
-                    reason: `联赛在第 ${leagueState.current_round - 1} 轮后被中止`
-                },
-                end_date: new Date().toISOString()
-            } as LeagueState;
+        const actualAbortAction = async () => {
+            // Save current league to history before aborting (if it has made progress)
+            if (leagueState.current_round > 1) {
+                // Create an aborted league state for history
+                const abortedLeagueState = {
+                    ...leagueState,
+                    status: 'finished',
+                    winner: {
+                        name: '联赛中止',
+                        avatar: '⚠️',
+                        reason: `联赛在第 ${leagueState.current_round - 1} 轮后被中止`
+                    },
+                    end_date: new Date().toISOString()
+                } as LeagueState;
+                
+                await saveLeagueToHistory(abortedLeagueState, players);
+            }
+
+            // Reset player scores in local state
+            setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
             
-            await saveLeagueToHistory(abortedLeagueState, players);
-        }
+            // Clear league state completely
+            setLeagueState(null);
+            setWinner(null);
+            setCurrentPage('league'); // Go back to league management
 
-        // Reset player scores in local state
-        setPlayers((curr) => curr.map((p) => ({ ...p, score: 0, history: [] })));
-        
-        // Clear league state completely
-        setLeagueState(null);
-        setWinner(null);
-        setCurrentPage('league'); // Go back to league management
+            // Delete the league from database and reset player scores
+            const [{ error: pErr }, { error: lErr }] = await Promise.all([
+                supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
+                supabase.from('league_state').delete().eq('app_id', appId)
+            ]);
 
-        // Delete the league from database and reset player scores
-        const [{ error: pErr }, { error: lErr }] = await Promise.all([
-            supabase.from('players').update({ score: 0, history: [] }).eq('app_id', appId),
-            supabase.from('league_state').delete().eq('app_id', appId)
-        ]);
+            if (pErr || lErr) {
+                console.error('Abort league errors:', pErr, lErr);
+            } else {
+                // Reload history after successful abort
+                await loadLeagueHistory();
+            }
+        };
 
-        if (pErr || lErr) {
-            console.error('Abort league errors:', pErr, lErr);
-        } else {
-            // Reload history after successful abort
-            await loadLeagueHistory();
-        }
+        const leagueName = leagueState.league_name || 'Current League';
+        requestPasswordConfirmation(
+            actualAbortAction,
+            'Abort League',
+            `This will permanently abort "${leagueName}" and delete all current progress. If the league has progressed beyond round 1, it will be saved to history as aborted.`
+        );
     };
 
     const handleBackToLeagueManagement = () => {
@@ -590,6 +625,27 @@ export default function Index() {
     const handlePlayerClick = (player: Player) => {
         setSelectedPlayerForProfile(player);
         setShowPlayerProfileModal(true);
+    };
+
+    // Password protection helper functions
+    const requestPasswordConfirmation = (action: () => void, title: string, message: string) => {
+        setPendingDeleteAction(() => action);
+        setDeleteModalTitle(title);
+        setDeleteModalMessage(message);
+        setShowPasswordModal(true);
+    };
+
+    const handlePasswordConfirm = () => {
+        if (pendingDeleteAction) {
+            pendingDeleteAction();
+            setPendingDeleteAction(null);
+        }
+        setShowPasswordModal(false);
+    };
+
+    const handlePasswordCancel = () => {
+        setPendingDeleteAction(null);
+        setShowPasswordModal(false);
     };
 
     const toggleTheme = () => {
@@ -906,11 +962,7 @@ export default function Index() {
                                 <span className="xs:hidden">返回</span>
                             </button>
                             <button
-                                onClick={() => {
-                                    if (window.confirm('确定要中止当前联赛吗？\n\n• 当前联赛将被删除\n• 如果已进行多轮比赛，进度将保存到历史记录\n• 玩家分数将被重置\n• 您将返回到联赛管理主页')) {
-                                        handleAbortLeague();
-                                    }
-                                }}
+                                onClick={handleAbortLeague}
                                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.button} transition-all duration-200 ${
                                     theme === 'dark'
                                         ? 'bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50'
@@ -952,32 +1004,34 @@ export default function Index() {
                 {/* Player Leaderboard - Always at the top */}
                 <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
 
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
-                    <div className="flex flex-col gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
+                    <div className="flex flex-col gap-5 sm:gap-6 md:gap-8 xl:col-span-2 2xl:col-span-1">
                     {/* Round Info Card */}
                     <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                             <h2 className={`${TYPOGRAPHY.COMBINATIONS.sectionTitle} text-orange-400 ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮</h2>
-                            <button 
-                                onClick={() => setShowResultsModal(true)} 
-                                className={`bg-green-500 hover:bg-green-600 active:bg-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 rounded-lg shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`}
-                            >
-                                <LucideClipboardList size={18} className="flex-shrink-0" /> 
-                                <span className="hidden xs:inline">输入本轮结果</span>
-                                <span className="xs:hidden">结果</span>
-                            </button>
+                                                    <button 
+                            onClick={() => setShowResultsModal(true)} 
+                            className={`bg-green-500 hover:bg-green-600 active:bg-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-3 sm:py-4 md:py-5 px-5 sm:px-6 md:px-8 rounded-xl sm:rounded-2xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 sm:gap-3 ${LINE_HEIGHTS.tight} min-h-touch text-base sm:text-lg md:text-xl font-semibold`}
+                        >
+                            <LucideClipboardList size={20} className="flex-shrink-0 sm:w-6 sm:h-6" /> 
+                            <span className="hidden sm:inline">输入本轮结果</span>
+                            <span className="sm:hidden">结果</span>
+                        </button>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base lg:text-lg">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
                             <InfoCard icon={<LucideShield className="text-blue-400" />} title="安全牌数量" value={currentRoundConfig.safeCards} />
                             <InfoCard icon={<LucideBomb className="text-red-400" />} title="炸弹牌数量" value={currentRoundConfig.bombCards} />
                             <InfoCard icon={<LucideSwords className="text-yellow-400" />} title="出战手牌上限" value={currentRoundConfig.handLimit === Infinity ? "无限制" : currentRoundConfig.handLimit} />
                             <InfoCard icon={<LucideTrophy className="text-green-400" />} title="VP 奖励模式" value={currentRoundConfig.vpMode.name} />
-                            <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRule} />
+                            <div className="md:col-span-2 xl:col-span-1">
+                                <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRule} />
+                            </div>
                         </div>
                     </div>
                     
                     </div>
-                    <div className="flex flex-col gap-4 sm:gap-6">
+                    <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">
                         <ScheduleTimeline schedule={leagueState.schedule} currentRound={leagueState.current_round} />
                     </div>
                 </div>
@@ -1100,24 +1154,24 @@ export default function Index() {
 
                 <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'} relative`}>
                     {/* Mobile Header */}
-                    <header className={`lg:hidden flex items-center justify-between p-3 sm:p-4 border-b ${theme === 'dark' ? 'border-white/10 bg-black/40' : 'border-gray-200/50 bg-white/80'} backdrop-blur-2xl sticky top-0 z-40`}>
+                    <header className={`lg:hidden flex items-center justify-between p-4 sm:p-5 md:p-6 border-b ${theme === 'dark' ? 'border-white/10 bg-black/40' : 'border-gray-200/50 bg-white/80'} backdrop-blur-2xl sticky top-0 z-40`}>
                         <button 
                             onClick={() => setSidebarOpen(true)}
-                            className={`p-2 sm:p-2.5 rounded-lg transition-all duration-200 border border-transparent active:scale-95 ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                            className={`min-h-touch min-w-touch p-3 sm:p-3.5 rounded-xl transition-all duration-200 border border-transparent active:scale-95 ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
                         >
-                            <LucideMenu size={18} />
+                            <LucideMenu size={20} />
                         </button>
-                        <div className="flex items-center gap-2">
-                            <div className="p-1.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg">
-                                <LucideCat className="text-orange-400" size={16} />
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-xl">
+                                <LucideCat className="text-orange-400 w-[18px] h-[18px] sm:w-5 sm:h-5" />
                             </div>
-                            <h1 className={`text-sm sm:text-base font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} tracking-tight`}>Boom League</h1>
+                            <h1 className={`text-base sm:text-lg md:text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} tracking-tight`}>Boom League</h1>
                         </div>
-                        <div className="w-8 sm:w-10"></div> {/* Spacer for centering */}
+                        <div className="w-12 sm:w-14"></div> {/* Spacer for centering */}
                     </header>
 
                     {/* Main Content */}
-                    <main className="p-3 sm:p-4 md:p-6 lg:p-8 relative z-10 min-h-screen">
+                    <main className="p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 relative z-10 min-h-screen">
                         {renderCurrentPage()}
                     </main>
                 </div>
@@ -1203,6 +1257,16 @@ export default function Index() {
                         players={players}
                         round={cardDrawRound}
                         onClose={() => setShowCardDrawReminder(false)}
+                    />
+                )}
+
+                {showPasswordModal && (
+                    <PasswordModal
+                        isOpen={showPasswordModal}
+                        onClose={handlePasswordCancel}
+                        onConfirm={handlePasswordConfirm}
+                        title={deleteModalTitle}
+                        message={deleteModalMessage}
                     />
                 )}
 

@@ -301,9 +301,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                         </ul>
                     </nav>
 
-                    {/* Sound Effects Box */}
+                    {/* Sound Effects Box - Hidden on mobile */}
                     {!sidebarCollapsed && (
-                        <div className={`mx-3 sm:mx-4 mb-3 sm:mb-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} pt-3 sm:pt-4`}>
+                        <div className={`hidden lg:block mx-3 sm:mx-4 mb-3 sm:mb-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} pt-3 sm:pt-4`}>
                             <div className="relative">
                                 <button
                                     onClick={() => setSoundBoxCollapsed(!soundBoxCollapsed)}
@@ -360,10 +360,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className={`relative p-3 sm:p-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} mt-auto`}>
                         {sidebarCollapsed ? (
                             <div className="flex flex-col items-center gap-2">
-                                {/* Music button - collapsed */}
+                                {/* Music button - collapsed, hidden on mobile */}
                                 <button 
                                     onClick={handleMusicToggle}
-                                    className={`w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${
+                                    className={`hidden lg:flex w-8 h-8 rounded-lg transition-all duration-200 border border-transparent items-center justify-center ${
                                         musicPlaying && !musicMuted
                                             ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
                                             : theme === 'dark' 
@@ -394,10 +394,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                         ) : (
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    {/* Music button - expanded */}
+                                    {/* Music button - expanded, hidden on mobile */}
                                     <button 
                                         onClick={handleMusicToggle}
-                                        className={`p-2 rounded-lg transition-all duration-200 border border-transparent ${
+                                        className={`hidden lg:block p-2 rounded-lg transition-all duration-200 border border-transparent ${
                                             musicPlaying && !musicMuted
                                                 ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
                                                 : theme === 'dark' 
