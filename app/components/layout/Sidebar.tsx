@@ -139,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 
                 // Reset and play the video starting at 1 second
                 iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
+                iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`;
                 
                 // Set playback rate after iframe loads
                 const handleLoad = () => {
@@ -173,7 +173,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     // Fallback beep sound using Web Audio API
     const playBeepSound = () => {
         try {
-            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const audioContext = typeof window !== 'undefined' ? new ((window as any).AudioContext || (window as any).webkitAudioContext)() : null;
+            if (!audioContext) return;
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
             

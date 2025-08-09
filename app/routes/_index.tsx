@@ -110,7 +110,7 @@ export default function Index() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const urlParams = new URLSearchParams(window.location.search);
+            const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
             const canvasAppId = urlParams.get('app_id') || 'default';
             setAppId(canvasAppId);
 
@@ -505,7 +505,7 @@ export default function Index() {
                 // Reset and play the happy sound at normal speed starting from the beginning
                 const currentSrc = iframe.src;
                 iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${window.location.origin}`;
+                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`;
                 
                 // Set playback rate to normal speed (1x) after iframe loads
                 const handleLoad = () => {
