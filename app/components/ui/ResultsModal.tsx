@@ -6,17 +6,70 @@ import type { ResultsModalProps } from '../../types';
 const ResultsModal: React.FC<ResultsModalProps> = ({ players, onClose, onSubmit, round }) => {
     const { theme } = useTheme();
     const [rankedPlayers, setRankedPlayers] = useState(players.map(p => p.id));
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
     const handleDragStart = (e: React.DragEvent, index: number) => {
         e.dataTransfer.setData("draggedIndex", index.toString());
+        e.dataTransfer.effectAllowed = 'move';
+        setDraggedIndex(index);
+        
+        // Add ghost image styling
+        const dragElement = e.currentTarget as HTMLElement;
+        dragElement.style.opacity = '0.5';
+        
+        // Create custom drag image
+        setTimeout(() => {
+            dragElement.style.opacity = '1';
+        }, 0);
+    };
+
+    const handleDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setDragOverIndex(index);
+    };
+
+    const handleDragEnter = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        setDragOverIndex(index);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        // Only clear if we're leaving the container entirely
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+            setDragOverIndex(null);
+        }
     };
 
     const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-        const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"));
-        const newRankedPlayers = [...rankedPlayers];
-        const [draggedItem] = newRankedPlayers.splice(draggedIndex, 1);
-        newRankedPlayers.splice(dropIndex, 0, draggedItem);
-        setRankedPlayers(newRankedPlayers);
+        e.preventDefault();
+        const draggedIdx = parseInt(e.dataTransfer.getData("draggedIndex"));
+        
+        if (draggedIdx !== dropIndex) {
+            const newRankedPlayers = [...rankedPlayers];
+            const [draggedItem] = newRankedPlayers.splice(draggedIdx, 1);
+            newRankedPlayers.splice(dropIndex, 0, draggedItem);
+            setRankedPlayers(newRankedPlayers);
+        }
+        
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+    };
+
+    const handleDragEnd = (e: React.DragEvent) => {
+        e.preventDefault();
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+        
+        // Reset any styling
+        const dragElement = e.currentTarget as HTMLElement;
+        dragElement.style.opacity = '1';
     };
 
     const getPlayerById = (id: string) => players.find(p => p.id === id);

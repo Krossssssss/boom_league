@@ -9,6 +9,7 @@ export interface Player {
     championships: number;
     runnerUp: number;      // 亚军次数
     thirdPlace: number;    // 季军次数
+    totalVP: number;       // 总VP获得数
 }
 
 export interface GameHistory {
@@ -70,6 +71,7 @@ export interface PlayerStats {
     averagePlacement: string;
     winRate: string;
     championships: number;
+    totalVP: number;
 }
 
 // Theme Types

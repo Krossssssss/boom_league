@@ -33,6 +33,10 @@ const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({ player, onClose
                         <p className={`text-sm ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}>当前分数</p>
                     </div>
                     <div className={`${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border p-4 rounded-lg text-center`}>
+                        <p className="text-2xl font-bold text-green-400">{stats.totalVP}</p>
+                        <p className={`text-sm ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}>💎 总VP获得</p>
+                    </div>
+                    <div className={`${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border p-4 rounded-lg text-center`}>
                         <p className="text-2xl font-bold text-blue-400">{stats.totalGames}</p>
                         <p className={`text-sm ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}>总游戏数</p>
                     </div>

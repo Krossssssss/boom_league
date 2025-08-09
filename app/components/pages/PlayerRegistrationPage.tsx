@@ -40,12 +40,11 @@ const PlayerRegistrationPage: React.FC<PlayerRegistrationPageProps> = ({
                     <h3 className={`text-2xl font-bold flex items-center gap-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                         <div className="w-2 h-8 bg-gradient-to-b from-emerald-400 to-emerald-600 rounded-full"></div>
                         已注册玩家 
-                        <span className="text-orange-400">({players.length}/6)</span>
+                        <span className="text-orange-400">({players.length})</span>
                     </h3>
                     <button 
                         onClick={() => setShowPlayerModal(true)} 
-                        disabled={players.length >= 6}
-                        className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-200 hover:scale-105 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none"
+                        className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-200 hover:scale-105"
                     >
                         <LucidePlus size={18} /> 添加玩家
                     </button>

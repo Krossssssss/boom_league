@@ -47,6 +47,11 @@ const PlayerProfiles: React.FC<PlayerProfilesProps> = ({ players, onPlayerClick 
                                     <span className="hidden xs:inline">{p.thirdPlace || 0} 季军</span>
                                     <span className="xs:hidden">{p.thirdPlace || 0}</span>
                                 </div>
+                                <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded text-xs font-medium text-green-400">
+                                    <span>💎</span>
+                                    <span className="hidden xs:inline">{p.totalVP || 0} 总VP</span>
+                                    <span className="xs:hidden">{p.totalVP || 0}</span>
+                                </div>
                                 <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${
                                     theme === 'dark' 
                                         ? 'bg-white/5 border-white/10 text-white/70'

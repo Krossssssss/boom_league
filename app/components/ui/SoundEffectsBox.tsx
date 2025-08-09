@@ -36,7 +36,7 @@ const SoundEffectsBox: React.FC = () => {
             name: '😂 大笑',
             icon: <LucideSmile size={20} />,
             color: 'from-green-500/20 to-emerald-500/20 border-green-500/30 text-green-400',
-            youtubeId: 'Rc2k_8skxtI' // https://youtu.be/Rc2k_8skxtI?si=njTqQwahPfhmPMDu
+            youtubeId: 'USerehPnsEE' // https://youtu.be/USerehPnsEE?si=dltTownhKVfkqL5A
         },
         {
             id: 'cry',
@@ -61,8 +61,34 @@ const SoundEffectsBox: React.FC = () => {
         }
     ];
 
+    // Stop all currently playing sounds
+    const stopAllSounds = () => {
+        try {
+            // Stop all YouTube iframes by clearing their src
+            Object.keys(youtubeRefs.current).forEach(soundId => {
+                const iframe = youtubeRefs.current[soundId];
+                if (iframe && iframe.src) {
+                    iframe.src = '';
+                }
+            });
+
+            // Stop any Web Audio API sounds
+            Object.values(audioRefs.current).forEach(audio => {
+                if (audio && !audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        } catch (error) {
+            console.log('Error stopping sounds:', error);
+        }
+    };
+
     const playSound = (soundEffect: SoundEffect) => {
         try {
+            // Stop all previous sounds first
+            stopAllSounds();
+
             // Check if it's a YouTube sound effect
             if (soundEffect.youtubeId) {
                 playYouTubeSound(soundEffect.id, soundEffect.youtubeId);
@@ -81,10 +107,34 @@ const SoundEffectsBox: React.FC = () => {
         try {
             const iframe = youtubeRefs.current[soundId];
             if (iframe) {
-                // Reset and play the video
+                // Reset and play the video starting at 1 second with 2x speed
+                // We'll use a combination of URL parameters and postMessage
                 const currentSrc = iframe.src;
                 iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1`;
+                iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
+                
+                // Set playback rate to 2x speed after iframe loads
+                const handleLoad = () => {
+                    setTimeout(() => {
+                        try {
+                            if (iframe.contentWindow) {
+                                // Send command to set playback rate to 2x
+                                iframe.contentWindow.postMessage(
+                                    JSON.stringify({
+                                        event: 'command',
+                                        func: 'setPlaybackRate',
+                                        args: [2]
+                                    }),
+                                    'https://www.youtube.com'
+                                );
+                            }
+                        } catch (postMessageError) {
+                            console.log('Could not set playback rate:', postMessageError);
+                        }
+                    }, 500);
+                };
+
+                iframe.onload = handleLoad;
             }
         } catch (error) {
             console.log('YouTube sound failed:', error);
@@ -187,7 +237,7 @@ const SoundEffectsBox: React.FC = () => {
                         ref={(el) => youtubeRefs.current[sound.id] = el}
                         width="0"
                         height="0"
-                        src={`https://www.youtube.com/embed/${sound.youtubeId}?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&enablejsapi=1`}
+                        src={`https://www.youtube.com/embed/${sound.youtubeId}?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
                         title={`${sound.name} Sound Effect`}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

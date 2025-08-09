@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideScrollText } from 'lucide-react';
+import { LucideScrollText, LucideShield, LucideBomb, LucideSwords } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { ScheduleTimelineProps } from '../../types';
 
@@ -27,7 +27,7 @@ const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule, currentRo
                                         ? 'bg-white/5 border-white/10 hover:bg-white/10'
                                         : 'bg-gray-100/50 border-gray-200 hover:bg-gray-200/50'
                             }`}>
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between mb-3">
                                     <p className={`font-semibold text-base ${isActive ? 'text-orange-400' : theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>
                                         Round {roundInfo.round}
                                     </p>
@@ -35,7 +35,47 @@ const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule, currentRo
                                         <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(251,146,60,0.5)]"></div>
                                     )}
                                 </div>
-                                <p className={`text-sm mt-1 font-medium ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>{roundInfo.vpMode.name} • {roundInfo.specialRule}</p>
+                                
+                                {/* Game Parameters Overview */}
+                                <div className="grid grid-cols-3 gap-2 mb-3">
+                                    <div className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-medium ${
+                                        theme === 'dark' 
+                                            ? 'bg-blue-500/10 border border-blue-500/20 text-blue-400'
+                                            : 'bg-blue-100/80 border border-blue-200 text-blue-600'
+                                    }`}>
+                                        <LucideShield size={12} />
+                                        <span className="hidden sm:inline">安全牌</span>
+                                        <span className="font-bold">{roundInfo.safeCards}</span>
+                                    </div>
+                                    <div className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-medium ${
+                                        theme === 'dark' 
+                                            ? 'bg-red-500/10 border border-red-500/20 text-red-400'
+                                            : 'bg-red-100/80 border border-red-200 text-red-600'
+                                    }`}>
+                                        <LucideBomb size={12} />
+                                        <span className="hidden sm:inline">炸弹牌</span>
+                                        <span className="font-bold">{roundInfo.bombCards}</span>
+                                    </div>
+                                    <div className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-medium ${
+                                        theme === 'dark' 
+                                            ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400'
+                                            : 'bg-yellow-100/80 border border-yellow-200 text-yellow-600'
+                                    }`}>
+                                        <LucideSwords size={12} />
+                                        <span className="hidden sm:inline">手牌</span>
+                                        <span className="font-bold">{roundInfo.handLimit === Infinity ? '∞' : roundInfo.handLimit}</span>
+                                    </div>
+                                </div>
+                                
+                                {/* VP Mode and Special Rule */}
+                                <div className="space-y-1">
+                                    <p className={`text-xs font-medium ${theme === 'dark' ? 'text-white/70' : 'text-gray-700'}`}>
+                                        🏆 {roundInfo.vpMode.name}
+                                    </p>
+                                    <p className={`text-xs font-medium ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+                                        🎯 {roundInfo.specialRule}
+                                    </p>
+                                </div>
                             </div>
                         );
                     })}

@@ -11,6 +11,15 @@ import { SUPABASE_CONFIG } from '../constants/supabase';
 
 // Import utils
 import { UTILS } from '../utils/gameUtils';
+import { 
+    playerToSupabase, 
+    playerFromSupabase, 
+    playersFromSupabase,
+    leagueStateToSupabase, 
+    leagueStateFromSupabase,
+    leagueHistoryToSupabase,
+    leagueHistoryArrayFromSupabase
+} from '../utils/supabaseMapping';
 
 // Import context
 import { ThemeContext, useTheme } from '../contexts/ThemeContext';
@@ -146,9 +155,10 @@ export default function Index() {
                 }
 
                 if (historyData) {
-                    setLeagueHistory(historyData);
+                    const mappedHistory = leagueHistoryArrayFromSupabase(historyData);
+                    setLeagueHistory(mappedHistory);
                     // Set next season number based on latest season
-                    const latestSeason = historyData.length > 0 ? historyData[0].season_number : 0;
+                    const latestSeason = mappedHistory.length > 0 ? mappedHistory[0].season_number : 0;
                     setNextSeasonNumber(latestSeason + 1);
                     setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
                 }
@@ -165,8 +175,9 @@ export default function Index() {
                 .single();
             
             if (leagueData) {
-                setLeagueState(leagueData);
-                if (leagueData.winner) setWinner(leagueData.winner);
+                const mappedLeagueState = leagueStateFromSupabase(leagueData);
+                setLeagueState(mappedLeagueState);
+                if (mappedLeagueState.winner) setWinner(mappedLeagueState.winner);
                 else setWinner(null);
             } else {
                  setLeagueState(null);
@@ -179,7 +190,10 @@ export default function Index() {
                 .eq('app_id', appId)
                 .order('score', { ascending: false });
 
-            if (playersData) setPlayers(playersData);
+            if (playersData) {
+                const mappedPlayers = playersFromSupabase(playersData);
+                setPlayers(mappedPlayers);
+            }
             if (playersError) console.error("Error fetching players:", playersError);
         };
 
@@ -188,7 +202,7 @@ export default function Index() {
 
         const leagueChannel = supabase.channel(`league-state:${appId}`)
             .on('postgres_changes', { event: '*', schema: 'public', table: 'league_state', filter: `app_id=eq.${appId}` }, (payload: any) => {
-                const updatedState = payload.new;
+                const updatedState = leagueStateFromSupabase(payload.new);
                 setLeagueState(updatedState);
                 if (updatedState.winner) setWinner(updatedState.winner);
                 else setWinner(null);
@@ -199,14 +213,16 @@ export default function Index() {
             .on('postgres_changes', { event: '*', schema: 'public', table: 'players', filter: `app_id=eq.${appId}` }, 
             (payload: any) => {
                 if (payload.eventType === 'INSERT') {
+                    const mappedPlayer = playerFromSupabase(payload.new);
                     setPlayers(currentPlayers => {
-                        const exists = currentPlayers.some(p => p.id === payload.new.id);
-                        const next = exists ? currentPlayers : [...currentPlayers, payload.new];
+                        const exists = currentPlayers.some(p => p.id === mappedPlayer.id);
+                        const next = exists ? currentPlayers : [...currentPlayers, mappedPlayer];
                         return next.sort((a, b) => b.score - a.score);
                     });
                 }
                 if (payload.eventType === 'UPDATE') {
-                    setPlayers(currentPlayers => currentPlayers.map(p => p.id === payload.new.id ? payload.new : p).sort((a, b) => b.score - a.score));
+                    const mappedPlayer = playerFromSupabase(payload.new);
+                    setPlayers(currentPlayers => currentPlayers.map(p => p.id === mappedPlayer.id ? mappedPlayer : p).sort((a, b) => b.score - a.score));
                 }
                 if (payload.eventType === 'DELETE') {
                     setPlayers(currentPlayers => currentPlayers.filter(p => p.id !== payload.old.id));
@@ -223,8 +239,8 @@ export default function Index() {
     const handleAddPlayer = async () => {
         console.log('handleAddPlayer called with:', { newPlayerName, selectedAvatar, playersLength: players.length });
         
-        if (newPlayerName.trim() === "" || players.length >= 6) {
-            console.log('handleAddPlayer early return:', { nameEmpty: newPlayerName.trim() === "", tooManyPlayers: players.length >= 6 });
+        if (newPlayerName.trim() === "") {
+            console.log('handleAddPlayer early return:', { nameEmpty: newPlayerName.trim() === "" });
             return;
         }
 
@@ -238,24 +254,28 @@ export default function Index() {
             championships: 0,
             runnerUp: 0,
             thirdPlace: 0,
+            totalVP: 0,
         } as any;
 
         console.log('Adding temp player:', tempPlayer);
         setPlayers((curr) => [...curr, tempPlayer].sort((a, b) => b.score - a.score));
 
         console.log('Inserting into Supabase...');
+        const playerData = {
+            app_id: appId,
+            name: tempPlayer.name,
+            avatar: selectedAvatar,
+            score: 0,
+            history: [],
+            championships: 0,
+            runnerUp: 0,
+            thirdPlace: 0,
+            totalVP: 0,
+        };
+        
         const { data, error } = await supabase
             .from('players')
-            .insert({
-                app_id: appId,
-                name: tempPlayer.name,
-                avatar: selectedAvatar,
-                score: 0,
-                history: [],
-                championships: 0,
-                runnerUp: 0,
-                thirdPlace: 0,
-            })
+            .insert(playerToSupabase(playerData))
             .select()
             .single();
 
@@ -266,9 +286,10 @@ export default function Index() {
             console.error('Add player failed:', error);
         } else if (data) {
             console.log('Successfully added player, updating temp player with real data:', data);
+            const mappedPlayer = playerFromSupabase(data);
             setPlayers((curr) =>
                 curr
-                    .map((p) => (p.id === tempPlayer.id ? data : p))
+                    .map((p) => (p.id === tempPlayer.id ? mappedPlayer : p))
                     .sort((a, b) => b.score - a.score)
             );
         }
@@ -385,7 +406,7 @@ export default function Index() {
 
         const { error } = await supabase
             .from('league_state')
-            .upsert(newLeagueState, { onConflict: 'app_id' });
+            .upsert(leagueStateToSupabase(newLeagueState), { onConflict: 'app_id' });
 
         if (error) {
             console.error('Start league failed:', error);
@@ -467,6 +488,43 @@ export default function Index() {
         setCurrentPage('league');
     };
 
+    // Function to play happy sound effect
+    const playHappySound = () => {
+        try {
+            const iframe = (window as any).happySoundIframe;
+            if (iframe) {
+                // Reset and play the happy sound with 2x speed starting at 1 second
+                const currentSrc = iframe.src;
+                iframe.src = '';
+                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
+                
+                // Set playback rate to 2x speed after iframe loads
+                const handleLoad = () => {
+                    setTimeout(() => {
+                        try {
+                            if (iframe.contentWindow) {
+                                iframe.contentWindow.postMessage(
+                                    JSON.stringify({
+                                        event: 'command',
+                                        func: 'setPlaybackRate',
+                                        args: [2]
+                                    }),
+                                    'https://www.youtube.com'
+                                );
+                            }
+                        } catch (postMessageError) {
+                            console.log('Could not set playback rate for happy sound:', postMessageError);
+                        }
+                    }, 500);
+                };
+
+                iframe.onload = handleLoad;
+            }
+        } catch (error) {
+            console.log('Happy sound failed:', error);
+        }
+    };
+
     const handlePlayerClick = (player: Player) => {
         setSelectedPlayerForProfile(player);
         setShowPlayerProfileModal(true);
@@ -499,7 +557,7 @@ export default function Index() {
 
         const { error } = await supabase
             .from('league_history')
-            .insert(historyEntry);
+            .insert(leagueHistoryToSupabase(historyEntry));
 
         if (error) {
             console.error('Error saving league to history:', error);
@@ -524,14 +582,17 @@ export default function Index() {
 
             const points = vpMode.scores[index] || 0;
             const newScore = player.score + points;
+            const newTotalVP = (player.totalVP || 0) + points;
             
             player.score = newScore;
+            player.totalVP = newTotalVP;
             player.history = [...player.history, { round: leagueState.current_round, placement: index + 1 }];
 
+            const updateData = playerToSupabase({ score: newScore, totalVP: newTotalVP, history: player.history });
             playerUpdates.push(
                 supabase
                     .from('players')
-                    .update({ score: newScore, history: player.history })
+                    .update(updateData)
                     .match({ id: playerId, app_id: appId })
             );
         }
@@ -556,7 +617,7 @@ export default function Index() {
             playerUpdates.push(
                 supabase
                     .from('players')
-                    .update({ championships: potentialWinner.championships })
+                    .update(playerToSupabase({ championships: potentialWinner.championships }))
                     .match({ id: potentialWinner.id, app_id: appId })
             );
         } else if (nextRound > GAME_RULES.MAX_ROUNDS) {
@@ -574,7 +635,7 @@ export default function Index() {
                 playerUpdates.push(
                     supabase
                         .from('players')
-                        .update({ championships: champion.championships })
+                        .update(playerToSupabase({ championships: champion.championships }))
                         .match({ id: champion.id, app_id: appId })
                 );
                 
@@ -584,7 +645,7 @@ export default function Index() {
                     playerUpdates.push(
                         supabase
                             .from('players')
-                            .update({ runnerUp: runnerUp.runnerUp })
+                            .update(playerToSupabase({ runnerUp: runnerUp.runnerUp }))
                             .match({ id: runnerUp.id, app_id: appId })
                     );
                 }
@@ -595,7 +656,7 @@ export default function Index() {
                     playerUpdates.push(
                         supabase
                             .from('players')
-                            .update({ thirdPlace: thirdPlace.thirdPlace })
+                            .update(playerToSupabase({ thirdPlace: thirdPlace.thirdPlace }))
                             .match({ id: thirdPlace.id, app_id: appId })
                     );
                 }
@@ -632,6 +693,9 @@ export default function Index() {
             await saveLeagueToHistory(finalLeagueState, updatedPlayersData);
         }
 
+        // Play happy sound effect after advancing round
+        playHappySound();
+        
         setShowResultsModal(false);
     };
 
@@ -732,12 +796,11 @@ export default function Index() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-                    {/* Mobile: Stack everything vertically, Desktop: Sidebar layout */}
-                    <div className="xl:col-span-1 flex flex-col gap-4 sm:gap-6 order-2 xl:order-1">
-                        <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
-                    </div>
-                    <div className="xl:col-span-2 flex flex-col gap-4 sm:gap-6 order-1 xl:order-2">
+                {/* Player Leaderboard - Always at the top */}
+                <Leaderboard players={players} onPlayerClick={handlePlayerClick} />
+
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="flex flex-col gap-4 sm:gap-6">
                     {/* Round Info Card */}
                     <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -760,45 +823,47 @@ export default function Index() {
                         </div>
                     </div>
                     
-                    {/* League Info Card */}
-                    {leagueState.league_name && (
-                        <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
-                                    <LucideTrophy className="text-orange-400" size={20} />
-                                </div>
-                                <div>
-                                    <h3 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
-                                        {leagueState.league_name}
-                                    </h3>
-                                    {leagueState.season_number && (
-                                        <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
-                                            Season {leagueState.season_number}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            {leagueState.created_at && (
-                                <div className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-100/50'}`}>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <span className={`${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>创建时间：</span>
-                                        <span className={`${theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>
-                                            {new Date(leagueState.created_at).toLocaleDateString('zh-CN', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </span>
+                    </div>
+                    <div className="flex flex-col gap-4 sm:gap-6">
+                        {/* League Info Card */}
+                        {leagueState.league_name && (
+                            <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
+                                        <LucideTrophy className="text-orange-400" size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
+                                            {leagueState.league_name}
+                                        </h3>
+                                        {leagueState.season_number && (
+                                            <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+                                                Season {leagueState.season_number}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
-                            )}
-                        </div>
-                    )}
-                    
-                     <ScheduleTimeline schedule={leagueState.schedule} currentRound={leagueState.current_round} />
-                     <SoundEffectsBox />
+                                {leagueState.created_at && (
+                                    <div className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-100/50'}`}>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className={`${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>创建时间：</span>
+                                            <span className={`${theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>
+                                                {new Date(leagueState.created_at).toLocaleDateString('zh-CN', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        
+                        <ScheduleTimeline schedule={leagueState.schedule} currentRound={leagueState.current_round} />
+                        <SoundEffectsBox />
                     </div>
                 </div>
             </div>
@@ -916,7 +981,7 @@ export default function Index() {
                     setMusicMuted={setMusicMuted}
                 />
 
-                <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-0'} relative`}>
+                <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'} relative`}>
                     {/* Mobile Header */}
                     <header className={`lg:hidden flex items-center justify-between p-3 sm:p-4 border-b ${theme === 'dark' ? 'border-white/10 bg-black/40' : 'border-gray-200/50 bg-white/80'} backdrop-blur-2xl sticky top-0 z-40`}>
                         <button 
@@ -1029,6 +1094,22 @@ export default function Index() {
                         style={{ width: '1px', height: '1px', position: 'fixed', top: '-9999px', left: '-9999px' }}
                     ></iframe>
                 )}
+
+                {/* Hidden iframe for happy sound effect */}
+                <iframe
+                    ref={(el) => {
+                        if (el) {
+                            (window as any).happySoundIframe = el;
+                        }
+                    }}
+                    width="0"
+                    height="0"
+                    src="https://www.youtube.com/embed/NSU2hJ5wT08?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=1&enablejsapi=1"
+                    title="Happy Sound Effect"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    style={{ display: 'none', position: 'absolute', left: '-9999px', top: '-9999px' }}
+                />
             </div>
         </ThemeContext.Provider>
     );

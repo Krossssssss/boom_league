@@ -24,7 +24,8 @@ export const UTILS = {
             placements,
             averagePlacement,
             winRate,
-            championships: player.championships || 0
+            championships: player.championships || 0,
+            totalVP: player.totalVP || 0
         };
     }
 };
