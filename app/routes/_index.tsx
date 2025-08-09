@@ -129,7 +129,10 @@ export default function Index() {
                 setTheme(savedTheme);
             }
 
-            supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            // Only initialize Supabase on client side
+            if (!supabase) {
+                supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            }
 
             supabase.auth.getSession().then(({ data: { session } }: any) => {
                 setSession(session)
@@ -180,7 +183,7 @@ export default function Index() {
     };
 
     useEffect(() => {
-        if (!isAuthReady || !supabase) return;
+        if (!isAuthReady || !supabase || typeof window === 'undefined') return;
 
         const fetchInitialData = async () => {
             const { data: leagueData, error: leagueError } = await supabase
@@ -989,6 +992,10 @@ export default function Index() {
     };
 
     const renderCurrentPage = () => {
+        if (typeof window === 'undefined') {
+            return <div className="text-center text-2xl p-8">正在加载...</div>;
+        }
+        
         if (!isAuthReady) {
             return <div className="text-center text-2xl p-8">正在连接服务器...</div>;
         }
