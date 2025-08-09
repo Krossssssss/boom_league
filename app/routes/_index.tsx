@@ -1016,33 +1016,18 @@ export default function Index() {
                     />
                 )}
 
-                {/* Background Music Player */}
+                {/* Background Music Player - Hidden iframe for audio-only playback */}
                 {!musicMuted && (
-                    <div className="fixed bottom-4 right-4 z-50 max-w-[90vw] sm:max-w-none">
-                        <div className={`${theme === 'dark' ? 'bg-black/80' : 'bg-white/80'} backdrop-blur-md rounded-lg border ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} p-2 sm:p-3 shadow-lg`}>
-                            <iframe
-                                width="280"
-                                height="160"
-                                src={`https://www.youtube.com/embed/FeJKBFWYB0o?autoplay=${musicPlaying ? '1' : '0'}&loop=1&playlist=FeJKBFWYB0o&controls=1&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&volume=30`}
-                                title="Background Music"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                className="rounded w-full max-w-[280px] h-[160px]"
-                            ></iframe>
-                            <div className="flex items-center justify-between mt-2">
-                                <span className={`text-xs ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}>Background Music</span>
-                                <button 
-                                    onClick={() => {
-                                        setMusicMuted(true);
-                                        setMusicPlaying(false);
-                                    }}
-                                    className={`text-xs px-2 py-1 rounded transition-colors ${theme === 'dark' ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'}`}
-                                >
-                                    Hide
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <iframe
+                        width="1"
+                        height="1"
+                        src={`https://www.youtube.com/embed/FeJKBFWYB0o?autoplay=${musicPlaying ? '1' : '0'}&loop=1&playlist=FeJKBFWYB0o&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&volume=30`}
+                        title="Background Music"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        className="fixed top-0 left-0 opacity-0 pointer-events-none"
+                        style={{ width: '1px', height: '1px', position: 'fixed', top: '-9999px', left: '-9999px' }}
+                    ></iframe>
                 )}
             </div>
         </ThemeContext.Provider>
