@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause } from 'lucide-react';
+import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause, LucideBook, LucideExternalLink } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { SidebarProps } from '../../types';
 
@@ -33,6 +33,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                 setMusicPlaying(true);
             }
         }
+    };
+
+    const handleRulebookClick = () => {
+        window.open('https://docs.google.com/document/d/1zJaKW7T4Lz0537q-SPOSN5mYH0btt6K8Yvd6craN504/edit?usp=sharing', '_blank');
     };
     
     const menuItems = [

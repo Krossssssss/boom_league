@@ -8082,7 +8082,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\constants\\gameRules.ts"
   );
-  import.meta.hot.lastModified = "1754705513542.8096";
+  import.meta.hot.lastModified = "1754706045112.6787";
 }
 var GAME_RULES = {
   WIN_SCORE: 12,
@@ -8147,7 +8147,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\constants\\supabase.ts"
   );
-  import.meta.hot.lastModified = "1754705522644.588";
+  import.meta.hot.lastModified = "1754706045112.6787";
 }
 var SUPABASE_CONFIG = {
   url: "https://gatiuwpldvmxeeraldue.supabase.co",
@@ -8160,7 +8160,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\utils\\gameUtils.ts"
   );
-  import.meta.hot.lastModified = "1754705893755.6553";
+  import.meta.hot.lastModified = "1754706045113.6787";
 }
 var UTILS = {
   getRandomElement: (arr) => arr[Math.floor(Math.random() * arr.length)],
@@ -8190,7 +8190,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\contexts\\ThemeContext.tsx"
   );
-  import.meta.hot.lastModified = "1754705540736.7632";
+  import.meta.hot.lastModified = "1754706045113.6787";
 }
 var ThemeContext = (0, import_react3.createContext)(void 0);
 var useTheme = () => {
@@ -8221,7 +8221,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\layout\\Sidebar.tsx"
   );
-  import.meta.hot.lastModified = "1754707009579.4795";
+  import.meta.hot.lastModified = "1754707125187.5317";
 }
 var Sidebar = ({
   currentPage,
@@ -8255,6 +8255,9 @@ var Sidebar = ({
       }
     }
   };
+  const handleRulebookClick = () => {
+    window.open("https://docs.google.com/document/d/1zJaKW7T4Lz0537q-SPOSN5mYH0btt6K8Yvd6craN504/edit?usp=sharing", "_blank");
+  };
   const menuItems = [{
     id: "home",
     name: "\u9996\u9875",
@@ -8275,13 +8278,13 @@ var Sidebar = ({
   return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(import_jsx_dev_runtime.Fragment, { children: [
     sidebarOpen && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "fixed inset-0 bg-black/50 z-40 lg:hidden", onClick: () => setSidebarOpen(false) }, void 0, false, {
       fileName: "app/components/layout/Sidebar.tsx",
-      lineNumber: 78,
+      lineNumber: 81,
       columnNumber: 29
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: `fixed left-0 top-0 h-full ${theme === "dark" ? "bg-black/40" : "bg-white/80"} backdrop-blur-2xl border-r ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} z-50 transform transition-all duration-300 ease-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:static lg:z-auto ${sidebarCollapsed ? "w-16 lg:w-16" : "w-72 sm:w-80 md:w-72 lg:w-64"} ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.5)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-b from-white/5 to-transparent" : "bg-gradient-to-b from-gray-50/50 to-transparent"}` }, void 0, false, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 82,
+        lineNumber: 85,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "flex flex-col h-full", children: [
@@ -8289,99 +8292,99 @@ var Sidebar = ({
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "flex items-center gap-2 sm:gap-3", children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Cat, { className: "text-orange-400", size: 18 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 89,
+              lineNumber: 92,
               columnNumber: 37
             }, this) }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 88,
+              lineNumber: 91,
               columnNumber: 33
             }, this),
             !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { children: [
               /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("h2", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white/95" : "text-gray-900"} tracking-tight`, children: "Boom League" }, void 0, false, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 92,
+                lineNumber: 95,
                 columnNumber: 41
               }, this),
               /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("p", { className: `text-xs ${theme === "dark" ? "text-white/60" : "text-gray-600"} font-medium hidden sm:block`, children: "Tournament Tracker" }, void 0, false, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 93,
+                lineNumber: 96,
                 columnNumber: 41
               }, this)
             ] }, void 0, true, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 91,
+              lineNumber: 94,
               columnNumber: 55
             }, this)
           ] }, void 0, true, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 87,
+            lineNumber: 90,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: `flex items-center ${sidebarCollapsed ? "flex-col gap-1" : "gap-2"}`, children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: () => setSidebarCollapsed(!sidebarCollapsed), className: `hidden lg:flex p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`, title: sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar", children: sidebarCollapsed ? /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(PanelLeftOpen, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 99,
+              lineNumber: 102,
               columnNumber: 57
             }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(PanelLeftClose, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 99,
+              lineNumber: 102,
               columnNumber: 93
             }, this) }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 98,
+              lineNumber: 101,
               columnNumber: 33
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: handleMusicToggle, className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${musicPlaying && !musicMuted ? "text-orange-400 bg-orange-500/20 border-orange-500/30" : theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`, title: musicMuted ? "Unmute music" : musicPlaying ? "Pause music" : "Play music", children: musicMuted ? /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(VolumeX, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 103,
+              lineNumber: 106,
               columnNumber: 51
             }, this) : musicPlaying ? /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Pause, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 103,
+              lineNumber: 106,
               columnNumber: 96
             }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Play, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 103,
+              lineNumber: 106,
               columnNumber: 124
-            }, this) }, void 0, false, {
-              fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 102,
-              columnNumber: 33
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: toggleTheme, className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`, title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`, children: theme === "dark" ? /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Sun, { size: 16 }, void 0, false, {
-              fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 106,
-              columnNumber: 57
-            }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Moon, { size: 16 }, void 0, false, {
-              fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 106,
-              columnNumber: 83
             }, this) }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
               lineNumber: 105,
               columnNumber: 33
             }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: () => setSidebarOpen(false), className: `lg:hidden ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-900"}`, children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(X, { size: 20 }, void 0, false, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: toggleTheme, className: `p-2 rounded-lg transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`, title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`, children: theme === "dark" ? /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Sun, { size: 16 }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
               lineNumber: 109,
-              columnNumber: 37
+              columnNumber: 57
+            }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Moon, { size: 16 }, void 0, false, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 109,
+              columnNumber: 83
             }, this) }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
               lineNumber: 108,
               columnNumber: 33
+            }, this),
+            /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: () => setSidebarOpen(false), className: `lg:hidden ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-900"}`, children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(X, { size: 20 }, void 0, false, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 112,
+              columnNumber: 37
+            }, this) }, void 0, false, {
+              fileName: "app/components/layout/Sidebar.tsx",
+              lineNumber: 111,
+              columnNumber: 33
             }, this)
           ] }, void 0, true, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 96,
+            lineNumber: 99,
             columnNumber: 29
           }, this)
         ] }, void 0, true, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 86,
+          lineNumber: 89,
           columnNumber: 25
         }, this) }, void 0, false, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 85,
+          lineNumber: 88,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("nav", { className: `flex-1 ${sidebarCollapsed ? "p-2" : "p-3 sm:p-4"} relative z-10`, children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("ul", { className: `space-y-1 sm:space-y-1.5 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`, children: menuItems.map((item) => {
@@ -8393,81 +8396,81 @@ var Sidebar = ({
           }, className: `group relative ${sidebarCollapsed ? "w-10 h-10" : "w-full"} flex items-center ${sidebarCollapsed ? "justify-center" : "gap-3"} px-3 sm:px-4 py-3 sm:py-3 rounded-lg transition-all duration-200 overflow-hidden text-sm sm:text-base ${isActive ? "bg-gradient-to-r from-orange-500/20 to-orange-600/20 text-orange-400 border border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.2)]" : theme === "dark" ? "text-white/70 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10" : "text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 border border-transparent hover:border-gray-200"}`, title: sidebarCollapsed ? item.name : void 0, children: [
             isActive && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 backdrop-blur-sm" }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 126,
+              lineNumber: 129,
               columnNumber: 58
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Icon2, { size: 18, className: "relative z-10 flex-shrink-0" }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 127,
+              lineNumber: 130,
               columnNumber: 45
             }, this),
             !sidebarCollapsed && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("span", { className: "font-medium relative z-10 truncate", children: item.name }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 128,
+              lineNumber: 131,
               columnNumber: 67
             }, this)
           ] }, void 0, true, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 122,
+            lineNumber: 125,
             columnNumber: 41
           }, this) }, item.id, false, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 121,
+            lineNumber: 124,
             columnNumber: 22
           }, this);
         }) }, void 0, false, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 117,
+          lineNumber: 120,
           columnNumber: 25
         }, this) }, void 0, false, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 116,
+          lineNumber: 119,
           columnNumber: 21
         }, this),
         !sidebarCollapsed && currentPage !== "rankings" && players.length > 0 && /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: `relative p-3 sm:p-4 border-t ${theme === "dark" ? "border-white/10" : "border-gray-200/50"}`, children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("h3", { className: `text-xs font-semibold ${theme === "dark" ? "text-white/60" : "text-gray-500"} mb-2 sm:mb-3 uppercase tracking-wider`, children: "Quick Access" }, void 0, false, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 137,
+            lineNumber: 140,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "space-y-1 max-h-28 sm:max-h-32 overflow-y-auto", children: players.slice(0, 3).map((player) => /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("button", { onClick: () => onPlayerClick(player), className: `relative w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm transition-all duration-200 border border-transparent ${theme === "dark" ? "text-white/70 hover:bg-white/5 hover:text-white hover:border-white/10" : "text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 hover:border-gray-200"}`, children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("span", { className: "text-sm sm:text-base flex-shrink-0", children: player.avatar }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 140,
+              lineNumber: 143,
               columnNumber: 41
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("span", { className: "truncate font-medium", children: player.name }, void 0, false, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 141,
+              lineNumber: 144,
               columnNumber: 41
             }, this)
           ] }, player.id, true, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 139,
+            lineNumber: 142,
             columnNumber: 68
           }, this)) }, void 0, false, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 138,
+            lineNumber: 141,
             columnNumber: 29
           }, this)
         ] }, void 0, true, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 136,
+          lineNumber: 139,
           columnNumber: 95
         }, this)
       ] }, void 0, true, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 83,
+        lineNumber: 86,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "app/components/layout/Sidebar.tsx",
-      lineNumber: 81,
+      lineNumber: 84,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "app/components/layout/Sidebar.tsx",
-    lineNumber: 76,
+    lineNumber: 79,
     columnNumber: 10
   }, this);
 };
@@ -8501,7 +8504,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\Leaderboard.tsx"
   );
-  import.meta.hot.lastModified = "1754706197942.2578";
+  import.meta.hot.lastModified = "1754706509412.1318";
 }
 var Leaderboard = ({
   players,
@@ -8626,7 +8629,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\PlayerProfiles.tsx"
   );
-  import.meta.hot.lastModified = "1754706236119.361";
+  import.meta.hot.lastModified = "1754706509412.6533";
 }
 var PlayerProfiles = ({
   players,
@@ -8824,7 +8827,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\InfoCard.tsx"
   );
-  import.meta.hot.lastModified = "1754706249302.2476";
+  import.meta.hot.lastModified = "1754706509412.6533";
 }
 var InfoCard = ({
   icon,
@@ -8908,7 +8911,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\ScheduleTimeline.tsx"
   );
-  import.meta.hot.lastModified = "1754705631092.385";
+  import.meta.hot.lastModified = "1754706045131.71";
 }
 var ScheduleTimeline = ({
   schedule,
@@ -9027,7 +9030,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\Modal.tsx"
   );
-  import.meta.hot.lastModified = "1754706269806.7158";
+  import.meta.hot.lastModified = "1754706509412.6533";
 }
 var Modal = ({
   children,
@@ -9115,7 +9118,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\PlayerProfileModal.tsx"
   );
-  import.meta.hot.lastModified = "1754705669128.4817";
+  import.meta.hot.lastModified = "1754706045152.7368";
 }
 var PlayerProfileModal = ({
   player,
@@ -9404,7 +9407,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\ui\\ResultsModal.tsx"
   );
-  import.meta.hot.lastModified = "1754706288861.4983";
+  import.meta.hot.lastModified = "1754706509413.194";
 }
 var ResultsModal = ({
   players,
@@ -9509,7 +9512,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\pages\\HomePage.tsx"
   );
-  import.meta.hot.lastModified = "1754706376921.5564";
+  import.meta.hot.lastModified = "1754706509424.5706";
 }
 var HomePage = ({
   leagueState,
@@ -9752,7 +9755,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\pages\\PlayerRegistrationPage.tsx"
   );
-  import.meta.hot.lastModified = "1754705735689.2952";
+  import.meta.hot.lastModified = "1754706045153.7373";
 }
 var PlayerRegistrationPage = ({
   players,
@@ -9935,7 +9938,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\pages\\LeagueManagementPage.tsx"
   );
-  import.meta.hot.lastModified = "1754705751770.0154";
+  import.meta.hot.lastModified = "1754706045154.7363";
 }
 var LeagueManagementPage = ({
   leagueState,
@@ -10121,7 +10124,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\components\\pages\\PlayerRankingsPage.tsx"
   );
-  import.meta.hot.lastModified = "1754705768250.9753";
+  import.meta.hot.lastModified = "1754706045182.62";
 }
 var PlayerRankingsPage = ({
   players,
@@ -10326,7 +10329,7 @@ if (import.meta) {
     //@ts-expect-error
     "app\\routes\\_index.tsx"
   );
-  import.meta.hot.lastModified = "1754707028770.7087";
+  import.meta.hot.lastModified = "1754707097210.553";
 }
 var supabase;
 function Index() {
@@ -11387,4 +11390,4 @@ lucide-react/dist/esm/lucide-react.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=/build/routes/_index-MRIPJJA4.js.map
+//# sourceMappingURL=/build/routes/_index-SWROCCUO.js.map
