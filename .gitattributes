@@ -1,28 +1,29 @@
-# Auto detect text files and perform LF normalization
+# Set default behavior to automatically normalize line endings
 * text=auto
 
 # Explicitly declare text files you want to always be normalized and converted
-# to native line endings on checkout.
-*.js text
-*.jsx text
+# to native line endings on checkout
 *.ts text
 *.tsx text
+*.js text
+*.jsx text
 *.json text
-*.css text
-*.scss text
 *.md text
-*.html text
-*.txt text
 *.yml text
 *.yaml text
+*.css text
+*.scss text
+*.html text
+*.xml text
+*.txt text
 
-# Declare files that will always have CRLF line endings on checkout.
+# Declare files that will always have CRLF line endings on checkout
 *.bat text eol=crlf
 
-# Declare files that will always have LF line endings on checkout.
+# Declare files that will always have LF line endings on checkout
 *.sh text eol=lf
 
-# Denote all files that are truly binary and should not be modified.
+# Denote all files that are truly binary and should not be modified
 *.png binary
 *.jpg binary
 *.jpeg binary
@@ -47,3 +48,4 @@
 *.bz2 binary
 *.swp binary
 *.jar binary
+*.class binary

@@ -209,7 +209,7 @@ const ScheduleConfirmationPage: React.FC<ScheduleConfirmationPageProps> = ({
                                     <InfoCard 
                                         icon={<LucideDices className="text-purple-400" />} 
                                         title="特殊规则" 
-                                        value={round.specialRules.join(" + ")} 
+                                        value={round.specialRule} 
                                     />
                                 </div>
                             </div>

@@ -1,45 +1,7 @@
 import type { Player, PlayerStats } from '../types';
-import { GAME_RULES } from '../constants/gameRules';
 
 export const UTILS = {
     getRandomElement: <T>(arr: readonly T[]): T => arr[Math.floor(Math.random() * arr.length)],
-    
-    /**
-     * 选择特殊规则，考虑概率和互斥关系
-     * 60%概率选择1条规则，40%概率选择2条规则
-     */
-    selectSpecialRules: (availableRules: string[] = GAME_RULES.SPECIAL_RULES): string[] => {
-        // 过滤出可用的规则（排除"无特殊规则"，除非它是唯一选项）
-        const nonNullRules = availableRules.filter(rule => rule !== "无特殊规则");
-        
-        // 如果没有可用规则或用户明确选择了"无特殊规则"
-        if (nonNullRules.length === 0 || availableRules.includes("无特殊规则") && availableRules.length === 1) {
-            return ["无特殊规则"];
-        }
-        
-        // 决定选择1条还是2条规则：60%概率1条，40%概率2条
-        const shouldSelectTwo = Math.random() < 0.4;
-        
-        if (!shouldSelectTwo || nonNullRules.length < 2) {
-            // 选择1条规则
-            return [UTILS.getRandomElement(nonNullRules)];
-        }
-        
-        // 选择2条不冲突的规则
-        const firstRule = UTILS.getRandomElement(nonNullRules);
-        const conflictingRules = GAME_RULES.RULE_CONFLICTS[firstRule] || [];
-        const compatibleRules = nonNullRules.filter(rule => 
-            rule !== firstRule && !conflictingRules.includes(rule)
-        );
-        
-        if (compatibleRules.length === 0) {
-            // 如果没有兼容的规则，只返回第一条
-            return [firstRule];
-        }
-        
-        const secondRule = UTILS.getRandomElement(compatibleRules);
-        return [firstRule, secondRule];
-    },
     
     calculatePlayerStats: (player: Player): PlayerStats => {
         const history = player.history || [];
@@ -65,5 +27,50 @@ export const UTILS = {
             championships: player.championships || 0,
             totalVP: player.totalVP || 0
         };
+    },
+
+    // Calculate player statistics based on league history (not round history)
+    // This should only be called with league-level data, not round-level data
+    updatePlayerStatistics: (player: Player): Player => {
+        // For now, just return the player with existing stats
+        // The real statistics update should happen when leagues finish
+        return {
+            ...player,
+            totalGames: player.totalGames || 0,
+            averagePlacement: player.averagePlacement || 0,
+            winRate: player.winRate || 0
+        };
+    },
+
+    // Calculate and update league-level statistics when a league finishes
+    updateLeagueStatistics: (players: Player[], leagueResults: { playerId: string, finalPlacement: number }[]): Player[] => {
+        const updatedPlayers = [...players];
+        
+        leagueResults.forEach(result => {
+            const player = updatedPlayers.find(p => p.id === result.playerId);
+            if (!player) return;
+            
+            // Increment total leagues played
+            player.totalGames = (player.totalGames || 0) + 1;
+            
+            // Update championship/runner-up/third place counts based on FINAL league placement
+            if (result.finalPlacement === 1) {
+                player.championships = (player.championships || 0) + 1;
+            } else if (result.finalPlacement === 2) {
+                player.runnerUp = (player.runnerUp || 0) + 1;
+            } else if (result.finalPlacement === 3) {
+                player.thirdPlace = (player.thirdPlace || 0) + 1;
+            }
+            
+            // Calculate average placement across all leagues
+            // We need to track cumulative placement to calculate this properly
+            const totalPlacementSum = (player.averagePlacement || 0) * ((player.totalGames || 1) - 1) + result.finalPlacement;
+            player.averagePlacement = parseFloat((totalPlacementSum / player.totalGames).toFixed(2));
+            
+            // Calculate win rate (percentage of leagues won)
+            player.winRate = parseFloat(((player.championships || 0) / player.totalGames * 100).toFixed(1));
+        });
+        
+        return updatedPlayers;
     }
 };

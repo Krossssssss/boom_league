@@ -4,20 +4,20 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: !0 });
 };
 
-// app/entry.server.tsx
-var entry_server_exports = {};
-__export(entry_server_exports, {
+// node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx
+var entry_server_node_exports = {};
+__export(entry_server_node_exports, {
   default: () => handleRequest
 });
 import { PassThrough } from "node:stream";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import { isbot } from "isbot";
+import * as isbotModule from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { jsxDEV } from "react/jsx-dev-runtime";
 var ABORT_DELAY = 5e3;
 function handleRequest(request, responseStatusCode, responseHeaders, remixContext, loadContext) {
-  return isbot(request.headers.get("user-agent")) ? handleBotRequest(
+  return isBotRequest(request.headers.get("user-agent")) || remixContext.isSpaMode ? handleBotRequest(
     request,
     responseStatusCode,
     responseHeaders,
@@ -28,6 +28,9 @@ function handleRequest(request, responseStatusCode, responseHeaders, remixContex
     responseHeaders,
     remixContext
   );
+}
+function isBotRequest(userAgent) {
+  return userAgent ? "isbot" in isbotModule && typeof isbotModule.isbot == "function" ? isbotModule.isbot(userAgent) : "default" in isbotModule && typeof isbotModule.default == "function" ? isbotModule.default(userAgent) : !1 : !1;
 }
 function handleBotRequest(request, responseStatusCode, responseHeaders, remixContext) {
   return new Promise((resolve, reject) => {
@@ -42,8 +45,8 @@ function handleBotRequest(request, responseStatusCode, responseHeaders, remixCon
         void 0,
         !1,
         {
-          fileName: "app/entry.server.tsx",
-          lineNumber: 48,
+          fileName: "node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx",
+          lineNumber: 66,
           columnNumber: 7
         },
         this
@@ -83,8 +86,8 @@ function handleBrowserRequest(request, responseStatusCode, responseHeaders, remi
         void 0,
         !1,
         {
-          fileName: "app/entry.server.tsx",
-          lineNumber: 98,
+          fileName: "node_modules/@remix-run/dev/dist/config/defaults/entry.server.node.tsx",
+          lineNumber: 116,
           columnNumber: 7
         },
         this
@@ -127,7 +130,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-3KF5WDZO.css?url";
+var tailwind_default = "/build/_assets/tailwind-CBRR2FGF.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -217,31 +220,31 @@ var GAME_RULES = {
     "\u624B\u724C\u660E\u724C",
     "\u7981\u6B62\u643A\u5E26 Skip",
     "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip",
-    "\u81F3\u591A\u643A\u5E261\u5F20Skip",
-    "\u81F3\u591A\u643A\u5E261\u5F20Defuse",
-    "\u7981\u6B62\u643A\u5E26Attack",
-    "\u81F3\u591A\u643A\u5E261\u5F20Attack",
-    "1\u6B21\u514D\u8D39See the Future (x3)",
-    "3-of-a-kind\uFF1A\u5982\u679C\u4F60\u6253\u51FA\u4E09\u5F20\u540C\u540D\u5361\u7247\uFF08\u5E76\u975E\u5FC5\u987B\u662F\u732B\u5361\uFF09\uFF0C\u4F60\u53EF\u4EE5\u6307\u5B9A\u4F60\u60F3\u8981\u7684\u5361\u7247\u540D\u79F0\u5E76\u4ECE\u76EE\u6807\u73A9\u5BB6\u624B\u724C\u90A3\u91CC\u62FF\u8D70\u90A3\u5F20\u5361\uFF1B\u82E5\u5176\u624B\u4E2D\u6CA1\u6709\u5219\u65E0\u6548",
+    "\u81F3\u591A\u643A\u5E261\u5F20skip",
+    "\u81F3\u591A\u643A\u5E261\u5F20defuse",
+    "\u7981\u6B62\u643A\u5E26attack",
+    "\u81F3\u591A\u643A\u5E261\u5F20attack",
+    "1\u6B21\u514D\u8D39see the future (x3)",
+    "3-of-a-kind\uFF1A\u6253\u51FA\u4E09\u5F20\u540C\u540D\u724C\uFF0C\u6307\u5B9A\u5E76\u7D22\u53D6\u76EE\u6807\u73A9\u5BB6\u7684\u8BE5\u724C\uFF0C\u82E5\u65E0\u5219\u65E0\u6548\u3002",
     "\u4EFB\u610F2\u5F20\u76F8\u540C\u7684\u724C\u90FD\u53EF\u4EE5\u6253\u51FAsteal\u4E00\u540D\u73A9\u5BB6\u7684\u624B\u724C",
-    "\u6240\u6709\u732B\u724C\u89C6\u4E3ANope",
+    "\u6240\u6709\u732B\u724C\u89C6\u4E3Anope",
     "Tacocat=Reverse",
-    "Ralphing Rainbow Cat=Attack (2x)",
-    "Beard Cat=Alter the Future\xD73",
-    "Zombie Cat=Defuse",
-    "\u589E\u5F3AMark\uFF1A\u5982\u679C\u88ABMark\u7684\u724C\u4E0D\u5728\u4E0B\u56DE\u5408\u6253\u51FA\uFF0C\u5219\u81EA\u52A8\u88AB\u4F60\u5077\u8D70"
+    "Ralphing Rainbow Cat= attack (2x)",
+    "Beard Cat=Alter the future\xD73",
+    "Zombie cat = defuse",
+    "\u589E\u5F3Amark\uFF1A\u82E5\u88AB\u6807\u8BB0\u7684\u724C\u672A\u5728\u4E0B\u56DE\u5408\u6253\u51FA\uFF0C\u5219\u81EA\u52A8\u5F52\u4F60\u3002"
   ],
-  // 特殊规则互斥关系
+  // 互斥规则定义
   RULE_CONFLICTS: {
-    \u65E0\u7279\u6B8A\u89C4\u5219: ["\u624B\u724C\u660E\u724C", "\u7981\u6B62\u643A\u5E26 Skip", "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip", "\u81F3\u591A\u643A\u5E261\u5F20Skip", "\u81F3\u591A\u643A\u5E261\u5F20Defuse", "\u7981\u6B62\u643A\u5E26Attack", "\u81F3\u591A\u643A\u5E261\u5F20Attack", "1\u6B21\u514D\u8D39See the Future (x3)", "3-of-a-kind\uFF1A\u5982\u679C\u4F60\u6253\u51FA\u4E09\u5F20\u540C\u540D\u5361\u7247\uFF08\u5E76\u975E\u5FC5\u987B\u662F\u732B\u5361\uFF09\uFF0C\u4F60\u53EF\u4EE5\u6307\u5B9A\u4F60\u60F3\u8981\u7684\u5361\u7247\u540D\u79F0\u5E76\u4ECE\u76EE\u6807\u73A9\u5BB6\u624B\u724C\u90A3\u91CC\u62FF\u8D70\u90A3\u5F20\u5361\uFF1B\u82E5\u5176\u624B\u4E2D\u6CA1\u6709\u5219\u65E0\u6548", "\u4EFB\u610F2\u5F20\u76F8\u540C\u7684\u724C\u90FD\u53EF\u4EE5\u6253\u51FAsteal\u4E00\u540D\u73A9\u5BB6\u7684\u624B\u724C", "\u6240\u6709\u732B\u724C\u89C6\u4E3ANope", "Tacocat=Reverse", "Ralphing Rainbow Cat=Attack (2x)", "Beard Cat=Alter the Future\xD73", "Zombie Cat=Defuse", "\u589E\u5F3AMark\uFF1A\u5982\u679C\u88ABMark\u7684\u724C\u4E0D\u5728\u4E0B\u56DE\u5408\u6253\u51FA\uFF0C\u5219\u81EA\u52A8\u88AB\u4F60\u5077\u8D70"],
-    "\u7981\u6B62\u643A\u5E26 Skip": ["\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip", "\u81F3\u591A\u643A\u5E261\u5F20Skip"],
-    "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip": ["\u7981\u6B62\u643A\u5E26 Skip", "\u81F3\u591A\u643A\u5E261\u5F20Skip"],
-    \u81F3\u591A\u643A\u5E261\u5F20Skip: ["\u7981\u6B62\u643A\u5E26 Skip", "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip"],
-    \u7981\u6B62\u643A\u5E26Attack: ["\u81F3\u591A\u643A\u5E261\u5F20Attack", "Ralphing Rainbow Cat=Attack (2x)"],
-    \u81F3\u591A\u643A\u5E261\u5F20Attack: ["\u7981\u6B62\u643A\u5E26Attack"],
-    "Ralphing Rainbow Cat=Attack (2x)": ["\u7981\u6B62\u643A\u5E26Attack"],
-    \u81F3\u591A\u643A\u5E261\u5F20Defuse: ["Zombie Cat=Defuse"],
-    "Zombie Cat=Defuse": ["\u81F3\u591A\u643A\u5E261\u5F20Defuse"]
+    \u65E0\u7279\u6B8A\u89C4\u5219: ["\u624B\u724C\u660E\u724C", "\u7981\u6B62\u643A\u5E26 Skip", "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip", "\u81F3\u591A\u643A\u5E261\u5F20skip", "\u81F3\u591A\u643A\u5E261\u5F20defuse", "\u7981\u6B62\u643A\u5E26attack", "\u81F3\u591A\u643A\u5E261\u5F20attack", "1\u6B21\u514D\u8D39see the future (x3)", "3-of-a-kind\uFF1A\u6253\u51FA\u4E09\u5F20\u540C\u540D\u724C\uFF0C\u6307\u5B9A\u5E76\u7D22\u53D6\u76EE\u6807\u73A9\u5BB6\u7684\u8BE5\u724C\uFF0C\u82E5\u65E0\u5219\u65E0\u6548\u3002", "\u4EFB\u610F2\u5F20\u76F8\u540C\u7684\u724C\u90FD\u53EF\u4EE5\u6253\u51FAsteal\u4E00\u540D\u73A9\u5BB6\u7684\u624B\u724C", "\u6240\u6709\u732B\u724C\u89C6\u4E3Anope", "Tacocat=Reverse", "Ralphing Rainbow Cat= attack (2x)", "Beard Cat=Alter the future\xD73", "Zombie cat = defuse", "\u589E\u5F3Amark\uFF1A\u82E5\u88AB\u6807\u8BB0\u7684\u724C\u672A\u5728\u4E0B\u56DE\u5408\u6253\u51FA\uFF0C\u5219\u81EA\u52A8\u5F52\u4F60\u3002"],
+    "\u7981\u6B62\u643A\u5E26 Skip": ["\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip", "\u81F3\u591A\u643A\u5E261\u5F20skip"],
+    "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip": ["\u7981\u6B62\u643A\u5E26 Skip", "\u81F3\u591A\u643A\u5E261\u5F20skip"],
+    \u81F3\u591A\u643A\u5E261\u5F20skip: ["\u7981\u6B62\u643A\u5E26 Skip", "\u6240\u6709\u732B\u724C\u89C6\u4E3A Skip"],
+    \u7981\u6B62\u643A\u5E26attack: ["\u81F3\u591A\u643A\u5E261\u5F20attack", "Ralphing Rainbow Cat= attack (2x)"],
+    \u81F3\u591A\u643A\u5E261\u5F20attack: ["\u7981\u6B62\u643A\u5E26attack", "Ralphing Rainbow Cat= attack (2x)"],
+    "Ralphing Rainbow Cat= attack (2x)": ["\u7981\u6B62\u643A\u5E26attack", "\u81F3\u591A\u643A\u5E261\u5F20attack"],
+    \u81F3\u591A\u643A\u5E261\u5F20defuse: ["Zombie cat = defuse"],
+    "Zombie cat = defuse": ["\u81F3\u591A\u643A\u5E261\u5F20defuse"]
   },
   AVATARS: [
     "\u{1F63C}",
@@ -292,24 +295,6 @@ var SUPABASE_CONFIG = {
 // app/utils/gameUtils.ts
 var UTILS = {
   getRandomElement: (arr) => arr[Math.floor(Math.random() * arr.length)],
-  /**
-   * 选择特殊规则，考虑概率和互斥关系
-   * 60%概率选择1条规则，40%概率选择2条规则
-   */
-  selectSpecialRules: (availableRules = GAME_RULES.SPECIAL_RULES) => {
-    let nonNullRules = availableRules.filter((rule) => rule !== "\u65E0\u7279\u6B8A\u89C4\u5219");
-    if (nonNullRules.length === 0 || availableRules.includes("\u65E0\u7279\u6B8A\u89C4\u5219") && availableRules.length === 1)
-      return ["\u65E0\u7279\u6B8A\u89C4\u5219"];
-    if (!(Math.random() < 0.4) || nonNullRules.length < 2)
-      return [UTILS.getRandomElement(nonNullRules)];
-    let firstRule = UTILS.getRandomElement(nonNullRules), conflictingRules = GAME_RULES.RULE_CONFLICTS[firstRule] || [], compatibleRules = nonNullRules.filter(
-      (rule) => rule !== firstRule && !conflictingRules.includes(rule)
-    );
-    if (compatibleRules.length === 0)
-      return [firstRule];
-    let secondRule = UTILS.getRandomElement(compatibleRules);
-    return [firstRule, secondRule];
-  },
   calculatePlayerStats: (player) => {
     let history = player.history || [], totalGames = history.length, placements = history.reduce((acc, game) => (acc[game.placement] = (acc[game.placement] || 0) + 1, acc), {}), averagePlacement = totalGames > 0 ? (history.reduce((sum, game) => sum + game.placement, 0) / totalGames).toFixed(1) : "N/A", winRate = totalGames > 0 ? ((placements[1] || 0) / totalGames * 100).toFixed(1) : "0";
     return {
@@ -320,13 +305,33 @@ var UTILS = {
       championships: player.championships || 0,
       totalVP: player.totalVP || 0
     };
+  },
+  // Calculate player statistics based on league history (not round history)
+  // This should only be called with league-level data, not round-level data
+  updatePlayerStatistics: (player) => ({
+    ...player,
+    totalGames: player.totalGames || 0,
+    averagePlacement: player.averagePlacement || 0,
+    winRate: player.winRate || 0
+  }),
+  // Calculate and update league-level statistics when a league finishes
+  updateLeagueStatistics: (players, leagueResults) => {
+    let updatedPlayers = [...players];
+    return leagueResults.forEach((result) => {
+      let player = updatedPlayers.find((p) => p.id === result.playerId);
+      if (!player)
+        return;
+      player.totalGames = (player.totalGames || 0) + 1, result.finalPlacement === 1 ? player.championships = (player.championships || 0) + 1 : result.finalPlacement === 2 ? player.runnerUp = (player.runnerUp || 0) + 1 : result.finalPlacement === 3 && (player.thirdPlace = (player.thirdPlace || 0) + 1);
+      let totalPlacementSum = (player.averagePlacement || 0) * ((player.totalGames || 1) - 1) + result.finalPlacement;
+      player.averagePlacement = parseFloat((totalPlacementSum / player.totalGames).toFixed(2)), player.winRate = parseFloat(((player.championships || 0) / player.totalGames * 100).toFixed(1));
+    }), updatedPlayers;
   }
 };
 
 // app/utils/supabaseMapping.ts
 var playerToSupabase = (player) => {
   let supabasePlayer = {};
-  return player.id !== void 0 && (supabasePlayer.id = player.id), player.app_id !== void 0 && (supabasePlayer.app_id = player.app_id), player.name !== void 0 && (supabasePlayer.name = player.name), player.avatar !== void 0 && (supabasePlayer.avatar = player.avatar), player.score !== void 0 && (supabasePlayer.score = player.score), player.history !== void 0 && (supabasePlayer.history = player.history), player.championships !== void 0 && (supabasePlayer.championships = player.championships), player.runnerUp !== void 0 && (supabasePlayer.runner_up = player.runnerUp), player.thirdPlace !== void 0 && (supabasePlayer.third_place = player.thirdPlace), player.totalVP !== void 0 && (supabasePlayer.total_vp = player.totalVP), supabasePlayer;
+  return player.id !== void 0 && (supabasePlayer.id = player.id), player.app_id !== void 0 && (supabasePlayer.app_id = player.app_id), player.name !== void 0 && (supabasePlayer.name = player.name), player.avatar !== void 0 && (supabasePlayer.avatar = player.avatar), player.score !== void 0 && (supabasePlayer.score = player.score), player.history !== void 0 && (supabasePlayer.history = player.history), player.championships !== void 0 && (supabasePlayer.championships = player.championships), player.runnerUp !== void 0 && (supabasePlayer.runner_up = player.runnerUp), player.thirdPlace !== void 0 && (supabasePlayer.third_place = player.thirdPlace), player.totalVP !== void 0 && (supabasePlayer.total_vp = player.totalVP), player.totalGames !== void 0 && (supabasePlayer.total_games = player.totalGames), player.averagePlacement !== void 0 && (supabasePlayer.average_placement = player.averagePlacement), player.winRate !== void 0 && (supabasePlayer.win_rate = player.winRate), supabasePlayer;
 }, playerFromSupabase = (supabasePlayer) => ({
   id: supabasePlayer.id,
   app_id: supabasePlayer.app_id,
@@ -338,7 +343,10 @@ var playerToSupabase = (player) => {
   // snake_case to camelCase mapping
   runnerUp: supabasePlayer.runner_up || 0,
   thirdPlace: supabasePlayer.third_place || 0,
-  totalVP: supabasePlayer.total_vp || 0
+  totalVP: supabasePlayer.total_vp || 0,
+  totalGames: supabasePlayer.total_games || 0,
+  averagePlacement: supabasePlayer.average_placement || 0,
+  winRate: supabasePlayer.win_rate || 0
 }), leagueStateToSupabase = (leagueState) => {
   let supabaseLeagueState = {};
   return leagueState.app_id !== void 0 && (supabaseLeagueState.app_id = leagueState.app_id), leagueState.status !== void 0 && (supabaseLeagueState.status = leagueState.status), leagueState.current_round !== void 0 && (supabaseLeagueState.current_round = leagueState.current_round), leagueState.schedule !== void 0 && (supabaseLeagueState.schedule = leagueState.schedule), leagueState.winner !== void 0 && (supabaseLeagueState.winner = leagueState.winner), leagueState.league_name !== void 0 && (supabaseLeagueState.league_name = leagueState.league_name), leagueState.season_number !== void 0 && (supabaseLeagueState.season_number = leagueState.season_number), leagueState.start_date !== void 0 && (supabaseLeagueState.start_date = leagueState.start_date), leagueState.end_date !== void 0 && (supabaseLeagueState.end_date = leagueState.end_date), leagueState.created_at !== void 0 && (supabaseLeagueState.created_at = leagueState.created_at), leagueState.selected_special_rules !== void 0 && (supabaseLeagueState.selected_special_rules = leagueState.selected_special_rules), supabaseLeagueState;
@@ -369,7 +377,8 @@ var playerToSupabase = (player) => {
   total_rounds: supabaseLeagueHistory.total_rounds,
   total_players: supabaseLeagueHistory.total_players,
   created_at: supabaseLeagueHistory.created_at
-}), playersFromSupabase = (supabasePlayers) => supabasePlayers.map(playerFromSupabase), leagueHistoryArrayFromSupabase = (supabaseLeagueHistory) => supabaseLeagueHistory.map(leagueHistoryFromSupabase);
+});
+var leagueHistoryArrayFromSupabase = (supabaseLeagueHistory) => supabaseLeagueHistory.map(leagueHistoryFromSupabase);
 
 // app/contexts/ThemeContext.tsx
 import { createContext, useContext } from "react";
@@ -500,131 +509,6 @@ var LINE_HEIGHTS = {
   // 0.1em
 };
 
-// app/constants/designSystem.ts
-var GLASS_EFFECTS = {
-  // Glassmorphism backgrounds with varying intensities
-  BACKGROUNDS: {
-    // Primary glass surfaces
-    primary: "bg-white/10 dark:bg-white/5 backdrop-blur-xl",
-    secondary: "bg-white/5 dark:bg-white/3 backdrop-blur-lg",
-    tertiary: "bg-white/3 dark:bg-white/2 backdrop-blur-md",
-    // Interactive surfaces
-    interactive: "bg-white/8 dark:bg-white/4 backdrop-blur-xl hover:bg-white/12 dark:hover:bg-white/6",
-    activeState: "bg-white/15 dark:bg-white/8 backdrop-blur-xl",
-    // Card surfaces
-    card: "bg-white/12 dark:bg-white/6 backdrop-blur-2xl",
-    cardHover: "bg-white/16 dark:bg-white/8 backdrop-blur-2xl",
-    // Modal and overlay surfaces
-    modal: "bg-white/20 dark:bg-white/10 backdrop-blur-3xl",
-    overlay: "bg-black/40 backdrop-blur-sm",
-    // Sidebar surfaces
-    sidebar: "bg-white/8 dark:bg-black/20 backdrop-blur-3xl",
-    sidebarHover: "bg-white/12 dark:bg-white/5 backdrop-blur-3xl"
-  },
-  // Enhanced border effects
-  BORDERS: {
-    subtle: "border border-white/10 dark:border-white/5",
-    medium: "border border-white/15 dark:border-white/8",
-    strong: "border border-white/20 dark:border-white/12",
-    accent: "border border-orange-500/30 dark:border-orange-400/20",
-    success: "border border-green-500/30 dark:border-green-400/20",
-    danger: "border border-red-500/30 dark:border-red-400/20",
-    // Gradient borders
-    gradientOrange: "border border-transparent bg-gradient-to-r from-orange-500/20 via-orange-400/15 to-orange-600/20 bg-clip-padding",
-    gradientGreen: "border border-transparent bg-gradient-to-r from-green-500/20 via-green-400/15 to-green-600/20 bg-clip-padding"
-  },
-  // Premium shadow system
-  SHADOWS: {
-    // Subtle depth
-    xs: "shadow-[0_1px_3px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.02)]",
-    sm: "shadow-[0_2px_4px_rgba(0,0,0,0.06),0_2px_4px_rgba(0,0,0,0.03)]",
-    // Medium depth
-    md: "shadow-[0_4px_8px_rgba(0,0,0,0.08),0_2px_4px_rgba(0,0,0,0.04)]",
-    lg: "shadow-[0_8px_16px_rgba(0,0,0,0.1),0_4px_8px_rgba(0,0,0,0.06)]",
-    // Strong depth
-    xl: "shadow-[0_12px_24px_rgba(0,0,0,0.12),0_8px_16px_rgba(0,0,0,0.08)]",
-    "2xl": "shadow-[0_16px_32px_rgba(0,0,0,0.15),0_12px_24px_rgba(0,0,0,0.1)]",
-    // Colored shadows
-    orange: "shadow-[0_8px_32px_rgba(251,146,60,0.15),0_4px_16px_rgba(251,146,60,0.1)]",
-    green: "shadow-[0_8px_32px_rgba(34,197,94,0.15),0_4px_16px_rgba(34,197,94,0.1)]",
-    blue: "shadow-[0_8px_32px_rgba(59,130,246,0.15),0_4px_16px_rgba(59,130,246,0.1)]",
-    // Glow effects
-    glow: "shadow-[0_0_20px_rgba(255,255,255,0.1),0_0_40px_rgba(255,255,255,0.05)]",
-    glowOrange: "shadow-[0_0_20px_rgba(251,146,60,0.2),0_0_40px_rgba(251,146,60,0.1)]",
-    glowGreen: "shadow-[0_0_20px_rgba(34,197,94,0.2),0_0_40px_rgba(34,197,94,0.1)]"
-  }
-}, ANIMATIONS = {
-  // Micro-interactions
-  TRANSITIONS: {
-    fast: "transition-all duration-150 ease-out",
-    normal: "transition-all duration-200 ease-out",
-    slow: "transition-all duration-300 ease-out",
-    smooth: "transition-all duration-500 ease-in-out"
-  },
-  // Hover effects
-  HOVER: {
-    lift: "hover:scale-[1.02] hover:-translate-y-0.5",
-    liftStrong: "hover:scale-[1.05] hover:-translate-y-1",
-    glow: "hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]",
-    glowOrange: "hover:shadow-[0_0_20px_rgba(251,146,60,0.3)]",
-    shimmer: "hover:bg-gradient-to-r hover:from-white/5 hover:via-white/10 hover:to-white/5"
-  },
-  // Active states
-  ACTIVE: {
-    press: "active:scale-[0.98] active:translate-y-0.5",
-    pressStrong: "active:scale-[0.95] active:translate-y-1"
-  },
-  // Loading states
-  LOADING: {
-    pulse: "animate-pulse",
-    spin: "animate-spin",
-    bounce: "animate-bounce"
-  }
-};
-var ROUNDED = {
-  // Refined border radius system
-  none: "rounded-none",
-  xs: "rounded-sm",
-  // 2px - subtle
-  sm: "rounded",
-  // 4px - minimal
-  md: "rounded-md",
-  // 6px - standard
-  lg: "rounded-lg",
-  // 8px - moderate
-  xl: "rounded-xl",
-  // 12px - prominent
-  "2xl": "rounded-2xl",
-  // 16px - strong
-  "3xl": "rounded-3xl",
-  // 24px - very strong
-  full: "rounded-full"
-  // circle/pill
-}, createGlassCard = (intensity = "medium") => {
-  let backgrounds = {
-    subtle: GLASS_EFFECTS.BACKGROUNDS.tertiary,
-    medium: GLASS_EFFECTS.BACKGROUNDS.card,
-    strong: GLASS_EFFECTS.BACKGROUNDS.modal
-  }, borders = {
-    subtle: GLASS_EFFECTS.BORDERS.subtle,
-    medium: GLASS_EFFECTS.BORDERS.medium,
-    strong: GLASS_EFFECTS.BORDERS.strong
-  }, shadows = {
-    subtle: GLASS_EFFECTS.SHADOWS.sm,
-    medium: GLASS_EFFECTS.SHADOWS.lg,
-    strong: GLASS_EFFECTS.SHADOWS.xl
-  };
-  return `${backgrounds[intensity]} ${borders[intensity]} ${shadows[intensity]} ${ANIMATIONS.TRANSITIONS.normal}`;
-}, createInteractiveGlass = (variant = "primary") => {
-  let base = `${GLASS_EFFECTS.BACKGROUNDS.interactive} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.HOVER.lift}`;
-  return {
-    primary: `${base} ${GLASS_EFFECTS.BORDERS.medium} hover:${GLASS_EFFECTS.SHADOWS.glow}`,
-    accent: `${base} ${GLASS_EFFECTS.BORDERS.accent} hover:${GLASS_EFFECTS.SHADOWS.glowOrange}`,
-    success: `${base} ${GLASS_EFFECTS.BORDERS.success} hover:${GLASS_EFFECTS.SHADOWS.glowGreen}`,
-    danger: `${base} ${GLASS_EFFECTS.BORDERS.danger} hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]`
-  }[variant];
-};
-
 // app/components/layout/Sidebar.tsx
 import { Fragment, jsxDEV as jsxDEV3 } from "react/jsx-dev-runtime";
 var Sidebar = ({
@@ -649,7 +533,7 @@ var Sidebar = ({
       name: "\u{1F4A8} \u653E\u5C41",
       icon: /* @__PURE__ */ jsxDEV3(LucideWind, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 50,
+        lineNumber: 49,
         columnNumber: 19
       }, this),
       color: "from-yellow-500/20 to-brown-500/20 border-yellow-500/30 text-yellow-400",
@@ -660,7 +544,7 @@ var Sidebar = ({
       name: "\u{1F4A3} \u7206\u70B8",
       icon: /* @__PURE__ */ jsxDEV3(LucideBomb, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 57,
+        lineNumber: 56,
         columnNumber: 19
       }, this),
       color: "from-red-500/20 to-orange-500/20 border-red-500/30 text-red-400",
@@ -671,7 +555,7 @@ var Sidebar = ({
       name: "\u{1F602} \u5927\u7B11",
       icon: /* @__PURE__ */ jsxDEV3(LucideSmile, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 64,
+        lineNumber: 63,
         columnNumber: 19
       }, this),
       color: "from-green-500/20 to-emerald-500/20 border-green-500/30 text-green-400",
@@ -682,7 +566,7 @@ var Sidebar = ({
       name: "\u{1F62D} \u54ED\u6CE3",
       icon: /* @__PURE__ */ jsxDEV3(LucideFrown, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 71,
+        lineNumber: 70,
         columnNumber: 19
       }, this),
       color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30 text-blue-400",
@@ -693,7 +577,7 @@ var Sidebar = ({
       name: "\u{1F60A} \u5F00\u5FC3",
       icon: /* @__PURE__ */ jsxDEV3(LucidePartyPopper, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 78,
+        lineNumber: 77,
         columnNumber: 19
       }, this),
       color: "from-purple-500/20 to-pink-500/20 border-purple-500/30 text-purple-400",
@@ -704,7 +588,7 @@ var Sidebar = ({
       name: "\u{1F914} huh?",
       icon: /* @__PURE__ */ jsxDEV3(LucideHelpCircle, { size: 16 }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 85,
+        lineNumber: 84,
         columnNumber: 19
       }, this),
       color: "from-orange-500/20 to-amber-500/20 border-orange-500/30 text-orange-400",
@@ -735,8 +619,8 @@ var Sidebar = ({
     try {
       let iframe = youtubeRefs.current[soundId];
       if (iframe) {
-        let playbackRate = soundId === "fart" ? 1 : 2;
-        iframe.src = "", iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${typeof window < "u" ? window.location.origin : ""}`;
+        let playbackRate = ["fart", "happy", "huh"].includes(soundId) ? 1 : 2;
+        iframe.src = "", iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
         let handleLoad = () => {
           setTimeout(() => {
             try {
@@ -760,10 +644,7 @@ var Sidebar = ({
     }
   }, playBeepSound = () => {
     try {
-      let audioContext = typeof window < "u" ? new (window.AudioContext || window.webkitAudioContext)() : null;
-      if (!audioContext)
-        return;
-      let oscillator = audioContext.createOscillator(), gainNode = audioContext.createGain();
+      let audioContext = new (window.AudioContext || window.webkitAudioContext)(), oscillator = audioContext.createOscillator(), gainNode = audioContext.createGain();
       oscillator.connect(gainNode), gainNode.connect(audioContext.destination), oscillator.frequency.setValueAtTime(800, audioContext.currentTime), oscillator.type = "sine", gainNode.gain.setValueAtTime(0.3, audioContext.currentTime), gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3), oscillator.start(), oscillator.stop(audioContext.currentTime + 0.3);
     } catch {
       console.log("Web Audio API not supported");
@@ -785,48 +666,48 @@ var Sidebar = ({
       !1,
       {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 208,
+        lineNumber: 206,
         columnNumber: 17
       },
       this
     ),
-    /* @__PURE__ */ jsxDEV3("div", { className: `fixed left-0 top-0 h-screen ${GLASS_EFFECTS.BACKGROUNDS.sidebar} border-r ${GLASS_EFFECTS.BORDERS.medium} z-50 transform ${ANIMATIONS.TRANSITIONS.smooth} ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 ${sidebarCollapsed ? "w-16 lg:w-16" : "w-72 sm:w-80 md:w-72 lg:w-64"} ${GLASS_EFFECTS.SHADOWS["2xl"]}`, children: [
-      /* @__PURE__ */ jsxDEV3("div", { className: "absolute inset-0 bg-gradient-to-b from-white/8 via-white/4 to-transparent dark:from-white/3 dark:via-white/1 dark:to-transparent" }, void 0, !1, {
+    /* @__PURE__ */ jsxDEV3("div", { className: `fixed left-0 top-0 h-screen ${theme === "dark" ? "bg-black/40" : "bg-white/80"} backdrop-blur-2xl border-r ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} z-50 transform transition-all duration-300 ease-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 ${sidebarCollapsed ? "w-16 lg:w-16" : "w-72 sm:w-80 md:w-72 lg:w-64"} ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.5)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"}`, children: [
+      /* @__PURE__ */ jsxDEV3("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-b from-white/5 to-transparent" : "bg-gradient-to-b from-gray-50/50 to-transparent"}` }, void 0, !1, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 216,
+        lineNumber: 214,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV3("div", { className: "flex flex-col h-full", children: [
-        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-4 sm:p-6 border-b ${GLASS_EFFECTS.BORDERS.subtle}`, children: /* @__PURE__ */ jsxDEV3("div", { className: `flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"}`, children: [
+        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-4 sm:p-6 border-b ${theme === "dark" ? "border-white/10" : "border-gray-200/50"}`, children: /* @__PURE__ */ jsxDEV3("div", { className: `flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"}`, children: [
           !sidebarCollapsed && /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2 sm:gap-3", children: [
-            /* @__PURE__ */ jsxDEV3("div", { className: `relative p-2 sm:p-2.5 ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.TRANSITIONS.normal} hover:scale-105`, children: /* @__PURE__ */ jsxDEV3(LucideCat, { className: "text-orange-400", size: 18 }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV3("div", { className: "relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]", children: /* @__PURE__ */ jsxDEV3(LucideCat, { className: "text-orange-400", size: 18 }, void 0, !1, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 225,
+              lineNumber: 223,
               columnNumber: 41
             }, this) }, void 0, !1, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 224,
+              lineNumber: 222,
               columnNumber: 37
             }, this),
             /* @__PURE__ */ jsxDEV3("div", { children: [
               /* @__PURE__ */ jsxDEV3("h2", { className: `${TYPOGRAPHY.COMBINATIONS.navTitle} ${theme === "dark" ? "text-white/95" : "text-gray-900"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`, children: "Boom League" }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 228,
+                lineNumber: 226,
                 columnNumber: 41
               }, this),
               /* @__PURE__ */ jsxDEV3("p", { className: `${TYPOGRAPHY.COMBINATIONS.sidebarCaption} ${theme === "dark" ? "text-white/60" : "text-gray-600"} hidden sm:block ${LINE_HEIGHTS.normal}`, children: "Tournament Tracker" }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 229,
+                lineNumber: 227,
                 columnNumber: 41
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 227,
+              lineNumber: 225,
               columnNumber: 37
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 223,
+            lineNumber: 221,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2", children: [
@@ -838,11 +719,11 @@ var Sidebar = ({
                 title: sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar",
                 children: sidebarCollapsed ? /* @__PURE__ */ jsxDEV3(LucideChevronRight, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 246,
+                  lineNumber: 244,
                   columnNumber: 57
                 }, this) : /* @__PURE__ */ jsxDEV3(LucideChevronLeft, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 246,
+                  lineNumber: 244,
                   columnNumber: 92
                 }, this)
               },
@@ -850,7 +731,7 @@ var Sidebar = ({
               !1,
               {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 237,
+                lineNumber: 235,
                 columnNumber: 33
               },
               this
@@ -862,7 +743,7 @@ var Sidebar = ({
                 className: `lg:hidden w-8 h-8 flex items-center justify-center rounded-md transition-colors ${theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/10" : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"}`,
                 children: /* @__PURE__ */ jsxDEV3(LucideX, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 259,
+                  lineNumber: 257,
                   columnNumber: 41
                 }, this)
               },
@@ -870,23 +751,23 @@ var Sidebar = ({
               !1,
               {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 251,
+                lineNumber: 249,
                 columnNumber: 37
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 235,
+            lineNumber: 233,
             columnNumber: 29
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 220,
+          lineNumber: 218,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 219,
+          lineNumber: 217,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV3("nav", { className: `flex-1 ${sidebarCollapsed ? "p-2" : "p-3 sm:p-4"} relative z-10`, children: /* @__PURE__ */ jsxDEV3("ul", { className: `space-y-1 sm:space-y-1.5 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`, children: menuItems.map((item) => {
@@ -897,7 +778,7 @@ var Sidebar = ({
               onClick: () => {
                 setCurrentPage(item.id), setSidebarOpen(!1);
               },
-              className: `group relative ${sidebarCollapsed ? "w-10 h-10" : "w-full"} flex items-center ${sidebarCollapsed ? "justify-center" : "gap-3"} px-3 sm:px-4 py-3 sm:py-3 ${ROUNDED.lg} ${ANIMATIONS.TRANSITIONS.normal} overflow-hidden ${isActive ? `${GLASS_EFFECTS.BACKGROUNDS.card} text-orange-400 ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.HOVER.glow}` : `${createInteractiveGlass("primary")} ${theme === "dark" ? "text-white/70 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}`,
+              className: `group relative ${sidebarCollapsed ? "w-10 h-10" : "w-full"} flex items-center ${sidebarCollapsed ? "justify-center" : "gap-3"} px-3 sm:px-4 py-3 sm:py-3 rounded-lg transition-all duration-200 overflow-hidden ${isActive ? "bg-gradient-to-r from-orange-500/20 to-orange-600/20 text-orange-400 border border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.2)]" : theme === "dark" ? "text-white/70 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10" : "text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 border border-transparent hover:border-gray-200"}`,
               title: sidebarCollapsed ? item.name : void 0,
               children: [
                 isActive && /* @__PURE__ */ jsxDEV3("div", { className: "absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 backdrop-blur-sm" }, void 0, !1, {
@@ -921,30 +802,30 @@ var Sidebar = ({
             !0,
             {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 274,
+              lineNumber: 272,
               columnNumber: 41
             },
             this
           ) }, item.id, !1, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 273,
+            lineNumber: 271,
             columnNumber: 37
           }, this);
         }) }, void 0, !1, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 268,
+          lineNumber: 266,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 267,
+          lineNumber: 265,
           columnNumber: 21
         }, this),
-        !sidebarCollapsed && /* @__PURE__ */ jsxDEV3("div", { className: `mx-3 sm:mx-4 mb-3 sm:mb-4 border-t ${GLASS_EFFECTS.BORDERS.subtle} pt-3 sm:pt-4`, children: /* @__PURE__ */ jsxDEV3("div", { className: "relative", children: [
+        !sidebarCollapsed && /* @__PURE__ */ jsxDEV3("div", { className: `mx-3 sm:mx-4 mb-3 sm:mb-4 border-t ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} pt-3 sm:pt-4`, children: /* @__PURE__ */ jsxDEV3("div", { className: "relative", children: [
           /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: () => setSoundBoxCollapsed(!soundBoxCollapsed),
-              className: `w-full flex items-center justify-between p-2 ${ROUNDED.lg} ${createInteractiveGlass("primary")} ${theme === "dark" ? "text-white/70 hover:text-white" : "text-gray-600 hover:text-gray-900"}`,
+              className: `w-full flex items-center justify-between p-2 rounded-lg transition-all duration-200 ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/5" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/50"}`,
               children: [
                 /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2", children: [
                   /* @__PURE__ */ jsxDEV3(LucideVolume2, { size: 16 }, void 0, !1, {
@@ -987,7 +868,7 @@ var Sidebar = ({
               "button",
               {
                 onClick: () => playSound(sound),
-                className: `p-2 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.interactive} ${GLASS_EFFECTS.BORDERS.subtle} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.HOVER.lift} ${ANIMATIONS.ACTIVE.press} bg-gradient-to-br ${sound.color} hover:${GLASS_EFFECTS.SHADOWS.md} group`,
+                className: `p-2 rounded-lg border transition-all duration-200 hover:scale-105 active:scale-95 bg-gradient-to-br ${sound.color} hover:shadow-md group`,
                 title: `\u64AD\u653E ${sound.name}`,
                 children: /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-1.5", children: [
                   /* @__PURE__ */ jsxDEV3("div", { className: "transition-transform duration-200 group-hover:scale-110", children: sound.icon }, void 0, !1, {
@@ -1019,9 +900,9 @@ var Sidebar = ({
               lineNumber: 321,
               columnNumber: 41
             }, this),
-            /* @__PURE__ */ jsxDEV3("div", { className: `p-2 ${ROUNDED.lg} text-center ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle}`, children: /* @__PURE__ */ jsxDEV3("p", { className: `${TYPOGRAPHY.COMBINATIONS.caption} ${theme === "dark" ? "text-white/50" : "text-gray-500"} ${LINE_HEIGHTS.normal}`, children: "\u{1F4A1} \u70B9\u51FB\u64AD\u653E\u97F3\u6548" }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV3("div", { className: `p-2 rounded-lg text-center ${theme === "dark" ? "bg-white/5" : "bg-gray-100/50"}`, children: /* @__PURE__ */ jsxDEV3("p", { className: `${TYPOGRAPHY.COMBINATIONS.caption} ${theme === "dark" ? "text-white/50" : "text-gray-500"} ${LINE_HEIGHTS.normal}`, children: "\u{1F4A1} \u70B9\u51FB\u64AD\u653E\u97F3\u6548" }, void 0, !1, {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 341,
+              lineNumber: 343,
               columnNumber: 45
             }, this) }, void 0, !1, {
               fileName: "app/components/layout/Sidebar.tsx",
@@ -1042,24 +923,24 @@ var Sidebar = ({
           lineNumber: 302,
           columnNumber: 25
         }, this),
-        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-3 sm:p-4 border-t ${GLASS_EFFECTS.BORDERS.subtle} mt-auto`, children: sidebarCollapsed ? /* @__PURE__ */ jsxDEV3("div", { className: "flex flex-col items-center gap-2", children: [
+        /* @__PURE__ */ jsxDEV3("div", { className: `relative p-3 sm:p-4 border-t ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} mt-auto`, children: sidebarCollapsed ? /* @__PURE__ */ jsxDEV3("div", { className: "flex flex-col items-center gap-2", children: [
           /* @__PURE__ */ jsxDEV3(
             "button",
             {
               onClick: handleMusicToggle,
-              className: `w-8 h-8 ${ROUNDED.lg} ${ANIMATIONS.TRANSITIONS.normal} flex items-center justify-center ${musicPlaying && !musicMuted ? `text-orange-400 ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.orange}` : `${createInteractiveGlass("primary")} ${theme === "dark" ? "text-white/70 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}`,
+              className: `w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${musicPlaying && !musicMuted ? "text-orange-400 bg-orange-500/20 border-orange-500/30" : theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
               title: musicMuted ? "Unmute music" : musicPlaying ? "Pause music" : "Play music",
               children: musicMuted ? /* @__PURE__ */ jsxDEV3(LucideVolumeX, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 367,
+                lineNumber: 371,
                 columnNumber: 51
               }, this) : musicPlaying ? /* @__PURE__ */ jsxDEV3(LucidePause, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 367,
+                lineNumber: 371,
                 columnNumber: 96
               }, this) : /* @__PURE__ */ jsxDEV3(LucidePlay, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 367,
+                lineNumber: 371,
                 columnNumber: 124
               }, this)
             },
@@ -1067,7 +948,7 @@ var Sidebar = ({
             !1,
             {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 358,
+              lineNumber: 360,
               columnNumber: 33
             },
             this
@@ -1080,11 +961,11 @@ var Sidebar = ({
               title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
               children: theme === "dark" ? /* @__PURE__ */ jsxDEV3(LucideSun, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 375,
+                lineNumber: 379,
                 columnNumber: 57
               }, this) : /* @__PURE__ */ jsxDEV3(LucideMoon, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 375,
+                lineNumber: 379,
                 columnNumber: 83
               }, this)
             },
@@ -1092,7 +973,7 @@ var Sidebar = ({
             !1,
             {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 370,
+              lineNumber: 374,
               columnNumber: 33
             },
             this
@@ -1105,7 +986,7 @@ var Sidebar = ({
               title: "Open rulebook (external link)",
               children: /* @__PURE__ */ jsxDEV3(LucideBook, { size: 14 }, void 0, !1, {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 383,
+                lineNumber: 387,
                 columnNumber: 37
               }, this)
             },
@@ -1113,14 +994,14 @@ var Sidebar = ({
             !1,
             {
               fileName: "app/components/layout/Sidebar.tsx",
-              lineNumber: 378,
+              lineNumber: 382,
               columnNumber: 33
             },
             this
           )
         ] }, void 0, !0, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 356,
+          lineNumber: 358,
           columnNumber: 29
         }, this) : /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ jsxDEV3("div", { className: "flex items-center gap-2", children: [
@@ -1132,15 +1013,15 @@ var Sidebar = ({
                 title: musicMuted ? "Unmute music" : musicPlaying ? "Pause music" : "Play music",
                 children: musicMuted ? /* @__PURE__ */ jsxDEV3(LucideVolumeX, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 401,
+                  lineNumber: 405,
                   columnNumber: 55
                 }, this) : musicPlaying ? /* @__PURE__ */ jsxDEV3(LucidePause, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 401,
+                  lineNumber: 405,
                   columnNumber: 100
                 }, this) : /* @__PURE__ */ jsxDEV3(LucidePlay, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 401,
+                  lineNumber: 405,
                   columnNumber: 128
                 }, this)
               },
@@ -1148,7 +1029,7 @@ var Sidebar = ({
               !1,
               {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 390,
+                lineNumber: 394,
                 columnNumber: 37
               },
               this
@@ -1161,11 +1042,11 @@ var Sidebar = ({
                 title: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
                 children: theme === "dark" ? /* @__PURE__ */ jsxDEV3(LucideSun, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 409,
+                  lineNumber: 413,
                   columnNumber: 61
                 }, this) : /* @__PURE__ */ jsxDEV3(LucideMoon, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 409,
+                  lineNumber: 413,
                   columnNumber: 87
                 }, this)
               },
@@ -1173,7 +1054,7 @@ var Sidebar = ({
               !1,
               {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 404,
+                lineNumber: 408,
                 columnNumber: 37
               },
               this
@@ -1186,7 +1067,7 @@ var Sidebar = ({
                 title: "Open rulebook (external link)",
                 children: /* @__PURE__ */ jsxDEV3(LucideBook, { size: 16 }, void 0, !1, {
                   fileName: "app/components/layout/Sidebar.tsx",
-                  lineNumber: 417,
+                  lineNumber: 421,
                   columnNumber: 41
                 }, this)
               },
@@ -1194,38 +1075,38 @@ var Sidebar = ({
               !1,
               {
                 fileName: "app/components/layout/Sidebar.tsx",
-                lineNumber: 412,
+                lineNumber: 416,
                 columnNumber: 37
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 388,
+            lineNumber: 392,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV3("div", { className: `${TYPOGRAPHY.COMBINATIONS.caption} ${theme === "dark" ? "text-white/40" : "text-gray-400"} ${LINE_HEIGHTS.normal} ${LETTER_SPACING.wide}`, children: "Controls" }, void 0, !1, {
             fileName: "app/components/layout/Sidebar.tsx",
-            lineNumber: 420,
+            lineNumber: 424,
             columnNumber: 33
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 387,
+          lineNumber: 391,
           columnNumber: 29
         }, this) }, void 0, !1, {
           fileName: "app/components/layout/Sidebar.tsx",
-          lineNumber: 354,
+          lineNumber: 356,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 217,
+        lineNumber: 215,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/layout/Sidebar.tsx",
-      lineNumber: 215,
+      lineNumber: 213,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV3("div", { className: "hidden", children: soundEffects.filter((sound) => sound.youtubeId).map((sound) => /* @__PURE__ */ jsxDEV3(
@@ -1244,18 +1125,18 @@ var Sidebar = ({
       !1,
       {
         fileName: "app/components/layout/Sidebar.tsx",
-        lineNumber: 433,
+        lineNumber: 437,
         columnNumber: 21
       },
       this
     )) }, void 0, !1, {
       fileName: "app/components/layout/Sidebar.tsx",
-      lineNumber: 431,
+      lineNumber: 435,
       columnNumber: 13
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/layout/Sidebar.tsx",
-    lineNumber: 205,
+    lineNumber: 203,
     columnNumber: 9
   }, this);
 }, Sidebar_default = Sidebar;
@@ -1265,74 +1146,74 @@ import { LucideTrophy } from "lucide-react";
 import { jsxDEV as jsxDEV4 } from "react/jsx-dev-runtime";
 var Leaderboard = ({ players, onPlayerClick }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxDEV4("div", { className: `relative ${createGlassCard("strong")} ${ROUNDED.xl} sm:${ROUNDED["2xl"]} overflow-hidden`, children: [
+  return /* @__PURE__ */ jsxDEV4("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg sm:rounded-xl ${theme === "dark" ? "shadow-[0_0_50px_rgba(0,0,0,0.3)]" : "shadow-[0_0_50px_rgba(0,0,0,0.1)]"} overflow-hidden`, children: [
     /* @__PURE__ */ jsxDEV4("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"}` }, void 0, !1, {
       fileName: "app/components/ui/Leaderboard.tsx",
-      lineNumber: 13,
+      lineNumber: 12,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV4("div", { className: "relative z-10 p-4 sm:p-6", children: [
       /* @__PURE__ */ jsxDEV4("div", { className: "flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6", children: [
-        /* @__PURE__ */ jsxDEV4("div", { className: `relative p-1.5 sm:p-2 ${GLASS_EFFECTS.BACKGROUNDS.card} bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.orange}`, children: /* @__PURE__ */ jsxDEV4(LucideTrophy, { size: 14, className: "text-yellow-400 sm:w-4 sm:h-4" }, void 0, !1, {
+        /* @__PURE__ */ jsxDEV4("div", { className: "relative p-1.5 sm:p-2 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-lg shadow-[0_0_20px_rgba(251,191,36,0.2)]", children: /* @__PURE__ */ jsxDEV4(LucideTrophy, { size: 14, className: "text-yellow-400 sm:w-4 sm:h-4" }, void 0, !1, {
           fileName: "app/components/ui/Leaderboard.tsx",
-          lineNumber: 17,
+          lineNumber: 16,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/components/ui/Leaderboard.tsx",
-          lineNumber: 16,
+          lineNumber: 15,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV4("h3", { className: `${TYPOGRAPHY.COMBINATIONS.cardTitle} ${theme === "dark" ? "text-white/95" : "text-gray-900"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`, children: "Leaderboard" }, void 0, !1, {
           fileName: "app/components/ui/Leaderboard.tsx",
-          lineNumber: 19,
+          lineNumber: 18,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/Leaderboard.tsx",
-        lineNumber: 15,
+        lineNumber: 14,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV4("div", { className: "space-y-1.5 sm:space-y-2", children: players.map((p, index) => /* @__PURE__ */ jsxDEV4(
         "div",
         {
-          className: `group relative flex items-center justify-between p-3 sm:p-4 ${ROUNDED.lg} cursor-pointer ${createInteractiveGlass("primary")} ${ANIMATIONS.ACTIVE.press}`,
+          className: `group relative flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border border-transparent active:scale-[0.98] ${theme === "dark" ? "hover:bg-white/5 hover:border-white/10 active:bg-white/10" : "hover:bg-gray-100/50 hover:border-gray-200 active:bg-gray-200/50"}`,
           onClick: () => onPlayerClick && onPlayerClick(p),
           children: [
             /* @__PURE__ */ jsxDEV4("div", { className: "flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1", children: [
               /* @__PURE__ */ jsxDEV4("div", { className: `relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${TYPOGRAPHY.COMBINATIONS.badge} border flex-shrink-0 ${LINE_HEIGHTS.tight} ${index === 0 ? "bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border-yellow-500/30 text-yellow-400 shadow-[0_0_15px_rgba(251,191,36,0.2)]" : index === 1 ? `bg-gradient-to-br from-gray-300/20 to-gray-400/20 border-gray-400/30 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}` : index === 2 ? "bg-gradient-to-br from-orange-400/20 to-orange-500/20 border-orange-500/30 text-orange-400" : theme === "dark" ? "bg-white/5 border-white/10 text-white/70" : "bg-gray-100/50 border-gray-200 text-gray-600"}`, children: index + 1 }, void 0, !1, {
                 fileName: "app/components/ui/Leaderboard.tsx",
-                lineNumber: 29,
+                lineNumber: 32,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV4("span", { className: "text-lg sm:text-xl flex-shrink-0", children: p.avatar }, void 0, !1, {
                 fileName: "app/components/ui/Leaderboard.tsx",
-                lineNumber: 37,
+                lineNumber: 40,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV4("span", { className: `${TYPOGRAPHY.COMBINATIONS.emphasized} truncate ${theme === "dark" ? "text-white/90" : "text-gray-900"} ${LINE_HEIGHTS.tight}`, children: p.name }, void 0, !1, {
                 fileName: "app/components/ui/Leaderboard.tsx",
-                lineNumber: 38,
+                lineNumber: 41,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/ui/Leaderboard.tsx",
-              lineNumber: 28,
+              lineNumber: 31,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV4("div", { className: "text-right flex-shrink-0", children: [
               /* @__PURE__ */ jsxDEV4("div", { className: `${TYPOGRAPHY.COMBINATIONS.statNumber} text-emerald-400 ${LINE_HEIGHTS.tight}`, children: p.score }, void 0, !1, {
                 fileName: "app/components/ui/Leaderboard.tsx",
-                lineNumber: 41,
+                lineNumber: 44,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV4("div", { className: `${TYPOGRAPHY.COMBINATIONS.statLabel} ${theme === "dark" ? "text-white/60" : "text-gray-500"} ${LINE_HEIGHTS.normal} ${LETTER_SPACING.wide}`, children: "VP" }, void 0, !1, {
                 fileName: "app/components/ui/Leaderboard.tsx",
-                lineNumber: 42,
+                lineNumber: 45,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/ui/Leaderboard.tsx",
-              lineNumber: 40,
+              lineNumber: 43,
               columnNumber: 29
             }, this)
           ]
@@ -1341,23 +1222,23 @@ var Leaderboard = ({ players, onPlayerClick }) => {
         !0,
         {
           fileName: "app/components/ui/Leaderboard.tsx",
-          lineNumber: 23,
+          lineNumber: 22,
           columnNumber: 25
         },
         this
       )) }, void 0, !1, {
         fileName: "app/components/ui/Leaderboard.tsx",
-        lineNumber: 21,
+        lineNumber: 20,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/Leaderboard.tsx",
-      lineNumber: 14,
+      lineNumber: 13,
       columnNumber: 13
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/ui/Leaderboard.tsx",
-    lineNumber: 12,
+    lineNumber: 11,
     columnNumber: 9
   }, this);
 }, Leaderboard_default = Leaderboard;
@@ -1366,46 +1247,46 @@ var Leaderboard = ({ players, onPlayerClick }) => {
 import { jsxDEV as jsxDEV5 } from "react/jsx-dev-runtime";
 var InfoCard = ({ icon, title, value }) => {
   let { theme } = useTheme();
-  return /* @__PURE__ */ jsxDEV5("div", { className: `relative ${createInteractiveGlass("primary")} ${ROUNDED.lg} p-3 sm:p-4 lg:p-5 ${ANIMATIONS.HOVER.lift}`, children: [
+  return /* @__PURE__ */ jsxDEV5("div", { className: `relative ${theme === "dark" ? "bg-black/20" : "bg-white/60"} backdrop-blur-2xl border ${theme === "dark" ? "border-white/10" : "border-gray-200/50"} rounded-lg p-3 sm:p-4 lg:p-5 transition-all duration-200 ${theme === "dark" ? "hover:bg-white/5 shadow-[0_0_30px_rgba(0,0,0,0.2)]" : "hover:bg-gray-100/50 shadow-[0_0_30px_rgba(0,0,0,0.1)]"}`, children: [
     /* @__PURE__ */ jsxDEV5("div", { className: `absolute inset-0 ${theme === "dark" ? "bg-gradient-to-br from-white/5 to-transparent" : "bg-gradient-to-br from-gray-50/50 to-transparent"} rounded-lg` }, void 0, !1, {
       fileName: "app/components/ui/InfoCard.tsx",
-      lineNumber: 12,
+      lineNumber: 11,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV5("div", { className: "relative z-10 flex items-center gap-2.5 sm:gap-3 lg:gap-4", children: [
-      /* @__PURE__ */ jsxDEV5("div", { className: `p-2 sm:p-2.5 ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle} ${ROUNDED.lg} flex-shrink-0`, children: /* @__PURE__ */ jsxDEV5("div", { className: "w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex items-center justify-center", children: icon }, void 0, !1, {
+      /* @__PURE__ */ jsxDEV5("div", { className: `p-2 sm:p-2.5 backdrop-blur-sm border rounded-lg flex-shrink-0 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"}`, children: /* @__PURE__ */ jsxDEV5("div", { className: "w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 flex items-center justify-center", children: icon }, void 0, !1, {
         fileName: "app/components/ui/InfoCard.tsx",
-        lineNumber: 15,
+        lineNumber: 14,
         columnNumber: 21
       }, this) }, void 0, !1, {
         fileName: "app/components/ui/InfoCard.tsx",
-        lineNumber: 14,
+        lineNumber: 13,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV5("div", { className: "min-w-0 flex-1", children: [
         /* @__PURE__ */ jsxDEV5("p", { className: `${TYPOGRAPHY.COMBINATIONS.statLabel} ${theme === "dark" ? "text-white/60" : "text-gray-500"} truncate ${LINE_HEIGHTS.normal} ${LETTER_SPACING.wide}`, children: title }, void 0, !1, {
           fileName: "app/components/ui/InfoCard.tsx",
-          lineNumber: 20,
+          lineNumber: 19,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV5("p", { className: `${TYPOGRAPHY.COMBINATIONS.statNumber} ${theme === "dark" ? "text-white" : "text-gray-900"} truncate ${LINE_HEIGHTS.tight}`, children: value }, void 0, !1, {
           fileName: "app/components/ui/InfoCard.tsx",
-          lineNumber: 21,
+          lineNumber: 20,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/InfoCard.tsx",
-        lineNumber: 19,
+        lineNumber: 18,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/InfoCard.tsx",
-      lineNumber: 13,
+      lineNumber: 12,
       columnNumber: 13
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/ui/InfoCard.tsx",
-    lineNumber: 11,
+    lineNumber: 10,
     columnNumber: 9
   }, this);
 }, InfoCard_default = InfoCard;
@@ -1542,10 +1423,32 @@ var ScheduleTimeline = ({ schedule, currentRound }) => {
               lineNumber: 72,
               columnNumber: 37
             }, this),
-            /* @__PURE__ */ jsxDEV6("p", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: [
-              "\u{1F3AF} ",
-              roundInfo.specialRules.join(" + ")
+            /* @__PURE__ */ jsxDEV6("div", { className: `text-xs font-medium ${theme === "dark" ? "text-white/60" : "text-gray-600"}`, children: roundInfo.specialRules && roundInfo.specialRules.length > 1 ? /* @__PURE__ */ jsxDEV6("div", { className: "space-y-0.5", children: [
+              /* @__PURE__ */ jsxDEV6("div", { className: "text-xs font-semibold", children: "\u{1F3AF} \u7279\u6B8A\u89C4\u5219:" }, void 0, !1, {
+                fileName: "app/components/ui/ScheduleTimeline.tsx",
+                lineNumber: 78,
+                columnNumber: 49
+              }, this),
+              roundInfo.specialRules.map((rule, idx) => /* @__PURE__ */ jsxDEV6("div", { className: "text-xs pl-3", children: [
+                "\u2022 ",
+                rule
+              ] }, idx, !0, {
+                fileName: "app/components/ui/ScheduleTimeline.tsx",
+                lineNumber: 80,
+                columnNumber: 53
+              }, this))
             ] }, void 0, !0, {
+              fileName: "app/components/ui/ScheduleTimeline.tsx",
+              lineNumber: 77,
+              columnNumber: 45
+            }, this) : /* @__PURE__ */ jsxDEV6("p", { children: [
+              "\u{1F3AF} ",
+              roundInfo.specialRule
+            ] }, void 0, !0, {
+              fileName: "app/components/ui/ScheduleTimeline.tsx",
+              lineNumber: 86,
+              columnNumber: 45
+            }, this) }, void 0, !1, {
               fileName: "app/components/ui/ScheduleTimeline.tsx",
               lineNumber: 75,
               columnNumber: 37
@@ -2086,15 +1989,15 @@ var ResultsModal = ({ players, onClose, onSubmit, round }) => {
 import { jsxDEV as jsxDEV10 } from "react/jsx-dev-runtime";
 var CardDrawReminder = ({ players, onClose, round }) => {
   let { theme } = useTheme(), getCardCount = (ranking) => [2, 3, 4, 5, 6][ranking - 1] || 6, sortedPlayers = [...players].sort((a, b) => b.score - a.score);
-  return /* @__PURE__ */ jsxDEV10("div", { className: `fixed inset-0 ${GLASS_EFFECTS.BACKGROUNDS.overlay} flex items-center justify-center p-4 z-50`, children: /* @__PURE__ */ jsxDEV10("div", { className: `relative w-full max-w-md mx-auto ${ROUNDED["2xl"]} ${createGlassCard("strong")} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.HOVER.lift}`, children: [
-    /* @__PURE__ */ jsxDEV10("div", { className: `p-6 border-b ${GLASS_EFFECTS.BORDERS.subtle}`, children: /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-3 mb-2", children: [
-      /* @__PURE__ */ jsxDEV10("div", { className: `p-2 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.orange}`, children: /* @__PURE__ */ jsxDEV10("span", { className: "text-orange-500 text-lg", children: "\u{1F0CF}" }, void 0, !1, {
+  return /* @__PURE__ */ jsxDEV10("div", { className: "fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50", children: /* @__PURE__ */ jsxDEV10("div", { className: `relative w-full max-w-md mx-auto rounded-2xl shadow-2xl border backdrop-blur-xl ${theme === "dark" ? "bg-gray-900/90 border-gray-700" : "bg-white/90 border-gray-200"}`, children: [
+    /* @__PURE__ */ jsxDEV10("div", { className: `p-6 border-b ${theme === "dark" ? "border-gray-700" : "border-gray-200"}`, children: /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-3 mb-2", children: [
+      /* @__PURE__ */ jsxDEV10("div", { className: `p-2 rounded-lg ${theme === "dark" ? "bg-orange-500/20 border border-orange-500/30" : "bg-orange-100 border border-orange-200"}`, children: /* @__PURE__ */ jsxDEV10("span", { className: "text-orange-500 text-lg", children: "\u{1F0CF}" }, void 0, !1, {
         fileName: "app/components/ui/CardDrawReminder.tsx",
-        lineNumber: 32,
+        lineNumber: 39,
         columnNumber: 29
       }, this) }, void 0, !1, {
         fileName: "app/components/ui/CardDrawReminder.tsx",
-        lineNumber: 31,
+        lineNumber: 34,
         columnNumber: 25
       }, this),
       /* @__PURE__ */ jsxDEV10("div", { children: [
@@ -2104,26 +2007,26 @@ var CardDrawReminder = ({ players, onClose, round }) => {
           " \u8F6E\u62BD\u5361\u63D0\u9192"
         ] }, void 0, !0, {
           fileName: "app/components/ui/CardDrawReminder.tsx",
-          lineNumber: 35,
+          lineNumber: 42,
           columnNumber: 29
         }, this),
         /* @__PURE__ */ jsxDEV10("p", { className: `${TYPOGRAPHY.COMBINATIONS.modalBody} ${theme === "dark" ? "text-gray-400" : "text-gray-600"} ${LINE_HEIGHTS.normal}`, children: "\u8BF7\u6839\u636E\u672C\u8F6E\u6392\u540D\u62BD\u53D6\u76F8\u5E94\u6570\u91CF\u7684\u5361\u7247" }, void 0, !1, {
           fileName: "app/components/ui/CardDrawReminder.tsx",
-          lineNumber: 40,
+          lineNumber: 47,
           columnNumber: 29
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/CardDrawReminder.tsx",
-        lineNumber: 34,
+        lineNumber: 41,
         columnNumber: 25
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/ui/CardDrawReminder.tsx",
-      lineNumber: 30,
+      lineNumber: 33,
       columnNumber: 21
     }, this) }, void 0, !1, {
       fileName: "app/components/ui/CardDrawReminder.tsx",
-      lineNumber: 29,
+      lineNumber: 32,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV10("div", { className: "p-6", children: [
@@ -2137,34 +2040,34 @@ var CardDrawReminder = ({ players, onClose, round }) => {
               /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-3", children: [
                 /* @__PURE__ */ jsxDEV10("div", { className: `flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${ranking === 1 ? "bg-yellow-500/20 text-yellow-500 border border-yellow-500/30" : ranking === 2 ? "bg-gray-400/20 text-gray-400 border border-gray-400/30" : ranking === 3 ? "bg-orange-600/20 text-orange-600 border border-orange-600/30" : theme === "dark" ? "bg-gray-600/20 text-gray-300 border border-gray-600/30" : "bg-gray-300/50 text-gray-600 border border-gray-300"}`, children: ranking }, void 0, !1, {
                   fileName: "app/components/ui/CardDrawReminder.tsx",
-                  lineNumber: 67,
+                  lineNumber: 74,
                   columnNumber: 41
                 }, this),
                 /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-2", children: [
                   /* @__PURE__ */ jsxDEV10("span", { className: "text-xl", children: player.avatar }, void 0, !1, {
                     fileName: "app/components/ui/CardDrawReminder.tsx",
-                    lineNumber: 83,
+                    lineNumber: 90,
                     columnNumber: 45
                   }, this),
                   /* @__PURE__ */ jsxDEV10("span", { className: `font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: player.name }, void 0, !1, {
                     fileName: "app/components/ui/CardDrawReminder.tsx",
-                    lineNumber: 84,
+                    lineNumber: 91,
                     columnNumber: 45
                   }, this)
                 ] }, void 0, !0, {
                   fileName: "app/components/ui/CardDrawReminder.tsx",
-                  lineNumber: 82,
+                  lineNumber: 89,
                   columnNumber: 41
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/components/ui/CardDrawReminder.tsx",
-                lineNumber: 65,
+                lineNumber: 72,
                 columnNumber: 37
               }, this),
               /* @__PURE__ */ jsxDEV10("div", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsxDEV10("span", { className: `text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: "\u62BD\u53D6" }, void 0, !1, {
                   fileName: "app/components/ui/CardDrawReminder.tsx",
-                  lineNumber: 94,
+                  lineNumber: 101,
                   columnNumber: 41
                 }, this),
                 /* @__PURE__ */ jsxDEV10("div", { className: `px-3 py-1.5 rounded-lg font-bold text-lg ${theme === "dark" ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" : "bg-blue-100 text-blue-600 border border-blue-200"}`, children: [
@@ -2172,12 +2075,12 @@ var CardDrawReminder = ({ players, onClose, round }) => {
                   " \u5F20"
                 ] }, void 0, !0, {
                   fileName: "app/components/ui/CardDrawReminder.tsx",
-                  lineNumber: 99,
+                  lineNumber: 106,
                   columnNumber: 41
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/components/ui/CardDrawReminder.tsx",
-                lineNumber: 93,
+                lineNumber: 100,
                 columnNumber: 37
               }, this)
             ]
@@ -2186,89 +2089,125 @@ var CardDrawReminder = ({ players, onClose, round }) => {
           !0,
           {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 57,
+            lineNumber: 64,
             columnNumber: 33
           },
           this
         );
       }) }, void 0, !1, {
         fileName: "app/components/ui/CardDrawReminder.tsx",
-        lineNumber: 51,
+        lineNumber: 58,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ jsxDEV10("div", { className: `mt-6 p-4 rounded-lg ${theme === "dark" ? "bg-gray-800/30 border border-gray-700" : "bg-gray-100/50 border border-gray-200"}`, children: [
         /* @__PURE__ */ jsxDEV10("h3", { className: `text-sm font-semibold mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`, children: "\u{1F4CB} \u62BD\u5361\u89C4\u5219" }, void 0, !1, {
           fileName: "app/components/ui/CardDrawReminder.tsx",
-          lineNumber: 118,
+          lineNumber: 125,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV10("div", { className: `text-xs space-y-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`, children: [
           /* @__PURE__ */ jsxDEV10("p", { children: "\u2022 \u7B2C 1 \u540D\uFF1A2 \u5F20\u5361\u7247" }, void 0, !1, {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 126,
+            lineNumber: 133,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV10("p", { children: "\u2022 \u7B2C 2 \u540D\uFF1A3 \u5F20\u5361\u7247" }, void 0, !1, {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 127,
+            lineNumber: 134,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV10("p", { children: "\u2022 \u7B2C 3 \u540D\uFF1A4 \u5F20\u5361\u7247" }, void 0, !1, {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 128,
+            lineNumber: 135,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV10("p", { children: "\u2022 \u7B2C 4 \u540D\uFF1A5 \u5F20\u5361\u7247" }, void 0, !1, {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 129,
+            lineNumber: 136,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV10("p", { children: "\u2022 \u7B2C 5 \u540D\u53CA\u4EE5\u540E\uFF1A6 \u5F20\u5361\u7247" }, void 0, !1, {
             fileName: "app/components/ui/CardDrawReminder.tsx",
-            lineNumber: 130,
+            lineNumber: 137,
             columnNumber: 29
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/ui/CardDrawReminder.tsx",
-          lineNumber: 123,
+          lineNumber: 130,
           columnNumber: 25
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/ui/CardDrawReminder.tsx",
-        lineNumber: 113,
+        lineNumber: 120,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ jsxDEV10(
         "button",
         {
           onClick: onClose,
-          className: `w-full mt-6 py-3 px-4 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.buttonLarge} ${createInteractiveGlass("success")} bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white ${GLASS_EFFECTS.SHADOWS.green} ${ANIMATIONS.ACTIVE.press} ${ANIMATIONS.HOVER.lift} ${LINE_HEIGHTS.tight}`,
+          className: `w-full mt-6 py-3 px-4 rounded-lg ${TYPOGRAPHY.COMBINATIONS.buttonLarge} transition-all duration-200 ${theme === "dark" ? "bg-green-600 hover:bg-green-700 active:bg-green-800 text-white" : "bg-green-500 hover:bg-green-600 active:bg-green-700 text-white"} active:scale-[0.98] ${LINE_HEIGHTS.tight}`,
           children: "\u2705 \u77E5\u9053\u4E86\uFF0C\u5F00\u59CB\u62BD\u5361"
         },
         void 0,
         !1,
         {
           fileName: "app/components/ui/CardDrawReminder.tsx",
-          lineNumber: 135,
+          lineNumber: 142,
           columnNumber: 21
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/components/ui/CardDrawReminder.tsx",
-      lineNumber: 50,
+      lineNumber: 57,
       columnNumber: 17
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/ui/CardDrawReminder.tsx",
-    lineNumber: 27,
+    lineNumber: 26,
     columnNumber: 13
   }, this) }, void 0, !1, {
     fileName: "app/components/ui/CardDrawReminder.tsx",
-    lineNumber: 26,
+    lineNumber: 25,
     columnNumber: 9
   }, this);
 }, CardDrawReminder_default = CardDrawReminder;
+
+// app/utils/specialRulesUtils.ts
+function selectSpecialRules(availableRules) {
+  if (availableRules.length === 1 && availableRules[0] === "\u65E0\u7279\u6B8A\u89C4\u5219")
+    return ["\u65E0\u7279\u6B8A\u89C4\u5219"];
+  let nonNullRules = availableRules.filter((rule) => rule !== "\u65E0\u7279\u6B8A\u89C4\u5219");
+  if (nonNullRules.length === 0)
+    return ["\u65E0\u7279\u6B8A\u89C4\u5219"];
+  if ((Math.random() < 0.6 ? 1 : 2) === 1 || nonNullRules.length === 1) {
+    let randomIndex = Math.floor(Math.random() * nonNullRules.length);
+    return [nonNullRules[randomIndex]];
+  } else
+    return selectTwoNonConflictingRules(nonNullRules);
+}
+function selectTwoNonConflictingRules(availableRules) {
+  let attempts = 0;
+  for (; attempts < 50; ) {
+    let firstRuleIndex = Math.floor(Math.random() * availableRules.length), firstRule = availableRules[firstRuleIndex], compatibleRules = availableRules.filter(
+      (rule) => rule !== firstRule && !areRulesConflicting(firstRule, rule)
+    );
+    if (compatibleRules.length > 0) {
+      let secondRuleIndex = Math.floor(Math.random() * compatibleRules.length), secondRule = compatibleRules[secondRuleIndex];
+      return [firstRule, secondRule];
+    }
+    attempts++;
+  }
+  let fallbackIndex = Math.floor(Math.random() * availableRules.length);
+  return [availableRules[fallbackIndex]];
+}
+function areRulesConflicting(rule1, rule2) {
+  let conflicts = GAME_RULES.RULE_CONFLICTS;
+  return !!(conflicts[rule1]?.includes(rule2) || conflicts[rule2]?.includes(rule1));
+}
+function formatSpecialRules(rules) {
+  return rules.length === 0 ? "\u65E0\u7279\u6B8A\u89C4\u5219" : rules.length === 1 ? rules[0] : rules.join(" + ");
+}
 
 // app/components/pages/HomePage.tsx
 import { LucideCat as LucideCat2, LucideCrown } from "lucide-react";
@@ -4494,7 +4433,7 @@ var ScheduleConfirmationPage = ({
                 columnNumber: 47
               }, this),
               title: "\u7279\u6B8A\u89C4\u5219",
-              value: round.specialRules.join(" + ")
+              value: round.specialRule
             },
             void 0,
             !1,
@@ -4610,7 +4549,7 @@ function Index() {
   let [theme, setTheme] = useState4("dark");
   useEffect(() => {
     if (typeof window < "u") {
-      let canvasAppId = (typeof window < "u" ? new URLSearchParams(window.location.search) : new URLSearchParams()).get("app_id") || "default";
+      let canvasAppId = new URLSearchParams(window.location.search).get("app_id") || "default";
       setAppId(canvasAppId);
       let savedTheme = localStorage.getItem("boom-league-theme");
       savedTheme && setTheme(savedTheme), supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey), supabase.auth.getSession().then(({ data: { session: session2 } }) => {
@@ -4623,27 +4562,28 @@ function Index() {
       });
       return () => subscription.unsubscribe();
     }
-  }, []), useEffect(() => {
+  }, []);
+  let loadLeagueHistory = async () => {
+    if (!(!supabase || !appId))
+      try {
+        let { data: historyData, error } = await supabase.from("league_history").select("*").eq("app_id", appId).order("season_number", { ascending: !1 });
+        if (error) {
+          console.error("Error loading league history:", error);
+          return;
+        }
+        if (historyData) {
+          let mappedHistory = leagueHistoryArrayFromSupabase(historyData);
+          setLeagueHistory(mappedHistory);
+          let latestSeason = mappedHistory.length > 0 ? mappedHistory[0].season_number : 0;
+          setNextSeasonNumber(latestSeason + 1), setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
+        }
+      } catch (error) {
+        console.error("Error in loadLeagueHistory:", error);
+      }
+  };
+  useEffect(() => {
     if (!isAuthReady || !supabase)
       return;
-    let loadLeagueHistory2 = async () => {
-      if (!(!supabase || !appId))
-        try {
-          let { data: historyData, error } = await supabase.from("league_history").select("*").eq("app_id", appId).order("season_number", { ascending: !1 });
-          if (error) {
-            console.error("Error loading league history:", error);
-            return;
-          }
-          if (historyData) {
-            let mappedHistory = leagueHistoryArrayFromSupabase(historyData);
-            setLeagueHistory(mappedHistory);
-            let latestSeason = mappedHistory.length > 0 ? mappedHistory[0].season_number : 0;
-            setNextSeasonNumber(latestSeason + 1), setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
-          }
-        } catch (error) {
-          console.error("Error in loadLeagueHistory:", error);
-        }
-    };
     (async () => {
       let { data: leagueData, error: leagueError } = await supabase.from("league_state").select("*").eq("app_id", appId).single();
       if (leagueData) {
@@ -4652,13 +4592,26 @@ function Index() {
       } else
         setLeagueState(null);
       leagueError && leagueError.code !== "PGRST116" && console.error("Error fetching league state:", leagueError);
-      let { data: playersData, error: playersError } = await supabase.from("players").select("*").eq("app_id", appId).order("score", { ascending: !1 });
-      if (playersData) {
-        let mappedPlayers = playersFromSupabase(playersData);
-        setPlayers(mappedPlayers);
+      let { data: playersData, error: playersError } = await supabase.from("players").select("*").eq("app_id", appId), { data: rankingsData, error: rankingsError } = await supabase.from("player_rankings").select("*").eq("app_id", appId).order("score", { ascending: !1 });
+      if (playersError && console.error("Error fetching players:", playersError), rankingsError && console.error("Error fetching player rankings:", rankingsError), playersData) {
+        let mappedPlayers = playersData.map((playerData) => {
+          let basePlayer = playerFromSupabase(playerData), rankingData = rankingsData?.find((r) => r.id === playerData.id);
+          return rankingData ? {
+            ...basePlayer,
+            totalGames: rankingData.total_games || 0,
+            averagePlacement: rankingData.average_placement || 0,
+            winRate: rankingData.win_rate || 0,
+            // Use rankings data for current score and stats if available
+            score: rankingData.score || basePlayer.score,
+            championships: rankingData.championships || basePlayer.championships,
+            runnerUp: rankingData.runner_up || basePlayer.runnerUp,
+            thirdPlace: rankingData.third_place || basePlayer.thirdPlace,
+            totalVP: rankingData.total_vp || basePlayer.totalVP
+          } : basePlayer;
+        });
+        mappedPlayers.sort((a, b) => b.score - a.score), setPlayers(mappedPlayers);
       }
-      playersError && console.error("Error fetching players:", playersError);
-    })(), loadLeagueHistory2();
+    })();
     let leagueChannel = supabase.channel(`league-state:${appId}`).on("postgres_changes", { event: "*", schema: "public", table: "league_state", filter: `app_id=eq.${appId}` }, (payload) => {
       let updatedState = leagueStateFromSupabase(payload.new);
       setLeagueState(updatedState), updatedState.winner ? setWinner(updatedState.winner) : setWinner(null);
@@ -4710,7 +4663,20 @@ function Index() {
       thirdPlace: 0,
       totalVP: 0
     }, { data, error } = await supabase.from("players").insert(playerToSupabase(playerData)).select().single();
-    if (console.log("Supabase insert result:", { data, error }), error)
+    if (data && !error && await supabase.from("player_rankings").insert({
+      id: data.id,
+      app_id: appId,
+      name: newPlayerName.trim(),
+      avatar: selectedAvatar,
+      score: 0,
+      championships: 0,
+      runner_up: 0,
+      third_place: 0,
+      total_vp: 0,
+      total_games: 0,
+      average_placement: 0,
+      win_rate: 0
+    }), console.log("Supabase insert result:", { data, error }), error)
       setPlayers((curr) => curr.filter((p) => p.id !== tempPlayer.id)), console.error("Add player failed:", error);
     else if (data) {
       console.log("Successfully added player, updating temp player with real data:", data);
@@ -4723,19 +4689,24 @@ function Index() {
   }, handleDeletePlayer = async (playerId) => {
     let previous = players;
     setPlayers((curr) => curr.filter((p) => p.id !== playerId));
-    let { error } = await supabase.from("players").delete().match({ id: playerId, app_id: appId });
+    let [{ error: playersError }, { error: rankingsError }] = await Promise.all([
+      supabase.from("players").delete().match({ id: playerId, app_id: appId }),
+      supabase.from("player_rankings").delete().match({ id: playerId, app_id: appId })
+    ]), error = playersError || rankingsError;
     error && (console.error("Delete player failed:", error), setPlayers(previous));
   }, generateSchedule = (playerCount, selectedSpecialRules = GAME_RULES.SPECIAL_RULES) => {
     let schedule = [];
     for (let i = 0; i < GAME_RULES.MAX_ROUNDS; i++) {
-      let safeCardMultipliers = [1, 2, 3, 4, 5], bombCardOptions = [playerCount, playerCount + 1], handLimits = [4, 5, 6, 1 / 0];
+      let safeCardMultipliers = [1, 2, 3, 4, 5], bombCardOptions = [playerCount, playerCount + 1], handLimits = [4, 5, 6, 1 / 0], roundSpecialRules = selectSpecialRules(selectedSpecialRules), specialRuleText = formatSpecialRules(roundSpecialRules);
       schedule.push({
         round: i + 1,
         safeCards: playerCount * UTILS.getRandomElement(safeCardMultipliers),
         bombCards: UTILS.getRandomElement(bombCardOptions),
         handLimit: UTILS.getRandomElement(handLimits),
         vpMode: UTILS.getRandomElement(GAME_RULES.VP_MODES),
-        specialRules: UTILS.selectSpecialRules(selectedSpecialRules)
+        specialRule: specialRuleText,
+        specialRules: roundSpecialRules
+        // 保存原始规则数组
       });
     }
     return schedule;
@@ -4830,32 +4801,33 @@ function Index() {
   }, handleBackToLeagueManagement = () => {
     setCurrentPage("league");
   }, playHappySound = () => {
-    try {
-      let iframe = window.happySoundIframe;
-      if (iframe) {
-        let currentSrc = iframe.src;
-        iframe.src = "", iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${typeof window < "u" ? window.location.origin : ""}`;
-        let handleLoad = () => {
-          setTimeout(() => {
-            try {
-              iframe.contentWindow && iframe.contentWindow.postMessage(
-                JSON.stringify({
-                  event: "command",
-                  func: "setPlaybackRate",
-                  args: [1]
-                }),
-                "https://www.youtube.com"
-              );
-            } catch (postMessageError) {
-              console.log("Could not set playback rate for happy sound:", postMessageError);
-            }
-          }, 500);
-        };
-        iframe.onload = handleLoad;
+    if (!(musicPlaying && !musicMuted))
+      try {
+        let iframe = window.happySoundIframe;
+        if (iframe) {
+          let currentSrc = iframe.src;
+          iframe.src = "", iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${window.location.origin}`;
+          let handleLoad = () => {
+            setTimeout(() => {
+              try {
+                iframe.contentWindow && iframe.contentWindow.postMessage(
+                  JSON.stringify({
+                    event: "command",
+                    func: "setPlaybackRate",
+                    args: [1]
+                  }),
+                  "https://www.youtube.com"
+                );
+              } catch (postMessageError) {
+                console.log("Could not set playback rate for happy sound:", postMessageError);
+              }
+            }, 500);
+          };
+          iframe.onload = handleLoad;
+        }
+      } catch (error) {
+        console.log("Happy sound failed:", error);
       }
-    } catch (error) {
-      console.log("Happy sound failed:", error);
-    }
   }, handlePlayerClick = (player) => {
     setSelectedPlayerForProfile(player), setShowPlayerProfileModal(!0);
   }, toggleTheme = () => {
@@ -4886,43 +4858,24 @@ function Index() {
       if (!player)
         continue;
       let points = vpMode.scores[index] || 0, newScore = player.score + points, newTotalVP = (player.totalVP || 0) + points;
-      player.score = newScore, player.totalVP = newTotalVP, player.history = [...player.history, { round: leagueState.current_round, placement: index + 1 }];
-      let updateData = playerToSupabase({ score: newScore, totalVP: newTotalVP, history: player.history });
-      playerUpdates.push(
-        supabase.from("players").update(updateData).match({ id: playerId, app_id: appId })
+      player.score = newScore, player.totalVP = newTotalVP, player.history = [...player.history, { round: leagueState.current_round, placement: index + 1 }], playerUpdates.push(
+        supabase.from("players").update({
+          score: newScore,
+          total_vp: newTotalVP,
+          history: player.history
+        }).match({ id: playerId, app_id: appId })
       );
     }
-    setPlayers(updatedPlayersData.sort((a, b) => b.score - a.score)), await Promise.all(playerUpdates);
+    setPlayers(updatedPlayersData.sort((a, b) => b.score - a.score));
     let potentialWinners = updatedPlayersData.filter((p) => p.score >= GAME_RULES.WIN_SCORE).sort((a, b) => b.score - a.score), potentialWinner = potentialWinners.length > 0 ? potentialWinners[0] : null, nextRound = leagueState.current_round + 1, newStatus = leagueState.status, finalWinner = null;
     if (potentialWinner)
-      finalWinner = { name: potentialWinner.name, avatar: potentialWinner.avatar, reason: `\u5728\u7B2C ${leagueState.current_round} \u8F6E\u7387\u5148\u8FBE\u5230 ${potentialWinner.score} \u5206\uFF01` }, newStatus = "finished", potentialWinner.championships += 1, playerUpdates.push(
-        supabase.from("players").update(playerToSupabase({ championships: potentialWinner.championships })).match({ id: potentialWinner.id, app_id: appId })
-      );
+      finalWinner = { name: potentialWinner.name, avatar: potentialWinner.avatar, reason: `\u5728\u7B2C ${leagueState.current_round} \u8F6E\u7387\u5148\u8FBE\u5230 ${potentialWinner.score} \u5206\uFF01` }, newStatus = "finished";
     else if (nextRound > GAME_RULES.MAX_ROUNDS) {
       newStatus = "finished";
       let sortedPlayers = updatedPlayersData.sort((a, b) => b.score - a.score), topScore = sortedPlayers[0].score, winners = sortedPlayers.filter((p) => p.score === topScore);
-      if (winners.length > 1)
-        finalWinner = { name: winners.map((w) => w.name).join(" \u548C "), avatar: "\u2694\uFE0F", reason: `5\u8F6E\u540E\u5E73\u5206 (${topScore}\u5206)\uFF0C\u9700\u8981\u8FDB\u884C\u52A0\u8D5B\u5BF9\u51B3\uFF01` };
-      else {
-        finalWinner = { name: sortedPlayers[0].name, avatar: sortedPlayers[0].avatar, reason: `5\u8F6E\u540E\u4EE5\u6700\u9AD8\u5206 (${topScore}\u5206) \u83B7\u80DC\uFF01` };
-        let champion = sortedPlayers[0];
-        if (champion.championships += 1, playerUpdates.push(
-          supabase.from("players").update(playerToSupabase({ championships: champion.championships })).match({ id: champion.id, app_id: appId })
-        ), sortedPlayers.length >= 2) {
-          let runnerUp = sortedPlayers[1];
-          runnerUp.runnerUp += 1, playerUpdates.push(
-            supabase.from("players").update(playerToSupabase({ runnerUp: runnerUp.runnerUp })).match({ id: runnerUp.id, app_id: appId })
-          );
-        }
-        if (sortedPlayers.length >= 3) {
-          let thirdPlace = sortedPlayers[2];
-          thirdPlace.thirdPlace += 1, playerUpdates.push(
-            supabase.from("players").update(playerToSupabase({ thirdPlace: thirdPlace.thirdPlace })).match({ id: thirdPlace.id, app_id: appId })
-          );
-        }
-      }
+      winners.length > 1 ? finalWinner = { name: winners.map((w) => w.name).join(" \u548C "), avatar: "\u2694\uFE0F", reason: `5\u8F6E\u540E\u5E73\u5206 (${topScore}\u5206)\uFF0C\u9700\u8981\u8FDB\u884C\u52A0\u8D5B\u5BF9\u51B3\uFF01` } : finalWinner = { name: sortedPlayers[0].name, avatar: sortedPlayers[0].avatar, reason: `5\u8F6E\u540E\u4EE5\u6700\u9AD8\u5206 (${topScore}\u5206) \u83B7\u80DC\uFF01` };
     }
-    if (setLeagueState((curr) => ({
+    if (await Promise.all(playerUpdates), setLeagueState((curr) => ({
       ...curr ?? {},
       app_id: appId,
       current_round: nextRound,
@@ -4934,6 +4887,35 @@ function Index() {
       status: newStatus,
       winner: finalWinner
     }).eq("app_id", appId), newStatus === "finished" && finalWinner) {
+      let leagueResults = updatedPlayersData.sort((a, b) => b.score - a.score).map((player, index) => ({
+        playerId: player.id,
+        finalPlacement: index + 1
+      })), playersWithUpdatedStats = UTILS.updateLeagueStatistics(updatedPlayersData, leagueResults);
+      setPlayers(playersWithUpdatedStats);
+      let statisticsUpdates = playersWithUpdatedStats.map((player) => {
+        let playerUpdateData = playerToSupabase({
+          championships: player.championships,
+          runnerUp: player.runnerUp,
+          thirdPlace: player.thirdPlace,
+          totalGames: player.totalGames,
+          averagePlacement: player.averagePlacement,
+          winRate: player.winRate
+        });
+        return [
+          // Update players table
+          supabase.from("players").update(playerUpdateData).match({ id: player.id, app_id: appId }),
+          // Update player_rankings table
+          supabase.from("player_rankings").upsert({
+            id: player.id,
+            app_id: appId,
+            name: player.name,
+            avatar: player.avatar,
+            score: player.score,
+            ...playerUpdateData
+          })
+        ];
+      }).flat();
+      await Promise.all(statisticsUpdates);
       let finalLeagueState = {
         ...leagueState,
         current_round: nextRound,
@@ -4941,33 +4923,33 @@ function Index() {
         winner: finalWinner,
         end_date: (/* @__PURE__ */ new Date()).toISOString()
       };
-      await saveLeagueToHistory(finalLeagueState, updatedPlayersData);
+      await saveLeagueToHistory(finalLeagueState, playersWithUpdatedStats);
     }
-    playHappySound(), setShowResultsModal(!1), setCardDrawRound(leagueState.current_round), setShowCardDrawReminder(!0);
+    setShowResultsModal(!1), setCardDrawRound(leagueState.current_round), setShowCardDrawReminder(!0);
   }, renderInProgress = () => {
     if (!leagueState)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 715,
+        lineNumber: 798,
         columnNumber: 34
       }, this);
     if (leagueState.status === "setup")
       return setCurrentPage("league"), /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u91CD\u5B9A\u5411\u5230\u8054\u8D5B\u7BA1\u7406..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 720,
+        lineNumber: 803,
         columnNumber: 20
       }, this);
     if (leagueState.status === "finished")
       return /* @__PURE__ */ jsxDEV18("div", { className: "space-y-4 sm:space-y-6", children: /* @__PURE__ */ jsxDEV18("div", { className: `text-center p-6 sm:p-8 lg:p-10 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg flex flex-col items-center gap-3 sm:gap-4 border-2 border-yellow-400 ${theme === "dark" ? "bg-gray-800/70" : "bg-white/80"}`, children: [
         /* @__PURE__ */ jsxDEV18(LucideCrown4, { className: "text-yellow-400", size: 60 }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 727,
+          lineNumber: 810,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "text-center", children: [
           /* @__PURE__ */ jsxDEV18("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-yellow-300", children: leagueState.league_name || "\u8054\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 729,
+            lineNumber: 812,
             columnNumber: 29
           }, this),
           leagueState.season_number && /* @__PURE__ */ jsxDEV18("p", { className: `text-lg sm:text-xl mt-2 ${theme === "dark" ? "text-yellow-400/80" : "text-yellow-600"}`, children: [
@@ -4976,33 +4958,33 @@ function Index() {
             " \u5B8C\u6210"
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 733,
+            lineNumber: 816,
             columnNumber: 33
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 728,
+          lineNumber: 811,
           columnNumber: 25
         }, this),
         leagueState.winner && /* @__PURE__ */ jsxDEV18(Fragment3, { children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "text-4xl sm:text-5xl lg:text-6xl mt-2 sm:mt-4", children: leagueState.winner.avatar }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 740,
+            lineNumber: 823,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV18("p", { className: `text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`, children: leagueState.winner.name }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 741,
+            lineNumber: 824,
             columnNumber: 33
           }, this),
           /* @__PURE__ */ jsxDEV18("p", { className: `text-base sm:text-lg lg:text-xl mt-2 px-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`, children: leagueState.winner.reason }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 742,
+            lineNumber: 825,
             columnNumber: 33
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 739,
+          lineNumber: 822,
           columnNumber: 29
         }, this),
         /* @__PURE__ */ jsxDEV18(
@@ -5016,44 +4998,44 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 745,
+            lineNumber: 828,
             columnNumber: 25
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 726,
+        lineNumber: 809,
         columnNumber: 21
       }, this) }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 725,
+        lineNumber: 808,
         columnNumber: 17
       }, this);
     if (!leagueState.schedule || leagueState.schedule.length === 0)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u52A0\u8F7D\u4E2D..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 756,
+        lineNumber: 839,
         columnNumber: 80
       }, this);
     let currentRoundConfig = leagueState.schedule[leagueState.current_round - 1];
     return currentRoundConfig ? /* @__PURE__ */ jsxDEV18("div", { className: "space-y-4 sm:space-y-6", children: [
-      /* @__PURE__ */ jsxDEV18("div", { className: `${createGlassCard("strong")} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED["2xl"]}`, children: [
+      /* @__PURE__ */ jsxDEV18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
         /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6 mb-4 sm:mb-6", children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3 sm:gap-4", children: [
-            /* @__PURE__ */ jsxDEV18("div", { className: `p-2.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.TRANSITIONS.normal} hover:scale-105`, children: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-orange-400", size: 22 }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV18("div", { className: `p-2.5 rounded-lg ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-100/50 border-gray-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-orange-400", size: 22 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 768,
+              lineNumber: 851,
               columnNumber: 33
             }, this) }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 767,
+              lineNumber: 850,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { className: "flex-1", children: [
               /* @__PURE__ */ jsxDEV18("h1", { className: `${TYPOGRAPHY.COMBINATIONS.pageTitle} ${theme === "dark" ? "text-white/95" : "text-gray-900"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`, children: leagueState.league_name || "Boom League" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 771,
+                lineNumber: 854,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-1", children: [
@@ -5062,12 +5044,12 @@ function Index() {
                   leagueState.season_number
                 ] }, void 0, !0, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 776,
+                  lineNumber: 859,
                   columnNumber: 41
                 }, this),
                 leagueState.season_number && leagueState.created_at && /* @__PURE__ */ jsxDEV18("span", { className: `hidden sm:inline ${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === "dark" ? "text-white/40" : "text-gray-400"}`, children: "\u2022" }, void 0, !1, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 781,
+                  lineNumber: 864,
                   columnNumber: 41
                 }, this),
                 leagueState.created_at && /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === "dark" ? "text-white/60" : "text-gray-600"} ${LINE_HEIGHTS.normal}`, children: [
@@ -5080,22 +5062,22 @@ function Index() {
                   })
                 ] }, void 0, !0, {
                   fileName: "app/routes/_index.tsx",
-                  lineNumber: 784,
+                  lineNumber: 867,
                   columnNumber: 41
                 }, this)
               ] }, void 0, !0, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 774,
+                lineNumber: 857,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 770,
+              lineNumber: 853,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 766,
+            lineNumber: 849,
             columnNumber: 25
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2 sm:gap-3", children: [
@@ -5103,21 +5085,21 @@ function Index() {
               "button",
               {
                 onClick: handleBackToLeagueManagement,
-                className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass("primary")} ${theme === "dark" ? "text-slate-300 hover:text-white" : "text-gray-700 hover:text-gray-900"} ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`,
+                className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.button} transition-all duration-200 ${theme === "dark" ? "bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white border border-slate-600/50" : "bg-gray-200/50 hover:bg-gray-300/50 text-gray-700 hover:text-gray-900 border border-gray-300/50"} ${LINE_HEIGHTS.tight}`,
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideChevronLeft2, { size: 16 }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 803,
+                    lineNumber: 888,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8FD4\u56DE\u7BA1\u7406" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 804,
+                    lineNumber: 889,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u8FD4\u56DE" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 805,
+                    lineNumber: 890,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5126,7 +5108,7 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 797,
+                lineNumber: 880,
                 columnNumber: 29
               },
               this
@@ -5142,21 +5124,21 @@ function Index() {
 \u2022 \u73A9\u5BB6\u5206\u6570\u5C06\u88AB\u91CD\u7F6E
 \u2022 \u60A8\u5C06\u8FD4\u56DE\u5230\u8054\u8D5B\u7BA1\u7406\u4E3B\u9875`) && handleAbortLeague();
                 },
-                className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass("danger")} ${theme === "dark" ? "text-red-400 hover:text-red-300" : "text-red-700 hover:text-red-800"} ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`,
+                className: `flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.button} transition-all duration-200 ${theme === "dark" ? "bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50" : "bg-red-100/50 hover:bg-red-200/50 text-red-700 hover:text-red-800 border border-red-300/50"} ${LINE_HEIGHTS.tight}`,
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideX3, { size: 16 }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 817,
+                    lineNumber: 904,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u4E2D\u6B62\u8054\u8D5B" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 818,
+                    lineNumber: 905,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u4E2D\u6B62" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 819,
+                    lineNumber: 906,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5165,36 +5147,36 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 807,
+                lineNumber: 892,
                 columnNumber: 29
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 796,
+            lineNumber: 879,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 765,
+          lineNumber: 848,
           columnNumber: 21
         }, this),
-        /* @__PURE__ */ jsxDEV18("div", { className: `flex items-center justify-between p-3 sm:p-4 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle}`, children: [
+        /* @__PURE__ */ jsxDEV18("div", { className: `flex items-center justify-between p-3 sm:p-4 rounded-lg ${theme === "dark" ? "bg-white/5 border border-white/10" : "bg-gray-100/50 border border-gray-200"}`, children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxDEV18("div", { className: `p-1.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.success} ${GLASS_EFFECTS.BORDERS.success} ${GLASS_EFFECTS.SHADOWS.green}`, children: /* @__PURE__ */ jsxDEV18(LucideGamepad22, { className: "text-green-500", size: 18 }, void 0, !1, {
+            /* @__PURE__ */ jsxDEV18("div", { className: `p-1.5 rounded-lg ${theme === "dark" ? "bg-green-500/20 border-green-500/30" : "bg-green-100 border-green-200"} border`, children: /* @__PURE__ */ jsxDEV18(LucideGamepad22, { className: "text-green-500", size: 18 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 828,
+              lineNumber: 915,
               columnNumber: 33
             }, this) }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 827,
+              lineNumber: 914,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { children: [
               /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.emphasized} ${theme === "dark" ? "text-white/90" : "text-gray-900"} ${LINE_HEIGHTS.tight}`, children: "\u8054\u8D5B\u8FDB\u884C\u4E2D" }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 831,
+                lineNumber: 918,
                 columnNumber: 33
               }, this),
               /* @__PURE__ */ jsxDEV18("p", { className: `${TYPOGRAPHY.COMBINATIONS.caption} ${theme === "dark" ? "text-white/60" : "text-gray-600"} ${LINE_HEIGHTS.normal}`, children: [
@@ -5205,17 +5187,17 @@ function Index() {
                 " \u8F6E"
               ] }, void 0, !0, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 834,
+                lineNumber: 921,
                 columnNumber: 33
               }, this)
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 830,
+              lineNumber: 917,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 826,
+            lineNumber: 913,
             columnNumber: 25
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: `px-3 py-1.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.badge} ${theme === "dark" ? "bg-green-500/20 text-green-400 border border-green-500/30" : "bg-green-100 text-green-700 border border-green-200"} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.wide}`, children: [
@@ -5223,26 +5205,26 @@ function Index() {
             leagueState.current_round
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 839,
+            lineNumber: 926,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 825,
+          lineNumber: 912,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 763,
+        lineNumber: 846,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV18(Leaderboard_default, { players, onPlayerClick: handlePlayerClick }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 850,
+        lineNumber: 937,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6", children: [
-        /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col gap-4 sm:gap-6", children: /* @__PURE__ */ jsxDEV18("div", { className: `${createGlassCard("strong")} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED["2xl"]}`, children: [
+        /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col gap-4 sm:gap-6", children: /* @__PURE__ */ jsxDEV18("div", { className: `backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === "dark" ? "bg-gray-800/60 border-gray-700" : "bg-white/60 border-gray-200/50"}`, children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6", children: [
             /* @__PURE__ */ jsxDEV18("h2", { className: `${TYPOGRAPHY.COMBINATIONS.sectionTitle} text-orange-400 ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`, children: [
               "\u7B2C ",
@@ -5252,28 +5234,28 @@ function Index() {
               " \u8F6E"
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 857,
+              lineNumber: 944,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(
               "button",
               {
                 onClick: () => setShowResultsModal(!0),
-                className: `${createInteractiveGlass("success")} bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.green} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.ACTIVE.press} ${ANIMATIONS.HOVER.lift} flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`,
+                className: `bg-green-500 hover:bg-green-600 active:bg-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 rounded-lg shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`,
                 children: [
                   /* @__PURE__ */ jsxDEV18(LucideClipboardList, { size: 18, className: "flex-shrink-0" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 862,
+                    lineNumber: 949,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "hidden xs:inline", children: "\u8F93\u5165\u672C\u8F6E\u7ED3\u679C" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 863,
+                    lineNumber: 950,
                     columnNumber: 33
                   }, this),
                   /* @__PURE__ */ jsxDEV18("span", { className: "xs:hidden", children: "\u7ED3\u679C" }, void 0, !1, {
                     fileName: "app/routes/_index.tsx",
-                    lineNumber: 864,
+                    lineNumber: 951,
                     columnNumber: 33
                   }, this)
                 ]
@@ -5282,104 +5264,104 @@ function Index() {
               !0,
               {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 858,
+                lineNumber: 945,
                 columnNumber: 29
               },
               this
             )
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 856,
+            lineNumber: 943,
             columnNumber: 26
           }, this),
           /* @__PURE__ */ jsxDEV18("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base lg:text-lg", children: [
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideShield3, { className: "text-blue-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 868,
+              lineNumber: 955,
               columnNumber: 45
             }, this), title: "\u5B89\u5168\u724C\u6570\u91CF", value: currentRoundConfig.safeCards }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 868,
+              lineNumber: 955,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideBomb4, { className: "text-red-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 869,
+              lineNumber: 956,
               columnNumber: 45
             }, this), title: "\u70B8\u5F39\u724C\u6570\u91CF", value: currentRoundConfig.bombCards }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 869,
+              lineNumber: 956,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideSwords3, { className: "text-yellow-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 870,
+              lineNumber: 957,
               columnNumber: 45
             }, this), title: "\u51FA\u6218\u624B\u724C\u4E0A\u9650", value: currentRoundConfig.handLimit === 1 / 0 ? "\u65E0\u9650\u5236" : currentRoundConfig.handLimit }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 870,
+              lineNumber: 957,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideTrophy6, { className: "text-green-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 871,
+              lineNumber: 958,
               columnNumber: 45
             }, this), title: "VP \u5956\u52B1\u6A21\u5F0F", value: currentRoundConfig.vpMode.name }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 871,
+              lineNumber: 958,
               columnNumber: 29
             }, this),
             /* @__PURE__ */ jsxDEV18(InfoCard_default, { icon: /* @__PURE__ */ jsxDEV18(LucideDices2, { className: "text-purple-400" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 872,
+              lineNumber: 959,
               columnNumber: 45
-            }, this), title: "\u7279\u6B8A\u89C4\u5219", value: currentRoundConfig.specialRules.join(" + ") }, void 0, !1, {
+            }, this), title: "\u7279\u6B8A\u89C4\u5219", value: currentRoundConfig.specialRule }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 872,
+              lineNumber: 959,
               columnNumber: 29
             }, this)
           ] }, void 0, !0, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 867,
+            lineNumber: 954,
             columnNumber: 25
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 855,
+          lineNumber: 942,
           columnNumber: 21
         }, this) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 853,
+          lineNumber: 940,
           columnNumber: 21
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "flex flex-col gap-4 sm:gap-6", children: /* @__PURE__ */ jsxDEV18(ScheduleTimeline_default, { schedule: leagueState.schedule, currentRound: leagueState.current_round }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 878,
+          lineNumber: 965,
           columnNumber: 25
         }, this) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 877,
+          lineNumber: 964,
           columnNumber: 21
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 852,
+        lineNumber: 939,
         columnNumber: 17
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 761,
+      lineNumber: 844,
       columnNumber: 13
     }, this) : /* @__PURE__ */ jsxDEV18("div", { className: "text-white", children: "\u6BD4\u8D5B\u7ED3\u675F\uFF01" }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 758,
+      lineNumber: 841,
       columnNumber: 41
     }, this);
   }, renderCurrentPage = () => {
     if (!isAuthReady)
       return /* @__PURE__ */ jsxDEV18("div", { className: "text-center text-2xl p-8", children: "\u6B63\u5728\u8FDE\u63A5\u670D\u52A1\u5668..." }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 887,
+        lineNumber: 974,
         columnNumber: 20
       }, this);
     if (leagueState && leagueState.status === "pending_confirmation")
@@ -5395,7 +5377,7 @@ function Index() {
         !1,
         {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 892,
+          lineNumber: 979,
           columnNumber: 20
         },
         this
@@ -5416,7 +5398,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 902,
+            lineNumber: 989,
             columnNumber: 24
           },
           this
@@ -5440,7 +5422,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 911,
+            lineNumber: 998,
             columnNumber: 24
           },
           this
@@ -5463,7 +5445,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 924,
+            lineNumber: 1011,
             columnNumber: 24
           },
           this
@@ -5481,7 +5463,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 938,
+            lineNumber: 1025,
             columnNumber: 24
           },
           this
@@ -5496,7 +5478,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 943,
+            lineNumber: 1030,
             columnNumber: 24
           },
           this
@@ -5509,13 +5491,14 @@ function Index() {
             players,
             handleStartLeague,
             handleResetLeague,
-            handlePlayerClick
+            handlePlayerClick,
+            setCurrentPage
           },
           void 0,
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 947,
+            lineNumber: 1034,
             columnNumber: 24
           },
           this
@@ -5531,22 +5514,22 @@ function Index() {
   return /* @__PURE__ */ jsxDEV18(ThemeContext.Provider, { value: { theme, toggleTheme }, children: /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.container, children: [
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.background }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 978,
+      lineNumber: 1066,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow1 }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 979,
+      lineNumber: 1067,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.radialGlow2 }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 980,
+      lineNumber: 1068,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18("div", { className: themeClasses.pattern }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 981,
+      lineNumber: 1069,
       columnNumber: 17
     }, this),
     /* @__PURE__ */ jsxDEV18(
@@ -5567,7 +5550,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 983,
+        lineNumber: 1071,
         columnNumber: 17
       },
       this
@@ -5581,7 +5564,7 @@ function Index() {
             className: `p-2 sm:p-2.5 rounded-lg transition-all duration-200 border border-transparent active:scale-95 ${theme === "dark" ? "text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300"}`,
             children: /* @__PURE__ */ jsxDEV18(LucideMenu2, { size: 18 }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1003,
+              lineNumber: 1091,
               columnNumber: 29
             }, this)
           },
@@ -5589,7 +5572,7 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 999,
+            lineNumber: 1087,
             columnNumber: 25
           },
           this
@@ -5597,49 +5580,49 @@ function Index() {
         /* @__PURE__ */ jsxDEV18("div", { className: "flex items-center gap-2", children: [
           /* @__PURE__ */ jsxDEV18("div", { className: "p-1.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg", children: /* @__PURE__ */ jsxDEV18(LucideCat3, { className: "text-orange-400", size: 16 }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1007,
+            lineNumber: 1095,
             columnNumber: 33
           }, this) }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1006,
+            lineNumber: 1094,
             columnNumber: 29
           }, this),
           /* @__PURE__ */ jsxDEV18("h1", { className: `text-sm sm:text-base font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"} tracking-tight`, children: "Boom League" }, void 0, !1, {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1009,
+            lineNumber: 1097,
             columnNumber: 29
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1005,
+          lineNumber: 1093,
           columnNumber: 25
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: "w-8 sm:w-10" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1011,
+          lineNumber: 1099,
           columnNumber: 25
         }, this),
         " "
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 998,
+        lineNumber: 1086,
         columnNumber: 21
       }, this),
       /* @__PURE__ */ jsxDEV18("main", { className: "p-3 sm:p-4 md:p-6 lg:p-8 relative z-10 min-h-screen", children: renderCurrentPage() }, void 0, !1, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1015,
+        lineNumber: 1103,
         columnNumber: 21
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 996,
+      lineNumber: 1084,
       columnNumber: 17
     }, this),
     showPlayerModal && /* @__PURE__ */ jsxDEV18(Modal_default, { onClose: () => setShowPlayerModal(!1), title: "Add New Player", children: /* @__PURE__ */ jsxDEV18("div", { children: [
       /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
         /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Player Name" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1024,
+          lineNumber: 1112,
           columnNumber: 33
         }, this),
         /* @__PURE__ */ jsxDEV18(
@@ -5655,20 +5638,20 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1025,
+            lineNumber: 1113,
             columnNumber: 33
           },
           this
         )
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1023,
+        lineNumber: 1111,
         columnNumber: 29
       }, this),
       /* @__PURE__ */ jsxDEV18("div", { className: "mb-4 sm:mb-6", children: [
         /* @__PURE__ */ jsxDEV18("label", { className: `font-medium mb-2 sm:mb-3 block text-sm ${theme === "dark" ? "text-white/90" : "text-gray-700"}`, children: "Choose Avatar" }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1039,
+          lineNumber: 1127,
           columnNumber: 33
         }, this),
         /* @__PURE__ */ jsxDEV18("div", { className: `grid grid-cols-6 sm:grid-cols-8 gap-2 max-h-40 sm:max-h-48 overflow-y-auto p-3 sm:p-4 rounded-lg border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-gray-50/80 border-gray-200"}`, children: GAME_RULES.AVATARS.map((avatar, index) => /* @__PURE__ */ jsxDEV18(
@@ -5682,18 +5665,18 @@ function Index() {
           !1,
           {
             fileName: "app/routes/_index.tsx",
-            lineNumber: 1046,
+            lineNumber: 1134,
             columnNumber: 41
           },
           this
         )) }, void 0, !1, {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1040,
+          lineNumber: 1128,
           columnNumber: 33
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1038,
+        lineNumber: 1126,
         columnNumber: 29
       }, this),
       /* @__PURE__ */ jsxDEV18(
@@ -5705,18 +5688,18 @@ function Index() {
             /* @__PURE__ */ jsxDEV18("span", { className: "relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base", children: [
               /* @__PURE__ */ jsxDEV18(LucidePlus2, { size: 18 }, void 0, !1, {
                 fileName: "app/routes/_index.tsx",
-                lineNumber: 1068,
+                lineNumber: 1156,
                 columnNumber: 37
               }, this),
               "Add Player"
             ] }, void 0, !0, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1067,
+              lineNumber: 1155,
               columnNumber: 33
             }, this),
             /* @__PURE__ */ jsxDEV18("div", { className: "absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" }, void 0, !1, {
               fileName: "app/routes/_index.tsx",
-              lineNumber: 1071,
+              lineNumber: 1159,
               columnNumber: 33
             }, this)
           ]
@@ -5725,18 +5708,18 @@ function Index() {
         !0,
         {
           fileName: "app/routes/_index.tsx",
-          lineNumber: 1063,
+          lineNumber: 1151,
           columnNumber: 29
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1022,
+      lineNumber: 1110,
       columnNumber: 25
     }, this) }, void 0, !1, {
       fileName: "app/routes/_index.tsx",
-      lineNumber: 1021,
+      lineNumber: 1109,
       columnNumber: 21
     }, this),
     showResultsModal && leagueState && /* @__PURE__ */ jsxDEV18(
@@ -5751,7 +5734,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1078,
+        lineNumber: 1166,
         columnNumber: 21
       },
       this
@@ -5768,7 +5751,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1087,
+        lineNumber: 1175,
         columnNumber: 21
       },
       this
@@ -5784,7 +5767,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1097,
+        lineNumber: 1185,
         columnNumber: 21
       },
       this
@@ -5805,7 +5788,7 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1106,
+        lineNumber: 1194,
         columnNumber: 21
       },
       this
@@ -5828,27 +5811,27 @@ function Index() {
       !1,
       {
         fileName: "app/routes/_index.tsx",
-        lineNumber: 1119,
+        lineNumber: 1207,
         columnNumber: 17
       },
       this
     )
   ] }, void 0, !0, {
     fileName: "app/routes/_index.tsx",
-    lineNumber: 977,
+    lineNumber: 1065,
     columnNumber: 13
   }, this) }, void 0, !1, {
     fileName: "app/routes/_index.tsx",
-    lineNumber: 976,
+    lineNumber: 1064,
     columnNumber: 9
   }, this);
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-VXSZJ43O.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-PYLAYDR2.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-HNDOHPPE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-24LML22H.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "f68e1a69", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754718254477 }, url: "/build/manifest-F68E1A69.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-XZRUNYCF.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-5ZF6PAZJ.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-XVHGACUF.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-FHDOH6WG.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-HRKADXCB.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "040b2064", hmr: { runtime: "/build/_shared\\chunk-XVHGACUF.js", timestamp: 1754722969541 }, url: "/build/manifest-040B2064.js" };
 
 // server-entry-module:@remix-run/dev/server-build
-var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
+var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_node_exports }, routes = {
   root: {
     id: "root",
     parentId: void 0,

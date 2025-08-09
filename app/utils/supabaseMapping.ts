@@ -20,6 +20,9 @@ export const playerToSupabase = (player: Partial<Player>): Record<string, any> =
     if (player.runnerUp !== undefined) supabasePlayer.runner_up = player.runnerUp;
     if (player.thirdPlace !== undefined) supabasePlayer.third_place = player.thirdPlace;
     if (player.totalVP !== undefined) supabasePlayer.total_vp = player.totalVP;
+    if (player.totalGames !== undefined) supabasePlayer.total_games = player.totalGames;
+    if (player.averagePlacement !== undefined) supabasePlayer.average_placement = player.averagePlacement;
+    if (player.winRate !== undefined) supabasePlayer.win_rate = player.winRate;
     
     return supabasePlayer;
 };
@@ -38,6 +41,9 @@ export const playerFromSupabase = (supabasePlayer: Record<string, any>): Player 
         runnerUp: supabasePlayer.runner_up || 0,
         thirdPlace: supabasePlayer.third_place || 0,
         totalVP: supabasePlayer.total_vp || 0,
+        totalGames: supabasePlayer.total_games || 0,
+        averagePlacement: supabasePlayer.average_placement || 0,
+        winRate: supabasePlayer.win_rate || 0,
     };
 };
 

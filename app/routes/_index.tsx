@@ -37,7 +37,9 @@ import CardDrawReminder from '../components/ui/CardDrawReminder';
 
 // Import constants
 import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../constants/typography';
-import { GLASS_EFFECTS, ANIMATIONS, ROUNDED, createGlassCard, createInteractiveGlass } from '../constants/designSystem';
+
+// Import utilities
+import { selectSpecialRules, formatSpecialRules } from '../utils/specialRulesUtils';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
@@ -110,7 +112,7 @@ export default function Index() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+            const urlParams = new URLSearchParams(window.location.search);
             const canvasAppId = urlParams.get('app_id') || 'default';
             setAppId(canvasAppId);
 
@@ -141,37 +143,37 @@ export default function Index() {
         }
     }, [])
 
+    // Load league history function
+    const loadLeagueHistory = async () => {
+        if (!supabase || !appId) return;
+        
+        try {
+            const { data: historyData, error } = await supabase
+                .from('league_history')
+                .select('*')
+                .eq('app_id', appId)
+                .order('season_number', { ascending: false });
+
+            if (error) {
+                console.error('Error loading league history:', error);
+                return;
+            }
+
+            if (historyData) {
+                const mappedHistory = leagueHistoryArrayFromSupabase(historyData);
+                setLeagueHistory(mappedHistory);
+                // Set next season number based on latest season
+                const latestSeason = mappedHistory.length > 0 ? mappedHistory[0].season_number : 0;
+                setNextSeasonNumber(latestSeason + 1);
+                setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
+            }
+        } catch (error) {
+            console.error('Error in loadLeagueHistory:', error);
+        }
+    };
+
     useEffect(() => {
         if (!isAuthReady || !supabase) return;
-
-        // Load league history and set next season number
-        const loadLeagueHistory = async () => {
-            if (!supabase || !appId) return;
-            
-            try {
-                const { data: historyData, error } = await supabase
-                    .from('league_history')
-                    .select('*')
-                    .eq('app_id', appId)
-                    .order('season_number', { ascending: false });
-
-                if (error) {
-                    console.error('Error loading league history:', error);
-                    return;
-                }
-
-                if (historyData) {
-                    const mappedHistory = leagueHistoryArrayFromSupabase(historyData);
-                    setLeagueHistory(mappedHistory);
-                    // Set next season number based on latest season
-                    const latestSeason = mappedHistory.length > 0 ? mappedHistory[0].season_number : 0;
-                    setNextSeasonNumber(latestSeason + 1);
-                    setCurrentLeagueName(`Boom League S${latestSeason + 1}`);
-                }
-            } catch (error) {
-                console.error('Error in loadLeagueHistory:', error);
-            }
-        };
 
         const fetchInitialData = async () => {
             const { data: leagueData, error: leagueError } = await supabase
@@ -190,21 +192,57 @@ export default function Index() {
             }
              if(leagueError && leagueError.code !== 'PGRST116') console.error("Error fetching league state:", leagueError);
 
+            // Load players data from main players table
             const { data: playersData, error: playersError } = await supabase
                 .from('players')
                 .select('*')
+                .eq('app_id', appId);
+            
+            // Load rankings data from player_rankings table
+            const { data: rankingsData, error: rankingsError } = await supabase
+                .from('player_rankings')
+                .select('*')
                 .eq('app_id', appId)
                 .order('score', { ascending: false });
-
+            
+            if (playersError) console.error("Error fetching players:", playersError);
+            if (rankingsError) console.error("Error fetching player rankings:", rankingsError);
+            
             if (playersData) {
-                const mappedPlayers = playersFromSupabase(playersData);
+                // Merge data from both tables
+                const mappedPlayers = playersData.map((playerData: any) => {
+                    const basePlayer = playerFromSupabase(playerData);
+                    
+                    // Find corresponding rankings data
+                    const rankingData = rankingsData?.find((r: any) => r.id === playerData.id);
+                    
+                    if (rankingData) {
+                        // Merge rankings data into player object
+                        return {
+                            ...basePlayer,
+                            totalGames: rankingData.total_games || 0,
+                            averagePlacement: rankingData.average_placement || 0,
+                            winRate: rankingData.win_rate || 0,
+                            // Use rankings data for current score and stats if available
+                            score: rankingData.score || basePlayer.score,
+                            championships: rankingData.championships || basePlayer.championships,
+                            runnerUp: rankingData.runner_up || basePlayer.runnerUp,
+                            thirdPlace: rankingData.third_place || basePlayer.thirdPlace,
+                            totalVP: rankingData.total_vp || basePlayer.totalVP,
+                        };
+                    }
+                    
+                    return basePlayer;
+                });
+                
+                // Sort by score (descending)
+                mappedPlayers.sort((a: Player, b: Player) => b.score - a.score);
                 setPlayers(mappedPlayers);
             }
-            if (playersError) console.error("Error fetching players:", playersError);
         };
 
         fetchInitialData();
-        loadLeagueHistory();
+                        // loadLeagueHistory(); // 这个函数需要在别的地方定义
 
         const leagueChannel = supabase.channel(`league-state:${appId}`)
             .on('postgres_changes', { event: '*', schema: 'public', table: 'league_state', filter: `app_id=eq.${appId}` }, (payload: any) => {
@@ -279,11 +317,32 @@ export default function Index() {
             totalVP: 0,
         };
         
+        // Insert into players table
         const { data, error } = await supabase
             .from('players')
             .insert(playerToSupabase(playerData))
             .select()
             .single();
+
+        // Also insert into player_rankings table with initial stats
+        if (data && !error) {
+            await supabase
+                .from('player_rankings')
+                .insert({
+                    id: data.id,
+                    app_id: appId,
+                    name: newPlayerName.trim(),
+                    avatar: selectedAvatar,
+                    score: 0,
+                    championships: 0,
+                    runner_up: 0,
+                    third_place: 0,
+                    total_vp: 0,
+                    total_games: 0,
+                    average_placement: 0.00,
+                    win_rate: 0.00
+                });
+        }
 
         console.log('Supabase insert result:', { data, error });
 
@@ -309,10 +368,13 @@ export default function Index() {
         const previous = players;
         setPlayers((curr) => curr.filter((p) => p.id !== playerId));
 
-        const { error } = await supabase
-            .from('players')
-            .delete()
-            .match({ id: playerId, app_id: appId });
+        // Delete from both tables
+        const [{ error: playersError }, { error: rankingsError }] = await Promise.all([
+            supabase.from('players').delete().match({ id: playerId, app_id: appId }),
+            supabase.from('player_rankings').delete().match({ id: playerId, app_id: appId })
+        ]);
+
+        const error = playersError || rankingsError;
 
         if (error) {
             console.error('Delete player failed:', error);
@@ -328,13 +390,18 @@ export default function Index() {
             const bombCardOptions = [playerCount, playerCount + 1];
             const handLimits = [4, 5, 6, Infinity];
 
+            // 选择特殊规则（60%概率1条，40%概率2条，确保不冲突）
+            const roundSpecialRules = selectSpecialRules(selectedSpecialRules);
+            const specialRuleText = formatSpecialRules(roundSpecialRules);
+
             schedule.push({
                 round: i + 1,
                 safeCards: playerCount * UTILS.getRandomElement(safeCardMultipliers),
                 bombCards: UTILS.getRandomElement(bombCardOptions),
                 handLimit: UTILS.getRandomElement(handLimits),
                 vpMode: UTILS.getRandomElement(GAME_RULES.VP_MODES),
-                specialRules: UTILS.selectSpecialRules(selectedSpecialRules),
+                specialRule: specialRuleText,
+                specialRules: roundSpecialRules, // 保存原始规则数组
             });
         }
         return schedule;
@@ -397,7 +464,7 @@ export default function Index() {
 
         const newLeagueState = {
             app_id: appId,
-            status: 'pending_confirmation',
+            status: 'pending_confirmation' as const,
             current_round: 0,
             schedule,
             winner: null,
@@ -497,15 +564,20 @@ export default function Index() {
         setCurrentPage('league');
     };
 
-    // Function to play happy sound effect
+    // Function to play happy sound effect (only if music is not playing)
     const playHappySound = () => {
+        // Don't play happy sound if music is currently playing
+        if (musicPlaying && !musicMuted) {
+            return;
+        }
+        
         try {
             const iframe = (window as any).happySoundIframe;
             if (iframe) {
                 // Reset and play the happy sound at normal speed starting from the beginning
                 const currentSrc = iframe.src;
                 iframe.src = '';
-                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`;
+                iframe.src = `https://www.youtube.com/embed/NSU2hJ5wT08?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=0&enablejsapi=1&origin=${window.location.origin}`;
                 
                 // Set playback rate to normal speed (1x) after iframe loads
                 const handleLoad = () => {
@@ -593,21 +665,25 @@ export default function Index() {
             const newScore = player.score + points;
             const newTotalVP = (player.totalVP || 0) + points;
             
+            // Update basic round data only
             player.score = newScore;
             player.totalVP = newTotalVP;
             player.history = [...player.history, { round: leagueState.current_round, placement: index + 1 }];
 
-            const updateData = playerToSupabase({ score: newScore, totalVP: newTotalVP, history: player.history });
+            // Update only basic data in players table (no statistics calculation during rounds)
             playerUpdates.push(
                 supabase
                     .from('players')
-                    .update(updateData)
+                    .update({
+                        score: newScore,
+                        total_vp: newTotalVP,
+                        history: player.history
+                    })
                     .match({ id: playerId, app_id: appId })
             );
         }
         
         setPlayers(updatedPlayersData.sort((a, b) => b.score - a.score));
-        await Promise.all(playerUpdates);
         
         const potentialWinners = updatedPlayersData
             .filter(p => p.score >= GAME_RULES.WIN_SCORE)
@@ -621,14 +697,6 @@ export default function Index() {
         if (potentialWinner) {
             finalWinner = { name: potentialWinner.name, avatar: potentialWinner.avatar, reason: `在第 ${leagueState.current_round} 轮率先达到 ${potentialWinner.score} 分！` };
             newStatus = 'finished';
-            
-            potentialWinner.championships += 1;
-            playerUpdates.push(
-                supabase
-                    .from('players')
-                    .update(playerToSupabase({ championships: potentialWinner.championships }))
-                    .match({ id: potentialWinner.id, app_id: appId })
-            );
         } else if (nextRound > GAME_RULES.MAX_ROUNDS) {
             newStatus = 'finished';
             const sortedPlayers = updatedPlayersData.sort((a, b) => b.score - a.score);
@@ -638,39 +706,11 @@ export default function Index() {
                 finalWinner = { name: winners.map(w => w.name).join(' 和 '), avatar: '⚔️', reason: `5轮后平分 (${topScore}分)，需要进行加赛对决！` };
             } else {
                 finalWinner = { name: sortedPlayers[0].name, avatar: sortedPlayers[0].avatar, reason: `5轮后以最高分 (${topScore}分) 获胜！` };
-                
-                const champion = sortedPlayers[0];
-                champion.championships += 1;
-                playerUpdates.push(
-                    supabase
-                        .from('players')
-                        .update(playerToSupabase({ championships: champion.championships }))
-                        .match({ id: champion.id, app_id: appId })
-                );
-                
-                if (sortedPlayers.length >= 2) {
-                    const runnerUp = sortedPlayers[1];
-                    runnerUp.runnerUp += 1;
-                    playerUpdates.push(
-                        supabase
-                            .from('players')
-                            .update(playerToSupabase({ runnerUp: runnerUp.runnerUp }))
-                            .match({ id: runnerUp.id, app_id: appId })
-                    );
-                }
-                
-                if (sortedPlayers.length >= 3) {
-                    const thirdPlace = sortedPlayers[2];
-                    thirdPlace.thirdPlace += 1;
-                    playerUpdates.push(
-                        supabase
-                            .from('players')
-                            .update(playerToSupabase({ thirdPlace: thirdPlace.thirdPlace }))
-                            .match({ id: thirdPlace.id, app_id: appId })
-                    );
-                }
             }
         }
+
+        // Execute all player updates (including statistics that were already calculated above)
+        await Promise.all(playerUpdates);
         
         setLeagueState((curr: any) => ({
             ...(curr ?? {}),
@@ -690,8 +730,54 @@ export default function Index() {
             })
             .eq('app_id', appId);
 
-        // Save to history if league is finished
+        // Update player statistics and save to history if league is finished
         if (newStatus === 'finished' && finalWinner) {
+            // Calculate final league placements
+            const finalStandings = updatedPlayersData.sort((a, b) => b.score - a.score);
+            const leagueResults = finalStandings.map((player, index) => ({
+                playerId: player.id,
+                finalPlacement: index + 1
+            }));
+            
+            // Update league-level statistics for all players
+            const playersWithUpdatedStats = UTILS.updateLeagueStatistics(updatedPlayersData, leagueResults);
+            setPlayers(playersWithUpdatedStats);
+            
+            // Update database with new statistics
+            const statisticsUpdates = playersWithUpdatedStats.map(player => {
+                const playerUpdateData = playerToSupabase({
+                    championships: player.championships,
+                    runnerUp: player.runnerUp,
+                    thirdPlace: player.thirdPlace,
+                    totalGames: player.totalGames,
+                    averagePlacement: player.averagePlacement,
+                    winRate: player.winRate
+                });
+                
+                return [
+                    // Update players table
+                    supabase
+                        .from('players')
+                        .update(playerUpdateData)
+                        .match({ id: player.id, app_id: appId }),
+                    
+                    // Update player_rankings table
+                    supabase
+                        .from('player_rankings')
+                        .upsert({
+                            id: player.id,
+                            app_id: appId,
+                            name: player.name,
+                            avatar: player.avatar,
+                            score: player.score,
+                            ...playerUpdateData
+                        })
+                ];
+            }).flat();
+            
+            // Execute all statistics updates
+            await Promise.all(statisticsUpdates);
+            
             const finalLeagueState = {
                 ...leagueState,
                 current_round: nextRound,
@@ -699,12 +785,9 @@ export default function Index() {
                 winner: finalWinner,
                 end_date: new Date().toISOString(),
             } as LeagueState;
-            await saveLeagueToHistory(finalLeagueState, updatedPlayersData);
+            await saveLeagueToHistory(finalLeagueState, playersWithUpdatedStats);
         }
 
-        // Play happy sound effect after advancing round
-        playHappySound();
-        
         // Close results modal and show card draw reminder
         setShowResultsModal(false);
         setCardDrawRound(leagueState.current_round);
@@ -760,11 +843,11 @@ export default function Index() {
         return (
             <div className="space-y-4 sm:space-y-6">
                 {/* Combined League Header & Info */}
-                <div className={`${createGlassCard('strong')} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED['2xl']}`}>
+                <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
                     {/* League Info Section */}
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
                         <div className="flex items-center gap-3 sm:gap-4">
-                            <div className={`p-2.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.TRANSITIONS.normal} hover:scale-105`}>
+                            <div className={`p-2.5 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
                                 <LucideTrophy className="text-orange-400" size={22} />
                             </div>
                             <div className="flex-1">
@@ -796,9 +879,11 @@ export default function Index() {
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={handleBackToLeagueManagement}
-                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass('primary')} ${
-                                    theme === 'dark' ? 'text-slate-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'
-                                } ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.button} transition-all duration-200 ${
+                                    theme === 'dark'
+                                        ? 'bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white border border-slate-600/50'
+                                        : 'bg-gray-200/50 hover:bg-gray-300/50 text-gray-700 hover:text-gray-900 border border-gray-300/50'
+                                } ${LINE_HEIGHTS.tight}`}
                             >
                                 <LucideChevronLeft size={16} />
                                 <span className="hidden xs:inline">返回管理</span>
@@ -810,9 +895,11 @@ export default function Index() {
                                         handleAbortLeague();
                                     }
                                 }}
-                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass('danger')} ${
-                                    theme === 'dark' ? 'text-red-400 hover:text-red-300' : 'text-red-700 hover:text-red-800'
-                                } ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.button} transition-all duration-200 ${
+                                    theme === 'dark'
+                                        ? 'bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50'
+                                        : 'bg-red-100/50 hover:bg-red-200/50 text-red-700 hover:text-red-800 border border-red-300/50'
+                                } ${LINE_HEIGHTS.tight}`}
                             >
                                 <LucideX size={16} />
                                 <span className="hidden xs:inline">中止联赛</span>
@@ -822,9 +909,9 @@ export default function Index() {
                     </div>
 
                     {/* League Status Section */}
-                    <div className={`flex items-center justify-between p-3 sm:p-4 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle}`}>
+                    <div className={`flex items-center justify-between p-3 sm:p-4 rounded-lg ${theme === 'dark' ? 'bg-white/5 border border-white/10' : 'bg-gray-100/50 border border-gray-200'}`}>
                         <div className="flex items-center gap-3">
-                            <div className={`p-1.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.success} ${GLASS_EFFECTS.BORDERS.success} ${GLASS_EFFECTS.SHADOWS.green}`}>
+                            <div className={`p-1.5 rounded-lg ${theme === 'dark' ? 'bg-green-500/20 border-green-500/30' : 'bg-green-100 border-green-200'} border`}>
                                 <LucideGamepad2 className="text-green-500" size={18} />
                             </div>
                             <div>
@@ -852,12 +939,12 @@ export default function Index() {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
                     <div className="flex flex-col gap-4 sm:gap-6">
                     {/* Round Info Card */}
-                    <div className={`${createGlassCard('strong')} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED['2xl']}`}>
+                    <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                             <h2 className={`${TYPOGRAPHY.COMBINATIONS.sectionTitle} text-orange-400 ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮</h2>
                             <button 
                                 onClick={() => setShowResultsModal(true)} 
-                                className={`${createInteractiveGlass('success')} bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.green} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.ACTIVE.press} ${ANIMATIONS.HOVER.lift} flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`}
+                                className={`bg-green-500 hover:bg-green-600 active:bg-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 rounded-lg shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`}
                             >
                                 <LucideClipboardList size={18} className="flex-shrink-0" /> 
                                 <span className="hidden xs:inline">输入本轮结果</span>
@@ -869,7 +956,7 @@ export default function Index() {
                             <InfoCard icon={<LucideBomb className="text-red-400" />} title="炸弹牌数量" value={currentRoundConfig.bombCards} />
                             <InfoCard icon={<LucideSwords className="text-yellow-400" />} title="出战手牌上限" value={currentRoundConfig.handLimit === Infinity ? "无限制" : currentRoundConfig.handLimit} />
                             <InfoCard icon={<LucideTrophy className="text-green-400" />} title="VP 奖励模式" value={currentRoundConfig.vpMode.name} />
-                            <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRules.join(" + ")} />
+                            <InfoCard icon={<LucideDices className="text-purple-400" />} title="特殊规则" value={currentRoundConfig.specialRule} />
                         </div>
                     </div>
                     
@@ -950,6 +1037,7 @@ export default function Index() {
                     handleStartLeague={handleStartLeague}
                     handleResetLeague={handleResetLeague}
                     handlePlayerClick={handlePlayerClick}
+                    setCurrentPage={setCurrentPage}
                 />;
         }
     };

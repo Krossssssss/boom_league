@@ -10,23 +10,45 @@ DROP TABLE IF EXISTS league_state CASCADE;
 DROP TABLE IF EXISTS players CASCADE;
 
 -- 1. PLAYERS TABLE
--- Stores all player information including stats and game history
+-- Stores basic player information and current league scores
 CREATE TABLE players (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     app_id TEXT NOT NULL,
     name TEXT NOT NULL,
     avatar TEXT NOT NULL DEFAULT '😼',
-    score INTEGER NOT NULL DEFAULT 0,
-    history JSONB NOT NULL DEFAULT '[]'::jsonb,
-    championships INTEGER NOT NULL DEFAULT 0,
-    runner_up INTEGER NOT NULL DEFAULT 0,     -- 亚军次数 (note: using snake_case for SQL)
-    third_place INTEGER NOT NULL DEFAULT 0,  -- 季军次数
-    total_vp INTEGER NOT NULL DEFAULT 0,     -- 总VP获得数
+    score INTEGER NOT NULL DEFAULT 0,        -- Current league score
+    history JSONB NOT NULL DEFAULT '[]'::jsonb,  -- Current league round history
+    championships INTEGER NOT NULL DEFAULT 0,     -- Total championships (league wins)
+    runner_up INTEGER NOT NULL DEFAULT 0,         -- Total runner-up finishes (league 2nd place)
+    third_place INTEGER NOT NULL DEFAULT 0,       -- Total third place finishes (league 3rd place)
+    total_vp INTEGER NOT NULL DEFAULT 0,          -- Total VP earned across all leagues
+    total_games INTEGER NOT NULL DEFAULT 0,       -- Total leagues participated in
+    average_placement NUMERIC(4,2) DEFAULT 0.00,  -- Average league placement
+    win_rate NUMERIC(5,2) DEFAULT 0.00,           -- Win rate percentage
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 2. LEAGUE_STATE TABLE  
+-- 2. PLAYER_RANKINGS TABLE
+-- Stores calculated player statistics for efficient querying and leaderboards
+CREATE TABLE player_rankings (
+    id UUID NOT NULL,
+    app_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    avatar TEXT NOT NULL,
+    score INTEGER NOT NULL DEFAULT 0,
+    championships INTEGER NOT NULL DEFAULT 0,
+    runner_up INTEGER NOT NULL DEFAULT 0,
+    third_place INTEGER NOT NULL DEFAULT 0,
+    total_vp INTEGER NOT NULL DEFAULT 0,
+    total_games INTEGER NOT NULL DEFAULT 0,
+    average_placement NUMERIC(4,2) DEFAULT 0.00,
+    win_rate NUMERIC(5,2) DEFAULT 0.00,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    PRIMARY KEY (id, app_id)
+);
+
+-- 3. LEAGUE_STATE TABLE  
 -- Stores current active league state and configuration
 CREATE TABLE league_state (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -44,7 +66,7 @@ CREATE TABLE league_state (
     selected_special_rules JSONB DEFAULT '[]'::jsonb
 );
 
--- 3. LEAGUE_HISTORY TABLE
+-- 4. LEAGUE_HISTORY TABLE
 -- Stores completed league records for historical tracking
 CREATE TABLE league_history (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

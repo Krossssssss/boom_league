@@ -10,6 +10,9 @@ export interface Player {
     runnerUp: number;      // 亚军次数
     thirdPlace: number;    // 季军次数
     totalVP: number;       // 总VP获得数
+    totalGames?: number;   // 总游戏数
+    averagePlacement?: number; // 平均排名
+    winRate?: number;      // 胜率
 }
 
 export interface GameHistory {
@@ -57,7 +60,8 @@ export interface RoundConfig {
     bombCards: number;
     handLimit: number;
     vpMode: VPMode;
-    specialRules: string[];  // 改为数组以支持多个特殊规则
+    specialRule: string;
+    specialRules?: string[]; // For multiple special rules
 }
 
 export interface VPMode {
@@ -118,7 +122,7 @@ export interface ScheduleTimelineProps {
 export interface HomePageProps {
     leagueState: LeagueState | null;
     players: Player[];
-    handleStartLeague: () => void;
+    handleStartLeague: (selectedSpecialRules: string[]) => void;
     handleResetLeague: () => void;
     handlePlayerClick: (player: Player) => void;
     setCurrentPage: (page: string) => void;

@@ -3,17 +3,16 @@ import { LucideTrophy } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { LeaderboardProps } from '../../types';
 import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../../constants/typography';
-import { GLASS_EFFECTS, ANIMATIONS, ROUNDED, createGlassCard, createInteractiveGlass } from '../../constants/designSystem';
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ players, onPlayerClick }) => {
     const { theme } = useTheme();
     
     return (
-        <div className={`relative ${createGlassCard('strong')} ${ROUNDED.xl} sm:${ROUNDED['2xl']} overflow-hidden`}>
+        <div className={`relative ${theme === 'dark' ? 'bg-black/20' : 'bg-white/60'} backdrop-blur-2xl border ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} rounded-lg sm:rounded-xl ${theme === 'dark' ? 'shadow-[0_0_50px_rgba(0,0,0,0.3)]' : 'shadow-[0_0_50px_rgba(0,0,0,0.1)]'} overflow-hidden`}>
             <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-br from-white/5 to-transparent' : 'bg-gradient-to-br from-gray-50/50 to-transparent'}`}></div>
             <div className="relative z-10 p-4 sm:p-6">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                    <div className={`relative p-1.5 sm:p-2 ${GLASS_EFFECTS.BACKGROUNDS.card} bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.orange}`}>
+                    <div className="relative p-1.5 sm:p-2 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-lg shadow-[0_0_20px_rgba(251,191,36,0.2)]">
                         <LucideTrophy size={14} className="text-yellow-400 sm:w-4 sm:h-4" />
                     </div>
                     <h3 className={`${TYPOGRAPHY.COMBINATIONS.cardTitle} ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>Leaderboard</h3>
@@ -22,7 +21,11 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players, onPlayerClick }) => 
                     {players.map((p, index) => (
                         <div 
                             key={p.id} 
-                            className={`group relative flex items-center justify-between p-3 sm:p-4 ${ROUNDED.lg} cursor-pointer ${createInteractiveGlass('primary')} ${ANIMATIONS.ACTIVE.press}`}
+                            className={`group relative flex items-center justify-between p-3 sm:p-4 rounded-lg cursor-pointer transition-all duration-200 border border-transparent active:scale-[0.98] ${
+                                theme === 'dark' 
+                                    ? 'hover:bg-white/5 hover:border-white/10 active:bg-white/10'
+                                    : 'hover:bg-gray-100/50 hover:border-gray-200 active:bg-gray-200/50'
+                            }`}
                             onClick={() => onPlayerClick && onPlayerClick(p)}
                         >
                             <div className="flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1">

@@ -72,9 +72,20 @@ const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule, currentRo
                                     <p className={`text-xs font-medium ${theme === 'dark' ? 'text-white/70' : 'text-gray-700'}`}>
                                         🏆 {roundInfo.vpMode.name}
                                     </p>
-                                    <p className={`text-xs font-medium ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
-                                        🎯 {roundInfo.specialRules.join(" + ")}
-                                    </p>
+                                    <div className={`text-xs font-medium ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+                                        {roundInfo.specialRules && roundInfo.specialRules.length > 1 ? (
+                                            <div className="space-y-0.5">
+                                                <div className="text-xs font-semibold">🎯 特殊规则:</div>
+                                                {roundInfo.specialRules.map((rule, idx) => (
+                                                    <div key={idx} className="text-xs pl-3">
+                                                        • {rule}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p>🎯 {roundInfo.specialRule}</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         );
