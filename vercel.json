@@ -1,12 +1,7 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm ci --legacy-peer-deps",
-  "routes": [
-    { "src": "/build/(.*)", "headers": { "cache-control": "public, max-age=31536000, immutable" } },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/api/index" }
-  ]
+  "devCommand": "npm run dev", 
+  "installCommand": "npm ci --legacy-peer-deps"
 }
 
 
