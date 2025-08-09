@@ -4,6 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "prebuild": "node -e \"try{require('fs').chmodSync('node_modules/.bin/remix',0o755)}catch(e){}\"",
     "build": "remix build",
     "dev": "remix dev",
     "start": "remix-serve build/index.js",
