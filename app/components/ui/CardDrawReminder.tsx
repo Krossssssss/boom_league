@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { Player } from '../../types';
+import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../../constants/typography';
+import { GLASS_EFFECTS, ANIMATIONS, ROUNDED, createGlassCard, createInteractiveGlass } from '../../constants/designSystem';
 
 interface CardDrawReminderProps {
     players: Player[];
@@ -21,31 +23,23 @@ const CardDrawReminder: React.FC<CardDrawReminderProps> = ({ players, onClose, r
     const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className={`relative w-full max-w-md mx-auto rounded-2xl shadow-2xl border backdrop-blur-xl ${
-                theme === 'dark' 
-                    ? 'bg-gray-900/90 border-gray-700' 
-                    : 'bg-white/90 border-gray-200'
-            }`}>
+        <div className={`fixed inset-0 ${GLASS_EFFECTS.BACKGROUNDS.overlay} flex items-center justify-center p-4 z-50`}>
+            <div className={`relative w-full max-w-md mx-auto ${ROUNDED['2xl']} ${createGlassCard('strong')} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.HOVER.lift}`}>
                 {/* Header */}
-                <div className={`p-6 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className={`p-6 border-b ${GLASS_EFFECTS.BORDERS.subtle}`}>
                     <div className="flex items-center gap-3 mb-2">
-                        <div className={`p-2 rounded-lg ${
-                            theme === 'dark' 
-                                ? 'bg-orange-500/20 border border-orange-500/30' 
-                                : 'bg-orange-100 border border-orange-200'
-                        }`}>
+                        <div className={`p-2 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.orange}`}>
                             <span className="text-orange-500 text-lg">🃏</span>
                         </div>
                         <div>
-                            <h2 className={`text-xl font-bold ${
+                            <h2 className={`${TYPOGRAPHY.COMBINATIONS.modalTitle} ${
                                 theme === 'dark' ? 'text-white' : 'text-gray-900'
-                            }`}>
+                            } ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>
                                 第 {round} 轮抽卡提醒
                             </h2>
-                            <p className={`text-sm ${
+                            <p className={`${TYPOGRAPHY.COMBINATIONS.modalBody} ${
                                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                            }`}>
+                            } ${LINE_HEIGHTS.normal}`}>
                                 请根据本轮排名抽取相应数量的卡片
                             </p>
                         </div>
@@ -140,11 +134,7 @@ const CardDrawReminder: React.FC<CardDrawReminderProps> = ({ players, onClose, r
                     {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className={`w-full mt-6 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                            theme === 'dark'
-                                ? 'bg-green-600 hover:bg-green-700 active:bg-green-800 text-white'
-                                : 'bg-green-500 hover:bg-green-600 active:bg-green-700 text-white'
-                        } active:scale-[0.98]`}
+                        className={`w-full mt-6 py-3 px-4 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.buttonLarge} ${createInteractiveGlass('success')} bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white ${GLASS_EFFECTS.SHADOWS.green} ${ANIMATIONS.ACTIVE.press} ${ANIMATIONS.HOVER.lift} ${LINE_HEIGHTS.tight}`}
                     >
                         ✅ 知道了，开始抽卡
                     </button>

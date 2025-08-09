@@ -33,8 +33,11 @@ import ScheduleTimeline from '../components/ui/ScheduleTimeline';
 import Modal from '../components/ui/Modal';
 import PlayerProfileModal from '../components/ui/PlayerProfileModal';
 import ResultsModal from '../components/ui/ResultsModal';
-import SoundEffectsBox from '../components/ui/SoundEffectsBox';
 import CardDrawReminder from '../components/ui/CardDrawReminder';
+
+// Import constants
+import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../constants/typography';
+import { GLASS_EFFECTS, ANIMATIONS, ROUNDED, createGlassCard, createInteractiveGlass } from '../constants/designSystem';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
@@ -320,7 +323,7 @@ export default function Index() {
     const generateSchedule = (playerCount: number, selectedSpecialRules: string[] = GAME_RULES.SPECIAL_RULES): RoundConfig[] => {
         let schedule: RoundConfig[] = [];
         for (let i = 0; i < GAME_RULES.MAX_ROUNDS; i++) {
-            const safeCardMultipliers = [1, 2, 3, 4];
+            const safeCardMultipliers = [1, 2, 3, 4, 5];
             // 炸弹牌数量只有两种可能：玩家数 × 1 或 玩家数 + 1
             const bombCardOptions = [playerCount, playerCount + 1];
             const handLimits = [4, 5, 6, Infinity];
@@ -756,30 +759,46 @@ export default function Index() {
         
         return (
             <div className="space-y-4 sm:space-y-6">
-                {/* League Navigation Header */}
-                <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
-                                <LucideGamepad2 className="text-orange-400" size={20} />
+                {/* Combined League Header & Info */}
+                <div className={`${createGlassCard('strong')} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED['2xl']}`}>
+                    {/* League Info Section */}
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                            <div className={`p-2.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.TRANSITIONS.normal} hover:scale-105`}>
+                                <LucideTrophy className="text-orange-400" size={22} />
                             </div>
-                            <div>
-                                <h1 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
-                                    联赛进行中
+                            <div className="flex-1">
+                                <h1 className={`${TYPOGRAPHY.COMBINATIONS.pageTitle} ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>
+                                    {leagueState.league_name || 'Boom League'}
                                 </h1>
-                                <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
-                                    第 {leagueState.current_round} 轮 / 共 {GAME_RULES.MAX_ROUNDS} 轮
-                                </p>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-1">
+                                    {leagueState.season_number && (
+                                        <p className={`${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} ${LINE_HEIGHTS.normal}`}>
+                                            Season {leagueState.season_number}
+                                        </p>
+                                    )}
+                                    {leagueState.season_number && leagueState.created_at && (
+                                        <span className={`hidden sm:inline ${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === 'dark' ? 'text-white/40' : 'text-gray-400'}`}>•</span>
+                                    )}
+                                    {leagueState.created_at && (
+                                        <p className={`${TYPOGRAPHY.COMBINATIONS.bodySmall} ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} ${LINE_HEIGHTS.normal}`}>
+                                            创建于 {new Date(leagueState.created_at).toLocaleDateString('zh-CN', {
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={handleBackToLeagueManagement}
-                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${
-                                    theme === 'dark'
-                                        ? 'bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white border border-slate-600/50'
-                                        : 'bg-gray-200/50 hover:bg-gray-300/50 text-gray-700 hover:text-gray-900 border border-gray-300/50'
-                                }`}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass('primary')} ${
+                                    theme === 'dark' ? 'text-slate-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'
+                                } ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`}
                             >
                                 <LucideChevronLeft size={16} />
                                 <span className="hidden xs:inline">返回管理</span>
@@ -791,16 +810,38 @@ export default function Index() {
                                         handleAbortLeague();
                                     }
                                 }}
-                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${
-                                    theme === 'dark'
-                                        ? 'bg-red-900/30 hover:bg-red-800/40 text-red-400 hover:text-red-300 border border-red-800/50'
-                                        : 'bg-red-100/50 hover:bg-red-200/50 text-red-700 hover:text-red-800 border border-red-300/50'
-                                }`}
+                                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 ${ROUNDED.lg} ${TYPOGRAPHY.COMBINATIONS.button} ${createInteractiveGlass('danger')} ${
+                                    theme === 'dark' ? 'text-red-400 hover:text-red-300' : 'text-red-700 hover:text-red-800'
+                                } ${LINE_HEIGHTS.tight} ${ANIMATIONS.HOVER.lift}`}
                             >
                                 <LucideX size={16} />
                                 <span className="hidden xs:inline">中止联赛</span>
                                 <span className="xs:hidden">中止</span>
                             </button>
+                        </div>
+                    </div>
+
+                    {/* League Status Section */}
+                    <div className={`flex items-center justify-between p-3 sm:p-4 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle}`}>
+                        <div className="flex items-center gap-3">
+                            <div className={`p-1.5 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.success} ${GLASS_EFFECTS.BORDERS.success} ${GLASS_EFFECTS.SHADOWS.green}`}>
+                                <LucideGamepad2 className="text-green-500" size={18} />
+                            </div>
+                            <div>
+                                <p className={`${TYPOGRAPHY.COMBINATIONS.emphasized} ${theme === 'dark' ? 'text-white/90' : 'text-gray-900'} ${LINE_HEIGHTS.tight}`}>
+                                    联赛进行中
+                                </p>
+                                <p className={`${TYPOGRAPHY.COMBINATIONS.caption} ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} ${LINE_HEIGHTS.normal}`}>
+                                    第 {leagueState.current_round} 轮 / 共 {GAME_RULES.MAX_ROUNDS} 轮
+                                </p>
+                            </div>
+                        </div>
+                        <div className={`px-3 py-1.5 rounded-lg ${TYPOGRAPHY.COMBINATIONS.badge} ${
+                            theme === 'dark' 
+                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                : 'bg-green-100 text-green-700 border border-green-200'
+                        } ${LINE_HEIGHTS.tight} ${LETTER_SPACING.wide}`}>
+                            ROUND {leagueState.current_round}
                         </div>
                     </div>
                 </div>
@@ -811,12 +852,12 @@ export default function Index() {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
                     <div className="flex flex-col gap-4 sm:gap-6">
                     {/* Round Info Card */}
-                    <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
+                    <div className={`${createGlassCard('strong')} p-4 sm:p-6 ${ROUNDED.xl} sm:${ROUNDED['2xl']}`}>
                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                            <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold text-orange-400`}>第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮</h2>
+                            <h2 className={`${TYPOGRAPHY.COMBINATIONS.sectionTitle} text-orange-400 ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>第 {leagueState.current_round} / {GAME_RULES.MAX_ROUNDS} 轮</h2>
                             <button 
                                 onClick={() => setShowResultsModal(true)} 
-                                className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-2.5 sm:py-3 px-4 sm:px-5 rounded-lg shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm sm:text-base"
+                                className={`${createInteractiveGlass('success')} bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white ${TYPOGRAPHY.COMBINATIONS.button} py-2.5 sm:py-3 px-4 sm:px-5 ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.green} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.ACTIVE.press} ${ANIMATIONS.HOVER.lift} flex items-center justify-center gap-2 ${LINE_HEIGHTS.tight}`}
                             >
                                 <LucideClipboardList size={18} className="flex-shrink-0" /> 
                                 <span className="hidden xs:inline">输入本轮结果</span>
@@ -834,45 +875,7 @@ export default function Index() {
                     
                     </div>
                     <div className="flex flex-col gap-4 sm:gap-6">
-                        {/* League Info Card */}
-                        {leagueState.league_name && (
-                            <div className={`backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl border ${theme === 'dark' ? 'bg-gray-800/60 border-gray-700' : 'bg-white/60 border-gray-200/50'}`}>
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gray-100/50 border-gray-200'} border`}>
-                                        <LucideTrophy className="text-orange-400" size={20} />
-                                    </div>
-                                    <div>
-                                        <h3 className={`text-lg sm:text-xl font-bold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'}`}>
-                                            {leagueState.league_name}
-                                        </h3>
-                                        {leagueState.season_number && (
-                                            <p className={`text-sm ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
-                                                Season {leagueState.season_number}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                                {leagueState.created_at && (
-                                    <div className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-white/5' : 'bg-gray-100/50'}`}>
-                                        <div className="flex items-center gap-2 text-sm">
-                                            <span className={`${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>创建时间：</span>
-                                            <span className={`${theme === 'dark' ? 'text-white/90' : 'text-gray-900'}`}>
-                                                {new Date(leagueState.created_at).toLocaleDateString('zh-CN', {
-                                                    year: 'numeric',
-                                                    month: 'long',
-                                                    day: 'numeric',
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                })}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        
                         <ScheduleTimeline schedule={leagueState.schedule} currentRound={leagueState.current_round} />
-                        <SoundEffectsBox />
                     </div>
                 </div>
             </div>

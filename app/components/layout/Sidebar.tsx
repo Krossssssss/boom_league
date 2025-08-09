@@ -1,7 +1,9 @@
-import React from 'react';
-import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause, LucideBook, LucideExternalLink, LucideHistory, LucideChevronLeft, LucideChevronRight } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { LucideCat, LucideHome, LucideUserPlus, LucideGamepad2, LucideBarChart3, LucideMenu, LucideX, LucideSun, LucideMoon, LucidePanelLeftClose, LucidePanelLeftOpen, LucideMusic, LucideVolumeX, LucideVolume2, LucidePlay, LucidePause, LucideBook, LucideExternalLink, LucideHistory, LucideChevronLeft, LucideChevronRight, LucideChevronDown, LucideChevronUp, LucideSmile, LucideFrown, LucideBomb, LucidePartyPopper, LucideWind, LucideHelpCircle } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { SidebarProps } from '../../types';
+import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../../constants/typography';
+import { GLASS_EFFECTS, ANIMATIONS, GRADIENTS, ROUNDED, createGlassCard, createInteractiveGlass } from '../../constants/designSystem';
 
 const Sidebar: React.FC<SidebarProps> = ({ 
     currentPage, 
@@ -16,6 +18,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     setMusicMuted
 }) => {
     const { theme, toggleTheme } = useTheme();
+    const [soundBoxCollapsed, setSoundBoxCollapsed] = useState(false);
+    const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
+    const youtubeRefs = useRef<{ [key: string]: HTMLIFrameElement | null }>({});
     
     const handleMusicToggle = () => {
         if (musicMuted) {
@@ -36,6 +41,157 @@ const Sidebar: React.FC<SidebarProps> = ({
     const handleRulebookClick = () => {
         window.open('https://docs.google.com/document/d/1zJaKW7T4Lz0537q-SPOSN5mYH0btt6K8Yvd6craN504/edit?usp=sharing', '_blank');
     };
+
+    // Sound effects configuration
+    const soundEffects = [
+        {
+            id: 'fart',
+            name: '💨 放屁',
+            icon: <LucideWind size={16} />,
+            color: 'from-yellow-500/20 to-brown-500/20 border-yellow-500/30 text-yellow-400',
+            youtubeId: 'KJotmmDJWAg'
+        },
+        {
+            id: 'bomb',
+            name: '💣 爆炸',
+            icon: <LucideBomb size={16} />,
+            color: 'from-red-500/20 to-orange-500/20 border-red-500/30 text-red-400',
+            youtubeId: 'HTXiJpCDiH4'
+        },
+        {
+            id: 'laugh',
+            name: '😂 大笑',
+            icon: <LucideSmile size={16} />,
+            color: 'from-green-500/20 to-emerald-500/20 border-green-500/30 text-green-400',
+            youtubeId: 'USerehPnsEE'
+        },
+        {
+            id: 'cry',
+            name: '😭 哭泣',
+            icon: <LucideFrown size={16} />,
+            color: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30 text-blue-400',
+            youtubeId: 'pBUs2R9JV5M'
+        },
+        {
+            id: 'happy',
+            name: '😊 开心',
+            icon: <LucidePartyPopper size={16} />,
+            color: 'from-purple-500/20 to-pink-500/20 border-purple-500/30 text-purple-400',
+            youtubeId: 'NSU2hJ5wT08'
+        },
+        {
+            id: 'huh',
+            name: '🤔 huh?',
+            icon: <LucideHelpCircle size={16} />,
+            color: 'from-orange-500/20 to-amber-500/20 border-orange-500/30 text-orange-400',
+            youtubeId: 'igO9SmiY4hs'
+        }
+    ];
+
+    // Stop all currently playing sounds
+    const stopAllSounds = () => {
+        try {
+            // Stop all YouTube iframes by clearing their src
+            Object.keys(youtubeRefs.current).forEach(soundId => {
+                const iframe = youtubeRefs.current[soundId];
+                if (iframe && iframe.src) {
+                    iframe.src = '';
+                }
+            });
+
+            // Stop any Web Audio API sounds
+            Object.values(audioRefs.current).forEach(audio => {
+                if (audio && !audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        } catch (error) {
+            console.log('Error stopping sounds:', error);
+        }
+    };
+
+    const playSound = (soundEffect: any) => {
+        try {
+            // Stop all previous sounds first
+            stopAllSounds();
+
+            // Check if it's a YouTube sound effect
+            if (soundEffect.youtubeId) {
+                playYouTubeSound(soundEffect.id, soundEffect.youtubeId);
+                return;
+            }
+
+            // All sound effects now use YouTube - fallback to beep
+            playBeepSound();
+        } catch (error) {
+            console.log('Sound creation failed:', error);
+            playBeepSound();
+        }
+    };
+
+    const playYouTubeSound = (soundId: string, youtubeId: string) => {
+        try {
+            const iframe = youtubeRefs.current[soundId];
+            if (iframe) {
+                // Determine playback rate based on sound effect
+                const playbackRate = soundId === 'fart' ? 1 : 2; // Fart sound at 1x speed, others at 2x speed
+                
+                // Reset and play the video starting at 1 second
+                iframe.src = '';
+                iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=0&volume=50&start=1&enablejsapi=1&origin=${window.location.origin}`;
+                
+                // Set playback rate after iframe loads
+                const handleLoad = () => {
+                    setTimeout(() => {
+                        try {
+                            if (iframe.contentWindow) {
+                                // Send command to set playback rate
+                                iframe.contentWindow.postMessage(
+                                    JSON.stringify({
+                                        event: 'command',
+                                        func: 'setPlaybackRate',
+                                        args: [playbackRate]
+                                    }),
+                                    'https://www.youtube.com'
+                                );
+                            }
+                        } catch (postMessageError) {
+                            console.log('Could not set playback rate:', postMessageError);
+                        }
+                    }, 500);
+                };
+
+                iframe.onload = handleLoad;
+            }
+        } catch (error) {
+            console.log('YouTube sound failed:', error);
+            playBeepSound();
+        }
+    };
+
+    // Fallback beep sound using Web Audio API
+    const playBeepSound = () => {
+        try {
+            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (error) {
+            console.log('Web Audio API not supported');
+        }
+    };
     
     const menuItems = [
         { id: 'home', name: '首页', icon: LucideHome },
@@ -55,21 +211,21 @@ const Sidebar: React.FC<SidebarProps> = ({
             )}
             
             {/* Sidebar */}
-            <div className={`fixed left-0 top-0 h-screen ${theme === 'dark' ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-2xl border-r ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} z-50 transform transition-all duration-300 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${sidebarCollapsed ? 'w-16 lg:w-16' : 'w-72 sm:w-80 md:w-72 lg:w-64'} ${theme === 'dark' ? 'shadow-[0_0_50px_rgba(0,0,0,0.5)]' : 'shadow-[0_0_50px_rgba(0,0,0,0.1)]'}`}>
-                <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-white/5 to-transparent' : 'bg-gradient-to-b from-gray-50/50 to-transparent'}`}></div>
+            <div className={`fixed left-0 top-0 h-screen ${GLASS_EFFECTS.BACKGROUNDS.sidebar} border-r ${GLASS_EFFECTS.BORDERS.medium} z-50 transform ${ANIMATIONS.TRANSITIONS.smooth} ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${sidebarCollapsed ? 'w-16 lg:w-16' : 'w-72 sm:w-80 md:w-72 lg:w-64'} ${GLASS_EFFECTS.SHADOWS['2xl']}`}>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/8 via-white/4 to-transparent dark:from-white/3 dark:via-white/1 dark:to-transparent"></div>
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className={`relative p-4 sm:p-6 border-b ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
+                    <div className={`relative p-4 sm:p-6 border-b ${GLASS_EFFECTS.BORDERS.subtle}`}>
                         <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'}`}>
                             {/* Logo and Title - Only show when not collapsed */}
                             {!sidebarCollapsed && (
                                 <div className="flex items-center gap-2 sm:gap-3">
-                                    <div className="relative p-2 sm:p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm border border-orange-500/30 rounded-lg shadow-[0_0_20px_rgba(251,146,60,0.3)]">
+                                    <div className={`relative p-2 sm:p-2.5 ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${ROUNDED.lg} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.TRANSITIONS.normal} hover:scale-105`}>
                                         <LucideCat className="text-orange-400" size={18} />
                                     </div>
                                     <div>
-                                        <h2 className={`text-sm sm:text-base font-semibold ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'} tracking-tight`}>Boom League</h2>
-                                        <p className={`text-xs ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} font-medium hidden sm:block`}>Tournament Tracker</p>
+                                        <h2 className={`${TYPOGRAPHY.COMBINATIONS.navTitle} ${theme === 'dark' ? 'text-white/95' : 'text-gray-900'} ${LINE_HEIGHTS.tight} ${LETTER_SPACING.tight}`}>Boom League</h2>
+                                        <p className={`${TYPOGRAPHY.COMBINATIONS.sidebarCaption} ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'} hidden sm:block ${LINE_HEIGHTS.normal}`}>Tournament Tracker</p>
                                     </div>
                                 </div>
                             )}
@@ -119,12 +275,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                                                 setCurrentPage(item.id);
                                                 setSidebarOpen(false);
                                             }}
-                                            className={`group relative ${sidebarCollapsed ? 'w-10 h-10' : 'w-full'} flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 sm:px-4 py-3 sm:py-3 rounded-lg transition-all duration-200 overflow-hidden text-sm sm:text-base ${
+                                            className={`group relative ${sidebarCollapsed ? 'w-10 h-10' : 'w-full'} flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 sm:px-4 py-3 sm:py-3 ${ROUNDED.lg} ${ANIMATIONS.TRANSITIONS.normal} overflow-hidden ${
                                                 isActive
-                                                    ? 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 text-orange-400 border border-orange-500/30 shadow-[0_0_20px_rgba(251,146,60,0.2)]'
-                                                    : theme === 'dark' 
-                                                        ? 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10'
-                                                        : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 border border-transparent hover:border-gray-200'
+                                                    ? `${GLASS_EFFECTS.BACKGROUNDS.card} text-orange-400 ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.glowOrange} ${ANIMATIONS.HOVER.glow}`
+                                                    : `${createInteractiveGlass('primary')} ${theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`
                                             }`}
                                             title={sidebarCollapsed ? item.name : undefined}
                                         >
@@ -133,7 +287,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                             )}
                                             <Icon size={18} className="relative z-10 flex-shrink-0" />
                                             {!sidebarCollapsed && (
-                                                <span className="font-medium relative z-10 truncate">{item.name}</span>
+                                                <span className={`${TYPOGRAPHY.COMBINATIONS.sidebarItem} relative z-10 truncate ${LINE_HEIGHTS.tight}`}>{item.name}</span>
                                             )}
                                         </button>
                                     </li>
@@ -142,19 +296,70 @@ const Sidebar: React.FC<SidebarProps> = ({
                         </ul>
                     </nav>
 
+                    {/* Sound Effects Box */}
+                    {!sidebarCollapsed && (
+                        <div className={`mx-3 sm:mx-4 mb-3 sm:mb-4 border-t ${GLASS_EFFECTS.BORDERS.subtle} pt-3 sm:pt-4`}>
+                            <div className="relative">
+                                <button
+                                    onClick={() => setSoundBoxCollapsed(!soundBoxCollapsed)}
+                                    className={`w-full flex items-center justify-between p-2 ${ROUNDED.lg} ${createInteractiveGlass('primary')} ${
+                                        theme === 'dark' 
+                                            ? 'text-white/70 hover:text-white' 
+                                            : 'text-gray-600 hover:text-gray-900'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <LucideVolume2 size={16} />
+                                        <span className={`${TYPOGRAPHY.COMBINATIONS.sidebarTitle} ${LINE_HEIGHTS.tight}`}>音效盒</span>
+                                    </div>
+                                    {soundBoxCollapsed ? <LucideChevronDown size={16} /> : <LucideChevronUp size={16} />}
+                                </button>
+                                
+                                {!soundBoxCollapsed && (
+                                    <div className="mt-2 space-y-2">
+                                        <div className="grid grid-cols-2 gap-1.5">
+                                            {soundEffects.map((sound) => (
+                                                <button
+                                                    key={sound.id}
+                                                    onClick={() => playSound(sound)}
+                                                    className={`p-2 ${ROUNDED.lg} ${GLASS_EFFECTS.BACKGROUNDS.interactive} ${GLASS_EFFECTS.BORDERS.subtle} ${ANIMATIONS.TRANSITIONS.normal} ${ANIMATIONS.HOVER.lift} ${ANIMATIONS.ACTIVE.press} bg-gradient-to-br ${sound.color} hover:${GLASS_EFFECTS.SHADOWS.md} group`}
+                                                    title={`播放 ${sound.name}`}
+                                                >
+                                                    <div className="flex items-center gap-1.5">
+                                                        <div className="transition-transform duration-200 group-hover:scale-110">
+                                                            {sound.icon}
+                                                        </div>
+                                                        <span className={`${TYPOGRAPHY.COMBINATIONS.buttonSmall} truncate ${LINE_HEIGHTS.tight}`}>
+                                                            {sound.name.split(' ')[1] || sound.name}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className={`p-2 ${ROUNDED.lg} text-center ${GLASS_EFFECTS.BACKGROUNDS.secondary} ${GLASS_EFFECTS.BORDERS.subtle}`}>
+                                            <p className={`${TYPOGRAPHY.COMBINATIONS.caption} ${
+                                                theme === 'dark' ? 'text-white/50' : 'text-gray-500'
+                                            } ${LINE_HEIGHTS.normal}`}>
+                                                💡 点击播放音效
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Bottom Controls */}
-                    <div className={`relative p-3 sm:p-4 border-t ${theme === 'dark' ? 'border-white/10' : 'border-gray-200/50'} mt-auto`}>
+                    <div className={`relative p-3 sm:p-4 border-t ${GLASS_EFFECTS.BORDERS.subtle} mt-auto`}>
                         {sidebarCollapsed ? (
                             <div className="flex flex-col items-center gap-2">
                                 {/* Music button - collapsed */}
                                 <button 
                                     onClick={handleMusicToggle}
-                                    className={`w-8 h-8 rounded-lg transition-all duration-200 border border-transparent flex items-center justify-center ${
+                                    className={`w-8 h-8 ${ROUNDED.lg} ${ANIMATIONS.TRANSITIONS.normal} flex items-center justify-center ${
                                         musicPlaying && !musicMuted
-                                            ? 'text-orange-400 bg-orange-500/20 border-orange-500/30'
-                                            : theme === 'dark' 
-                                                ? 'text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20' 
-                                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'
+                                            ? `text-orange-400 ${GLASS_EFFECTS.BACKGROUNDS.card} ${GLASS_EFFECTS.BORDERS.accent} ${GLASS_EFFECTS.SHADOWS.orange}`
+                                            : `${createInteractiveGlass('primary')} ${theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`
                                     }`}
                                     title={musicMuted ? 'Unmute music' : musicPlaying ? 'Pause music' : 'Play music'}
                                 >
@@ -211,7 +416,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                         <LucideBook size={16} />
                                     </button>
                                 </div>
-                                <div className={`text-xs ${theme === 'dark' ? 'text-white/40' : 'text-gray-400'} font-medium`}>
+                                <div className={`${TYPOGRAPHY.COMBINATIONS.caption} ${theme === 'dark' ? 'text-white/40' : 'text-gray-400'} ${LINE_HEIGHTS.normal} ${LETTER_SPACING.wide}`}>
                                     Controls
                                 </div>
                             </div>
@@ -219,6 +424,23 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
 
                 </div>
+            </div>
+
+            {/* Hidden YouTube iframes for sound effects */}
+            <div className="hidden">
+                {soundEffects.filter(sound => sound.youtubeId).map((sound) => (
+                    <iframe
+                        key={sound.id}
+                        ref={(el) => youtubeRefs.current[sound.id] = el}
+                        width="0"
+                        height="0"
+                        src={`https://www.youtube.com/embed/${sound.youtubeId}?controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&mute=1&start=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+                        title={`${sound.name} Sound Effect`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        style={{ display: 'none', position: 'absolute', left: '-9999px', top: '-9999px' }}
+                    />
+                ))}
             </div>
         </>
     );
