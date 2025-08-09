@@ -127,7 +127,7 @@ import {
 } from "@remix-run/react";
 
 // app/tailwind.css?url
-var tailwind_default = "/build/_assets/tailwind-RIB4WDEF.css?url";
+var tailwind_default = "/build/_assets/tailwind-3KF5WDZO.css?url";
 
 // app/root.tsx
 import { jsxDEV as jsxDEV2 } from "react/jsx-dev-runtime";
@@ -5845,7 +5845,7 @@ function Index() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-W6YDLT3D.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-QQ5IMUKD.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-XVHGACUF.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-4HFIKU2C.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-CLY5QHYI.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "95e5177b", hmr: { runtime: "/build/_shared\\chunk-XVHGACUF.js", timestamp: 1754718233876 }, url: "/build/manifest-95E5177B.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-VXSZJ43O.js", imports: ["/build/_shared/chunk-X3PXDGUE.js", "/build/_shared/chunk-PYLAYDR2.js", "/build/_shared/chunk-F4KNNEUR.js", "/build/_shared/chunk-E7FOCUHM.js", "/build/_shared/chunk-JR22VO6P.js", "/build/_shared/chunk-PLT55Z5M.js", "/build/_shared/chunk-2Z2JGDFU.js", "/build/_shared/chunk-PZDJHGND.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-HNDOHPPE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-24LML22H.js", imports: ["/build/_shared/chunk-LFAKDRIB.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "f68e1a69", hmr: { runtime: "/build/_shared\\chunk-E7FOCUHM.js", timestamp: 1754718254477 }, url: "/build/manifest-F68E1A69.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public\\build", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {
