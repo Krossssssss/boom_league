@@ -131,11 +131,6 @@ export interface SidebarProps {
     setSidebarOpen: (open: boolean) => void;
     sidebarCollapsed: boolean;
     setSidebarCollapsed: (collapsed: boolean) => void;
-    musicPlaying: boolean;
-    setMusicPlaying: (playing: boolean) => void;
-    musicMuted: boolean;
-    setMusicMuted: (muted: boolean) => void;
-    onMusicToggle?: () => Promise<void>;
 }
 
 export interface LeaderboardProps {

@@ -42,7 +42,6 @@ import { TYPOGRAPHY, LINE_HEIGHTS, LETTER_SPACING } from '../constants/typograph
 
 // Import utilities
 import { selectSpecialRules, formatSpecialRules } from '../utils/specialRulesUtils';
-import { getAudioManager } from '../utils/audioUtils';
 
 // Import pages
 import HomePage from '../components/pages/HomePage';
@@ -72,14 +71,12 @@ export default function Index() {
     const [currentPage, setCurrentPage] = useState<string>('home');
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
-    const [musicPlaying, setMusicPlaying] = useState<boolean>(false);
-    const [musicMuted, setMusicMuted] = useState<boolean>(true);
+
     const [leagueHistory, setLeagueHistory] = useState<LeagueHistory[]>([]);
     const [currentLeagueName, setCurrentLeagueName] = useState<string>('');
     const [nextSeasonNumber, setNextSeasonNumber] = useState<number>(1);
     const [isHydrated, setIsHydrated] = useState<boolean>(false);
-    const [audioManager] = useState(() => getAudioManager());
-    const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
+
     
     // Password protection state
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
@@ -103,11 +100,7 @@ export default function Index() {
             setSidebarCollapsed(JSON.parse(savedCollapsed));
         }
         
-        // Load music muted state from localStorage
-        const savedMuted = localStorage.getItem('musicMuted');
-        if (savedMuted !== null) {
-            setMusicMuted(JSON.parse(savedMuted));
-        }
+
         
         // Initialize theme from localStorage
         const savedTheme = localStorage.getItem('boom-league-theme') as 'light' | 'dark' | null;
@@ -120,9 +113,8 @@ export default function Index() {
         const canvasAppId = urlParams.get('app_id') || 'default';
         setAppId(canvasAppId);
         
-        // Initialize audio manager
-        audioManager.setMuted(savedMuted !== null ? JSON.parse(savedMuted) : true);
-    }, [audioManager]);
+
+    }, []);
 
     // Save sidebar collapsed state to localStorage (only after hydration)
     useEffect(() => {
@@ -131,13 +123,7 @@ export default function Index() {
         }
     }, [sidebarCollapsed, isHydrated]);
 
-    // Save music muted state to localStorage (only after hydration)
-    useEffect(() => {
-        if (isHydrated) {
-            localStorage.setItem('musicMuted', JSON.stringify(musicMuted));
-            audioManager.setMuted(musicMuted);
-        }
-    }, [musicMuted, isHydrated, audioManager]);
+
     const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
     // Supabase initialization effect (only after hydration)
@@ -593,34 +579,9 @@ export default function Index() {
         setCurrentPage('league');
     };
 
-    // Enable audio silently on first user interaction (no popup)
-    const enableAudioOnInteraction = async () => {
-        if (!audioEnabled) {
-            await audioManager.enableAudio();
-            setAudioEnabled(true);
-        }
-    };
 
-    // Function to play happy sound effect (mobile-friendly)
-    const playHappySound = async () => {
-        await enableAudioOnInteraction();
-        await audioManager.playSoundEffect('happy');
-    };
 
-    // Function to toggle background music
-    const toggleBackgroundMusic = async () => {
-        await enableAudioOnInteraction();
-        
-        if (musicPlaying) {
-            audioManager.pauseBackgroundMusic();
-            setMusicPlaying(false);
-        } else {
-            const success = await audioManager.playBackgroundMusic();
-            if (success) {
-                setMusicPlaying(true);
-            }
-        }
-    };
+
 
     const handlePlayerClick = (player: Player) => {
         setSelectedPlayerForProfile(player);
@@ -1145,11 +1106,6 @@ export default function Index() {
                     setSidebarOpen={setSidebarOpen}
                     sidebarCollapsed={sidebarCollapsed}
                     setSidebarCollapsed={setSidebarCollapsed}
-                    musicPlaying={musicPlaying}
-                    setMusicPlaying={setMusicPlaying}
-                    musicMuted={musicMuted}
-                    setMusicMuted={setMusicMuted}
-                    onMusicToggle={toggleBackgroundMusic}
                 />
 
                 <div className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'} relative`}>
